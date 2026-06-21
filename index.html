@@ -103,7 +103,7 @@
         .video-indicator { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.7); color: #fff; padding: 5px; border-radius: 50%; display: flex; z-index: 2; }
 
         .likes-badge { position: absolute; bottom: 12px; right: 12px; background: rgba(0, 0, 0, 0.8); color: var(--heart-red); padding: 6px 14px; border-radius: 20px; font-weight: 900; display: flex; align-items: center; gap: 5px; backdrop-filter: blur(4px); z-index: 2; font-size: 0.95rem; border: 1px solid rgba(255, 42, 75, 0.3); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        .likes-badge i { fill: var(--heart-red); color: var(--heart-red); }
+        .likes-badge i { fill: var(--heart-red) !important; color: var(--heart-red) !important; }
 
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5, 7, 13, 0.96); backdrop-filter: blur(16px); z-index: 1000; display: none; justify-content: center; align-items: center; padding: 2rem; }
         .modal-box { background: var(--card-bg); border-radius: 28px; max-width: 1100px; width: 100%; height: 85vh; box-shadow: 0 30px 60px rgba(0,0,0,0.6); border: 2px solid rgba(255,255,255,0.05); display: flex; overflow: hidden; }
@@ -123,18 +123,17 @@
         .modal-actions-row { margin-bottom: 1.2rem; padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
         
         .btn-only-heart { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: var(--heart-red); width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
-        .btn-only-heart i { fill: var(--heart-red); } /* Zawsze zamalowane serce */
+        .btn-only-heart i { fill: var(--heart-red) !important; color: var(--heart-red) !important; } 
         .btn-only-heart:hover { transform: scale(1.1); box-shadow: var(--heart-glow); }
         .btn-only-heart.liked { background: rgba(255, 42, 75, 0.2); border-color: var(--heart-red); box-shadow: var(--heart-glow); }
         
-        /* Przycisk powiększania */
-        .btn-fullscreen-trigger { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main); padding: 0.5rem 1rem; height: 52px; border-radius: 26px; font-weight: 700; font-family: 'Nunito'; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; transition: 0.2s; }
-        .btn-fullscreen-trigger:hover { background: rgba(59, 130, 246, 0.1); border-color: var(--primary); color: var(--primary); }
+        .btn-fullscreen-trigger { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--primary); padding: 0.5rem 1rem; height: 52px; border-radius: 26px; font-weight: 800; font-family: 'Nunito'; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; transition: 0.2s; }
+        .btn-fullscreen-trigger:hover { background: var(--primary); color: #fff; transform: scale(1.05); }
 
         .stats-display { display: flex; align-items: center; gap: 0.6rem; font-weight: 800; font-size: 1rem; color: var(--text-main); }
         .stat-item { display: flex; align-items: center; gap: 0.4rem; background: rgba(255,255,255,0.02); padding: 0.4rem 0.8rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); height: 52px; }
         .stat-item i { width: 16px; height: 16px; }
-        .stat-item.heart-stat i { color: var(--heart-red); fill: var(--heart-red); }
+        .stat-item.heart-stat i { color: var(--heart-red); fill: var(--heart-red) !important; }
         .stat-item.comment-stat i { color: var(--primary); }
 
         .comments-section { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; }
@@ -169,6 +168,18 @@
         .comment-input-row button { padding: 0.9rem 1.2rem; border-radius: 14px; border: none; background: var(--primary); color: #fff; font-weight: 800; cursor: pointer; font-family: 'Nunito'; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
         .comment-input-row button:hover { background: var(--primary-hover); transform: scale(1.05); }
 
+        /* WŁASNY SYSTEM POWIADOMIEŃ NA STRONIE */
+        .custom-toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: #1e293b; color: #fff; padding: 1rem 2rem; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 2px solid var(--primary); z-index: 2000; font-weight: 700; display: flex; align-items: center; gap: 0.8rem; transition: bottom 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .custom-toast.active { bottom: 30px; }
+        
+        .confirm-modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); z-index: 3000; display: none; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
+        .confirm-box { background: var(--card-bg); padding: 2rem; border-radius: 20px; border: 2px solid #ef4444; text-align: center; max-width: 350px; width: 100%; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        .confirm-box h3 { font-size: 1.3rem; margin-bottom: 1.5rem; font-weight: 800; }
+        .confirm-btns { display: flex; gap: 1rem; justify-content: center; }
+        .confirm-btn { padding: 0.6rem 1.5rem; border-radius: 10px; border: none; font-weight: 800; font-family: 'Nunito'; cursor: pointer; }
+        .confirm-btn.yes { background: #ef4444; color: #fff; }
+        .confirm-btn.no { background: rgba(255,255,255,0.1); color: var(--text-main); }
+
         @media (max-width: 768px) {
             .modal-box { flex-direction: column; height: 90vh; }
             .media-container { flex: 1; }
@@ -185,6 +196,21 @@
 <body>
 
     <div class="ambient-layer"></div>
+
+    <div class="confirm-modal-overlay" id="custom-confirm-modal">
+        <div class="confirm-box">
+            <h3 id="confirm-msg-text">Czy na pewno?</h3>
+            <div class="confirm-btns">
+                <button class="confirm-btn yes" id="confirm-yes-btn">Usuń</button>
+                <button class="confirm-btn no" onclick="closeCustomConfirm()">Anuluj</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="custom-toast" id="site-toast">
+        <i data-lucide="info" style="width:20px; height:20px; color:var(--primary);" id="toast-icon"></i>
+        <span id="toast-message">Komunikat...</span>
+    </div>
 
     <nav class="navbar" id="main-nav">
         <div class="nav-left">
@@ -244,7 +270,7 @@
                         </button>
                         
                         <button class="btn-fullscreen-trigger" onclick="window.triggerFullscreenMedia()">
-                            <i data-lucide="maximize-2" style="width:16px;height:16px;"></i> Cały ekran
+                            <i data-lucide="maximize-2" style="width:16px;height:16px;"></i> Zobacz całe zdjęcie
                         </button>
 
                         <div class="stats-display">
@@ -317,6 +343,27 @@
 
         lucide.createIcons();
 
+        function showToast(text, type = "info") {
+            const toast = document.getElementById('site-toast');
+            document.getElementById('toast-message').innerText = text;
+            toast.classList.add('active');
+            setTimeout(() => toast.classList.remove('active'), 3000);
+        }
+
+        function askConfirm(text, onYes) {
+            document.getElementById('confirm-msg-text').innerText = text;
+            const overlay = document.getElementById('custom-confirm-modal');
+            overlay.style.display = 'flex';
+            document.getElementById('confirm-yes-btn').onclick = () => {
+                onYes();
+                closeCustomConfirm();
+            };
+        }
+
+        function closeCustomConfirm() {
+            document.getElementById('custom-confirm-modal').style.display = 'none';
+        }
+
         function isVideoUrl(url) {
             return url.toLowerCase().match(/\.(mp4|mov|webm|ogg|quicktime)/) || url.includes("video");
         }
@@ -338,7 +385,7 @@
 
         function handleNickSubmit() {
             const nickVal = document.getElementById('nick-input').value.trim();
-            if(!nickVal) return alert("Wpisz swoje imię!");
+            if(!nickVal) return showToast("Wpisz swoje imię!");
             localStorage.setItem('8f_nick', nickVal);
             
             gsap.to('#box-step-nick', { scale: 0.8, opacity: 0, duration: 0.3, onComplete: () => {
@@ -415,7 +462,7 @@
         };
 
         function triggerFileUpload() {
-            if(!window.currentCategory) return alert("Wejdź najpierw do wybranego albumu!");
+            if(!window.currentCategory) return showToast("Wejdź najpierw do wybranego albumu!");
             document.getElementById('global-file-picker').click();
         }
 
@@ -428,7 +475,7 @@
             const fileName = `${Math.random()}.${fileExt}`;
             const filePath = `${window.currentCategory}/${fileName}`;
 
-            alert("Wgrywam plik... Poczekaj chwilkę.");
+            showToast("Wgrywam plik... Poczekaj chwilkę.");
 
             try {
                 let uploadRes = await fetch(`${SUPABASE_URL}/storage/v1/object/${BUCKET_NAME}/${filePath}`, {
@@ -451,11 +498,11 @@
                     body: JSON.stringify({ url: publicUrl, category: window.currentCategory, owner_nick: myNick })
                 });
 
-                alert("Gotowe! Plik jest już w chmurze.");
+                showToast("Gotowe! Plik dodany.");
                 await syncOnlineData();
                 renderGalleryGrid();
             } catch(e) {
-                alert("Błąd wgrywania.");
+                showToast("Błąd wgrywania.");
             }
             event.target.value = '';
         }
@@ -537,7 +584,6 @@
             lucide.createIcons();
         }
 
-        // --- POWIĘKSZANIE ZDJĘCIA (FULLSCREEN) ---
         window.triggerFullscreenMedia = function() {
             const element = document.querySelector('.modal-preview-img') || document.querySelector('.modal-preview-video');
             if (element) {
@@ -626,19 +672,19 @@
             lucide.createIcons();
         }
 
-        window.deleteCurrentMediaOnline = async function() {
+        window.deleteCurrentMediaOnline = function() {
             const mediaRecord = dbMediaItems.find(i => i.url === selectedMediaUrl);
             if(!mediaRecord) return;
             
-            if(!confirm("Czy na pewno chcesz usunąć to wspomnienie?")) return;
-
-            await fetch(`${SUPABASE_URL}/rest/v1/media_items?id=eq.${mediaRecord.id}`, {
-                method: 'DELETE',
-                headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+            askConfirm("Czy na pewno chcesz usunąć to zdjęcie?", async () => {
+                await fetch(`${SUPABASE_URL}/rest/v1/media_items?id=eq.${mediaRecord.id}`, {
+                    method: 'DELETE',
+                    headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+                });
+                showToast("Usunięto pomyślnie.");
+                await syncOnlineData();
+                window.closeModal();
             });
-
-            await syncOnlineData();
-            window.closeModal();
         };
 
         window.toggleLike = async function(triggerVisual = false) {
@@ -684,13 +730,16 @@
             updateModalSocials();
         };
 
-        window.deleteCommentOnline = async function(id) {
-            await fetch(`${SUPABASE_URL}/rest/v1/comments?id=eq.${id}`, {
-                method: 'DELETE',
-                headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+        window.deleteCommentOnline = function(id) {
+            askConfirm("Usunąć ten komentarz?", async () => {
+                await fetch(`${SUPABASE_URL}/rest/v1/comments?id=eq.${id}`, {
+                    method: 'DELETE',
+                    headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+                });
+                showToast("Komentarz usunięty.");
+                await syncOnlineData();
+                updateModalSocials();
             });
-            await syncOnlineData();
-            updateModalSocials();
         };
 
         window.prepareReply = function(id, name) {
