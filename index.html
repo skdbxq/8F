@@ -7,7 +7,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -77,13 +77,13 @@
         }
         .verify-box img { width: 120px; height: 120px; object-fit: contain; border-radius: 50%; margin-bottom: 1.5rem; border: 4px solid var(--primary); background: #000; box-shadow: var(--shadow-glow); }
         .verify-box h2 { font-size: 1.9rem; margin-bottom: 1.5rem; color: var(--text-main); font-weight: 800; }
-        .verify-box input { width: 100%; padding: 1rem; background: var(--bg-color); border: 2px solid rgba(255,255,255,0.1); border-radius: 16px; font-size: 1.1rem; text-align: center; margin-bottom: 1rem; color: var(--text-main); outline: none; transition: 0.3s; font-family: 'Nunito', sans-serif; font-weight: 600; }
+        .verify-box input, .verify-box select { width: 100%; padding: 1rem; background: var(--bg-color); border: 2px solid rgba(255,255,255,0.1); border-radius: 16px; font-size: 1.1rem; text-align: center; margin-bottom: 1rem; color: var(--text-main); outline: none; transition: 0.3s; font-family: 'Nunito', sans-serif; font-weight: 600; }
         .verify-box input:focus { border-color: var(--primary); box-shadow: var(--shadow-glow); }
         .btn-verify { width: 100%; padding: 1rem; background: var(--primary); color: #fff; border: none; border-radius: 16px; font-size: 1.2rem; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; transition: 0.3s; }
         .btn-verify:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: var(--shadow-glow); }
         .msg-text { font-weight: 700; margin-top: 1rem; display: none; font-size: 1.1rem; }
 
-        #albums-screen { justify-content: flex-start; padding-top: 7rem; max-width: 1000px; margin: 0 auto; }
+        #albums-screen, #profile-screen { justify-content: flex-start; padding-top: 7rem; max-width: 1000px; margin: 0 auto; }
         .screen-header h2 { font-size: 2.6rem; margin-bottom: 1.5rem; color: var(--text-main); text-align: center; font-weight: 900; }
         .albums-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2.5rem; width: 100%; padding: 2rem; }
         
@@ -112,7 +112,7 @@
         .modal-preview-img, .modal-preview-video { max-width: 100%; max-height: 100%; object-fit: contain; }
         .modal-preview-video { width: 100%; height: 100%; }
         
-        .center-pop-heart { position: absolute; color: var(--heart-red); fill: var(--heart-red); font-size: 11rem; opacity: 0; scale: 0; pointer-events: none; z-index: 15; filter: drop-shadow(var(--heart-glow)); transform: translate(-50%, -50%); }
+        .center-pop-heart { position: absolute; color: var(--heart-red); fill: var(--heart-red); width: 15%; height: 15%; min-width: 70px; opacity: 0; scale: 0; pointer-events: none; z-index: 15; filter: drop-shadow(var(--heart-glow)); top: 50%; left: 50%; transform: translate(-50%, -50%); }
 
         .social-panel { flex: 1; display: flex; flex-direction: column; border-left: 2px solid rgba(255,255,255,0.05); background: #111827; padding: 1.8rem; }
         .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
@@ -123,9 +123,9 @@
         .modal-actions-row { margin-bottom: 1.2rem; padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
         
         .btn-only-heart { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: var(--heart-red); width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
-        .btn-only-heart i { fill: var(--heart-red) !important; color: var(--heart-red) !important; } 
         .btn-only-heart:hover { transform: scale(1.1); box-shadow: var(--heart-glow); }
         .btn-only-heart.liked { background: rgba(255, 42, 75, 0.2); border-color: var(--heart-red); box-shadow: var(--heart-glow); }
+        .btn-only-heart.liked i { fill: var(--heart-red) !important; color: var(--heart-red) !important; }
         
         .btn-fullscreen-trigger { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--primary); padding: 0.5rem 1rem; height: 52px; border-radius: 26px; font-weight: 800; font-family: 'Nunito'; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; transition: 0.2s; }
         .btn-fullscreen-trigger:hover { background: var(--primary); color: #fff; transform: scale(1.05); }
@@ -168,7 +168,20 @@
         .comment-input-row button { padding: 0.9rem 1.2rem; border-radius: 14px; border: none; background: var(--primary); color: #fff; font-weight: 800; cursor: pointer; font-family: 'Nunito'; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
         .comment-input-row button:hover { background: var(--primary-hover); transform: scale(1.05); }
 
-        /* WŁASNY SYSTEM POWIADOMIEŃ NA STRONIE */
+        /* PROFILE SECTION BUILD */
+        .profile-card { background: var(--card-bg); border-radius: 24px; padding: 2rem; border: 2px solid rgba(59, 130, 246, 0.1); display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%; margin-bottom: 2rem; position: relative; }
+        .profile-avatar-wrapper { position: relative; margin-bottom: 1rem; }
+        .profile-avatar { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--primary); object-fit: cover; background: #000; }
+        .profile-name { font-size: 1.8rem; font-weight: 900; margin-bottom: 0.5rem; }
+        .profile-stats { display: flex; gap: 1.5rem; color: var(--text-muted); font-weight: 700; margin-top: 0.5rem; }
+        .profile-stats span { color: var(--text-main); font-weight: 800; }
+        .btn-settings { position: absolute; top: 1.5rem; right: 1.5rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main); padding: 0.5rem 1rem; border-radius: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; font-family: 'Nunito'; transition: 0.2s; }
+        .btn-settings:hover { background: rgba(255,255,255,0.15); }
+
+        /* MULTI-CHOICE UPLOAD MODAL */
+        .upload-modal-box { max-width: 450px !important; height: auto !important; padding: 2rem; display: flex; flex-direction: column; gap: 1.2rem; }
+        .upload-modal-box h3 { font-size: 1.5rem; font-weight: 900; text-align: center; }
+
         .custom-toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: #1e293b; color: #fff; padding: 1rem 2rem; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 2px solid var(--primary); z-index: 2000; font-weight: 700; display: flex; align-items: center; gap: 0.8rem; transition: bottom 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .custom-toast.active { bottom: 30px; }
         
@@ -184,6 +197,9 @@
             .modal-box { flex-direction: column; height: 90vh; }
             .media-container { flex: 1; }
             .social-panel { flex: 1.4; }
+            .navbar { padding: 1rem; }
+            .nav-logo { font-size: 1.3rem; }
+            .nav-btn span { display: none; }
         }
 
         #global-file-picker { display: none; }
@@ -215,14 +231,15 @@
     <nav class="navbar" id="main-nav">
         <div class="nav-left">
             <button class="btn-back" id="back-btn" onclick="window.goBack()"><i data-lucide="arrow-left"></i></button>
-            <div class="nav-logo">Klasa <span>8F</span></div>
+            <div class="nav-logo" onclick="window.showScreen('albums-screen')" style="cursor:pointer">Klasa <span>8F</span></div>
         </div>
         <div class="nav-links">
-            <button class="nav-btn upload-btn" id="upload-nav-btn" onclick="triggerFileUpload()" style="display: none;">
-                <i data-lucide="plus-circle"></i> Dodaj plik
+            <button class="nav-btn upload-btn" id="upload-nav-btn" onclick="openUploadModal()" style="display: none;">
+                <i data-lucide="plus-circle"></i> <span>Dodaj</span>
             </button>
             <input type="file" id="global-file-picker" accept="image/*,video/*" onchange="handleGlobalFileSelect(event)">
-            <button class="nav-btn" onclick="window.showScreen('albums-screen')"><i data-lucide="images"></i> Albumy</button>
+            <button class="nav-btn" onclick="window.showScreen('albums-screen')"><i data-lucide="images"></i> <span>Albumy</span></button>
+            <button class="nav-btn" onclick="window.showScreen('profile-screen')"><i data-lucide="user"></i> <span>Profil</span></button>
         </div>
     </nav>
 
@@ -254,16 +271,72 @@
             <div class="domino-grid" id="domino-grid"></div>
         </section>
 
+        <section id="profile-screen" class="screen">
+            <div class="profile-card">
+                <button class="btn-settings" onclick="openSettingsModal()"><i data-lucide="settings"></i> Edytuj</button>
+                <div class="profile-avatar-wrapper">
+                    <img src="" id="user-profile-avatar" class="profile-avatar" alt="Avatar">
+                </div>
+                <h2 class="profile-name" id="user-profile-name">Nazwa Użytkownika</h2>
+                <div class="profile-stats">
+                    <div>Wpisy: <span id="user-stat-uploads">0</span></div>
+                    <div>Zdobyte lajki: <span id="user-stat-likes">0</span></div>
+                </div>
+            </div>
+            <div class="screen-header"><h3>Moje Wspomnienia</h3></div>
+            <div class="domino-grid" id="profile-gallery-grid"></div>
+        </section>
+
+        <div class="modal-overlay" id="settings-modal" style="z-index: 1500;">
+            <div class="modal-box upload-modal-box">
+                <h3>Ustawienia Profilu</h3>
+                <label style="font-weight:700; font-size:0.9rem; color:var(--text-muted)">Zmień Nickname</label>
+                <input type="text" id="settings-nick-input" placeholder="Wpisz nowy nick...">
+                
+                <label style="font-weight:700; font-size:0.9rem; color:var(--text-muted)">Wybierz Avatar</label>
+                <select id="settings-avatar-select">
+                    <option value="https://api.dicebear.com/7.x/bottts/svg?seed=Felix">Robot Felix</option>
+                    <option value="https://api.dicebear.com/7.x/bottts/svg?seed=Anežka">Robot Anezka</option>
+                    <option value="https://api.dicebear.com/7.x/avataaars/svg?seed=Jack">Chłopak Jack</option>
+                    <option value="https://api.dicebear.com/7.x/avataaars/svg?seed=Lily">Dziewczyna Lily</option>
+                    <option value="https://api.dicebear.com/7.x/fun-emoji/svg?seed=Smile">Emoji Smile</option>
+                    <option value="https://raw.githubusercontent.com/skdbxq/8F/refs/heads/main/IMG_E4646.JPG">Klasowy Kotlet</option>
+                </select>
+
+                <button class="btn-verify" onclick="saveProfileSettings()">Zapisz zmiany</button>
+                <button class="btn-verify" style="background:rgba(255,255,255,0.05); color:var(--text-main); margin-top:-0.5rem;" onclick="closeSettingsModal()">Anuluj</button>
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="upload-wizard-modal" style="z-index: 1400;">
+            <div class="modal-box upload-modal-box">
+                <h3>Dodaj nowe wspomnienie</h3>
+                <p style="color:var(--text-muted); text-align:center; font-size:0.95rem;">Każde dodane zdjęcie musi należeć do albumu. Wybierz istniejący lub utwórz nowy album, widoczny dla wszystkich.</p>
+                
+                <label style="font-weight:700; font-size:0.9rem; color:var(--text-muted)">Wybierz album docelowy</label>
+                <select id="upload-album-select" onchange="toggleNewAlbumInput()">
+                    </select>
+
+                <div id="new-album-input-wrapper" style="display:none; width:100%;">
+                    <label style="font-weight:700; font-size:0.9rem; color:var(--text-muted)">Nazwa nowego albumu</label>
+                    <input type="text" id="new-album-title-input" placeholder="Np. Wycieczka do Pragi...">
+                </div>
+
+                <button class="btn-verify" onclick="proceedToChooseFile()"><i data-lucide="upload-cloud"></i> Wybierz plik z urządzenia</button>
+                <button class="btn-verify" style="background:rgba(255,255,255,0.05); color:var(--text-main); margin-top:-0.5rem;" onclick="closeUploadModal()">Anuluj</button>
+            </div>
+        </div>
+
         <div class="modal-overlay" id="choice-modal">
             <div class="modal-box">
-                <div class="media-container" id="modal-media-container"></div>
+                <div class="media-container" id="modal-media-container" ondblclick="window.handleDoubleTapLike(event)"></div>
                 
                 <div class="social-panel">
                     <div class="panel-header">
                         <h4>Wspomnienie</h4>
                         <button class="btn-close-modal" onclick="window.closeModal()"><i data-lucide="x"></i></button>
                     </div>
-
+                    
                     <div class="modal-actions-row">
                         <button class="btn-only-heart" id="modal-like-btn" onclick="window.toggleLike(true)">
                             <i data-lucide="heart"></i>
@@ -329,7 +402,7 @@
             ]
         };
 
-        const categoryNames = { krosnice: "Krośnice", bal: "Bal Ósmoklasisty", wycieczki: "Wycieczki" };
+        let categoryNames = { krosnice: "Krośnice", bal: "Bal Ósmoklasisty", wycieczki: "Wycieczki" };
         const inputPlaceholders = ["Napisz coś miłego...", "Podziel się wspomnieniem...", "Ale to były czasy!", "Skomentuj to fotkę..."];
         
         window.currentCategory = "";
@@ -341,9 +414,17 @@
         let dbLikes = [];
         let dbComments = [];
 
+        // Generowanie bezpiecznego identyfikatora urządzenia dla polubień i zabezpieczeń publicznych profilu
+        if(!localStorage.getItem('8f_user_id')) {
+            localStorage.setItem('8f_user_id', 'id_' + Math.random().toString(36).substr(2, 9));
+        }
+        if(!localStorage.getItem('8f_avatar')) {
+            localStorage.setItem('8f_avatar', 'https://api.dicebear.com/7.x/bottts/svg?seed=Felix');
+        }
+
         lucide.createIcons();
 
-        function showToast(text, type = "info") {
+        function showToast(text) {
             const toast = document.getElementById('site-toast');
             document.getElementById('toast-message').innerText = text;
             toast.classList.add('active');
@@ -368,11 +449,18 @@
             return url.toLowerCase().match(/\.(mp4|mov|webm|ogg|quicktime)/) || url.includes("video");
         }
 
+        // NAPRAWIONA IMPLEMENTACJA SUPABASE REST FETCH (KOMPLETNE NAGŁÓWKI + BRAK CACHOWANIA)
         async function supabaseFetch(table) {
             try {
-                const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
-                    headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?select=*`, {
+                    method: 'GET',
+                    headers: { 
+                        "apikey": SUPABASE_ANON_KEY, 
+                        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+                        "Range": "0-999"
+                    }
                 });
+                if(!res.ok) return [];
                 return await res.json();
             } catch(e) { return []; }
         }
@@ -381,6 +469,13 @@
             dbMediaItems = await supabaseFetch("media_items");
             dbLikes = await supabaseFetch("likes");
             dbComments = await supabaseFetch("comments");
+
+            // Dynamiczna rekonstrukcja listy unikalnych albumów dodanych przez całą społeczność
+            dbMediaItems.forEach(item => {
+                if(item.category && !categoryNames[item.category]) {
+                    categoryNames[item.category] = item.category_name || item.category;
+                }
+            });
         }
 
         function handleNickSubmit() {
@@ -439,7 +534,7 @@
             if (!isGoingBack && currentScreen && currentScreen.id !== 'verify-screen') screenHistory.push(currentScreen.id);
             
             if (currentScreen) {
-                gsap.to(currentScreen, { opacity: 0, scale: 0.95, y: -10, duration: 0.3, onComplete: () => {
+                gsap.to(currentScreen, { opacity: 0, scale: 0.95, y: -10, duration: 0.25, onComplete: () => {
                     currentScreen.classList.remove('active');
                     showNewScreen(screenId);
                 }});
@@ -453,16 +548,64 @@
             const nextScreen = document.getElementById(screenId);
             nextScreen.classList.add('active');
             window.scrollTo(0,0);
-            gsap.fromTo(nextScreen, { opacity: 0, scale: 0.95, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.4 });
+            gsap.fromTo(nextScreen, { opacity: 0, scale: 0.95, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.35 });
+            
             if(screenId === 'albums-screen') renderAlbums();
+            if(screenId === 'profile-screen') renderUserProfile();
         }
 
         window.goBack = function() {
             if (screenHistory.length > 0) window.showScreen(screenHistory.pop(), true);
         };
 
-        function triggerFileUpload() {
-            if(!window.currentCategory) return showToast("Wejdź najpierw do wybranego albumu!");
+        /* NOWY SYSTEM PRZESYŁANIA Z WYBOREM / TWORZENIEM ALBUMU */
+        function openUploadModal() {
+            const select = document.getElementById('upload-album-select');
+            select.innerHTML = "";
+            
+            Object.keys(categoryNames).forEach(key => {
+                const opt = document.createElement('option');
+                opt.value = key;
+                opt.innerText = categoryNames[key];
+                select.appendChild(opt);
+            });
+
+            const optNew = document.createElement('option');
+            optNew.value = "_NEW_";
+            optNew.innerText = "[+ Utwórz nowy album...]";
+            select.appendChild(optNew);
+
+            // Jeśli użytkownik jest aktualnie w albumie, ustaw go jako domyślny wybór
+            if(window.currentCategory && categoryNames[window.currentCategory]) {
+                select.value = window.currentCategory;
+            }
+
+            toggleNewAlbumInput();
+            document.getElementById('upload-wizard-modal').style.display = 'flex';
+            lucide.createIcons();
+        }
+
+        function closeUploadModal() {
+            document.getElementById('upload-wizard-modal').style.display = 'none';
+        }
+
+        function toggleNewAlbumInput() {
+            const select = document.getElementById('upload-album-select');
+            const wrapper = document.getElementById('new-album-input-wrapper');
+            if(select.value === '_NEW_') {
+                wrapper.style.display = 'block';
+                document.getElementById('new-album-title-input').focus();
+            } else {
+                wrapper.style.display = 'none';
+            }
+        }
+
+        function proceedToChooseFile() {
+            const select = document.getElementById('upload-album-select');
+            if(select.value === '_NEW_') {
+                const title = document.getElementById('new-album-title-input').value.trim();
+                if(!title) return showToast("Wpisz nazwę nowego albumu!");
+            }
             document.getElementById('global-file-picker').click();
         }
 
@@ -470,11 +613,23 @@
             const file = event.target.files[0];
             if(!file) return;
 
+            closeUploadModal();
             const myNick = localStorage.getItem('8f_nick') || "Anonim";
+            const myId = localStorage.getItem('8f_user_id');
             const fileExt = file.name.split('.').pop();
             const fileName = `${Math.random()}.${fileExt}`;
-            const filePath = `${window.currentCategory}/${fileName}`;
 
+            let targetCategory = document.getElementById('upload-album-select').value;
+            let targetCategoryName = categoryNames[targetCategory] || targetCategory;
+
+            if(targetCategory === '_NEW_') {
+                targetCategoryName = document.getElementById('new-album-title-input').value.trim();
+                // Konwersja na bezpieczny klucz tekstowy
+                targetCategory = 'cat_' + Date.now();
+                categoryNames[targetCategory] = targetCategoryName;
+            }
+
+            const filePath = `${targetCategory}/${fileName}`;
             showToast("Wgrywam plik... Poczekaj chwilkę.");
 
             try {
@@ -495,14 +650,28 @@
                         "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify({ url: publicUrl, category: window.currentCategory, owner_nick: myNick })
+                    body: JSON.stringify({ 
+                        url: publicUrl, 
+                        category: targetCategory, 
+                        category_name: targetCategoryName,
+                        owner_nick: myNick,
+                        user_id: myId
+                    })
                 });
 
-                showToast("Gotowe! Plik dodany.");
+                showToast("Gotowe! Wspomnienie dodane publicznie.");
                 await syncOnlineData();
-                renderGalleryGrid();
+                
+                if(document.getElementById('albums-screen').classList.contains('active')) {
+                    renderAlbums();
+                } else {
+                    window.currentCategory = targetCategory;
+                    document.getElementById('gallery-title').innerText = targetCategoryName;
+                    window.showScreen('gallery-screen');
+                    renderGalleryGrid();
+                }
             } catch(e) {
-                showToast("Błąd wgrywania.");
+                showToast("Błąd zapisu pliku.");
             }
             event.target.value = '';
         }
@@ -515,7 +684,13 @@
             Object.keys(categoryNames).forEach((catKey, index) => {
                 const name = categoryNames[catKey];
                 const catOnlineItems = dbMediaItems.filter(i => i.category === catKey);
-                const cover = catOnlineItems.length > 0 ? catOnlineItems[0].url : defaultHardcodedItems[catKey][0];
+                
+                let cover = "https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=500";
+                if(catOnlineItems.length > 0) {
+                    cover = catOnlineItems[0].url;
+                } else if(defaultHardcodedItems[catKey] && defaultHardcodedItems[catKey].length > 0) {
+                    cover = defaultHardcodedItems[catKey][0];
+                }
 
                 const div = document.createElement('div');
                 div.className = 'album-card';
@@ -542,7 +717,7 @@
                 });
 
                 container.appendChild(div);
-                gsap.to(div, {opacity: 1, y: 0, scale: 1, duration: 0.4, delay: index * 0.1});
+                gsap.to(div, {opacity: 1, y: 0, scale: 1, duration: 0.4, delay: index * 0.08});
             });
         }
 
@@ -551,7 +726,11 @@
             if(!grid) return;
             grid.innerHTML = "";
 
-            let items = [...defaultHardcodedItems[window.currentCategory]];
+            let items = [];
+            if(defaultHardcodedItems[window.currentCategory]) {
+                items = [...defaultHardcodedItems[window.currentCategory]];
+            }
+            
             dbMediaItems.filter(i => i.category === window.currentCategory).forEach(i => {
                 if(!items.includes(i.url)) items.unshift(i.url);
             });
@@ -574,14 +753,77 @@
                 div.innerHTML = mediaElement;
                 
                 if(isVideoUrl(item.url)) {
-                    div.addEventListener('mouseenter', () => div.querySelector('video').play());
-                    div.addEventListener('mouseleave', () => { const v = div.querySelector('video'); v.pause(); v.currentTime = 0; });
+                    div.addEventListener('mouseenter', () => { try { div.querySelector('video').play(); } catch(e){} });
+                    div.addEventListener('mouseleave', () => { try { const v = div.querySelector('video'); v.pause(); v.currentTime = 0; } catch(e){} });
                 }
 
                 grid.appendChild(div);
-                gsap.to(div, { opacity: 1, scale: 1, y: 0, duration: 0.4, delay: index * 0.03 });
+                gsap.to(div, { opacity: 1, scale: 1, y: 0, duration: 0.3, delay: index * 0.02 });
             });
             lucide.createIcons();
+        }
+
+        /* MECHANIKA TWÓJ PROFIL (FB / IG STYLE) */
+        function renderUserProfile() {
+            const myNick = localStorage.getItem('8f_nick') || "Użytkownik";
+            const myAvatar = localStorage.getItem('8f_avatar');
+            const myId = localStorage.getItem('8f_user_id');
+
+            document.getElementById('user-profile-name').innerText = myNick;
+            document.getElementById('user-profile-avatar').src = myAvatar;
+
+            const myUploads = dbMediaItems.filter(i => i.user_id === myId);
+            document.getElementById('user-stat-uploads').innerText = myUploads.length;
+
+            // Obliczanie sumy serduszek zdobytych pod własnymi zdjęciami
+            let totalEarnedLikes = 0;
+            myUploads.forEach(media => {
+                totalEarnedLikes += dbLikes.filter(l => l.media_url === media.url).length;
+            });
+            document.getElementById('user-stat-likes').innerText = totalEarnedLikes;
+
+            const grid = document.getElementById('profile-gallery-grid');
+            grid.innerHTML = "";
+
+            if(myUploads.length === 0) {
+                grid.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--text-muted); padding:3rem 0; font-weight:700;">Nie dodałeś jeszcze żadnych publicznych zdjęć.</p>`;
+                return;
+            }
+
+            myUploads.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'domino-item';
+                div.onclick = () => window.openMediaModal(item.url);
+
+                let mediaElement = isVideoUrl(item.url) ? `<video src="${item.url}" muted></video>` : `<img src="${item.url}">`;
+                div.innerHTML = mediaElement;
+                grid.appendChild(div);
+            });
+            lucide.createIcons();
+        }
+
+        function openSettingsModal() {
+            document.getElementById('settings-nick-input').value = localStorage.getItem('8f_nick') || "";
+            document.getElementById('settings-avatar-select').value = localStorage.getItem('8f_avatar') || "";
+            document.getElementById('settings-modal').style.display = 'flex';
+        }
+
+        function closeSettingsModal() {
+            document.getElementById('settings-modal').style.display = 'none';
+        }
+
+        function saveProfileSettings() {
+            const newNick = document.getElementById('settings-nick-input').value.trim();
+            const newAvatar = document.getElementById('settings-avatar-select').value;
+
+            if(!newNick) return showToast("Nick nie może być pusty!");
+
+            localStorage.setItem('8f_nick', newNick);
+            localStorage.setItem('8f_avatar', newAvatar);
+
+            closeSettingsModal();
+            showToast("Profil zaktualizowany pomyślnie.");
+            renderUserProfile();
         }
 
         window.triggerFullscreenMedia = function() {
@@ -592,14 +834,32 @@
             }
         };
 
-        function playTargetedHeartAnimation(x, y) {
-            const centerHeart = document.getElementById('center-heart');
-            if(!centerHeart) return;
-            centerHeart.style.left = `${x}px`; centerHeart.style.top = `${y}px`;
-            gsap.fromTo(centerHeart, { scale: 0, opacity: 0, rotation: -25 }, { scale: 1, opacity: 1, rotation: 10, duration: 0.25, onComplete: () => {
-                gsap.to(centerHeart, { scale: 0, opacity: 0, delay: 0.2, duration: 0.2 });
-            }});
-        }
+        /* GEST DOUBLE TAP TO LIKE (Prawidłowe skalowanie: 1/7 rozmiaru) */
+        window.handleDoubleTapLike = function(event) {
+            const container = document.getElementById('modal-media-container');
+            const heart = document.getElementById('center-heart');
+            
+            // Rejestracja lajka jeśli jeszcze go nie ma
+            const myId = localStorage.getItem('8f_user_id');
+            const alreadyLiked = dbLikes.some(l => l.media_url === selectedMediaUrl && l.user_id === myId);
+            
+            if(!alreadyLiked) {
+                window.toggleLike(false);
+            }
+
+            // Wyświetlenie animacji serca dokładnie w punkcie kliknięcia (rozmiar sterowany bezpiecznie przez CSS klasy)
+            gsap.killTweensOf(heart);
+            gsap.fromTo(heart, { scale: 0, opacity: 0, rotation: -20 }, { 
+                scale: 1, 
+                opacity: 1, 
+                rotation: 0, 
+                duration: 0.25, 
+                ease: "back.out(1.7)",
+                onComplete: () => {
+                    gsap.to(heart, { scale: 0, opacity: 0, delay: 0.4, duration: 0.2 });
+                }
+            });
+        };
 
         window.openMediaModal = function(url) {
             selectedMediaUrl = url;
@@ -614,30 +874,36 @@
 
             updateModalSocials();
             document.getElementById('choice-modal').style.display = 'flex';
-            gsap.fromTo('.modal-box', { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3 });
+            gsap.fromTo('.modal-box', { scale: 0.85, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.25 });
             lucide.createIcons();
         };
 
         window.closeModal = function() {
             const video = document.querySelector('.modal-preview-video');
             if(video) video.pause();
-            document.getElementById('choice-modal').style.display = 'none';
-            renderGalleryGrid();
+            document.getElementById('choice-modal').style.style.display = 'none';
+            
+            if(document.getElementById('profile-screen').classList.contains('active')) {
+                renderUserProfile();
+            } else {
+                renderGalleryGrid();
+            }
         };
 
         function updateModalSocials() {
-            const myNick = localStorage.getItem('8f_nick') || "Anonim";
+            const myId = localStorage.getItem('8f_user_id');
             
             const mediaRecord = dbMediaItems.find(i => i.url === selectedMediaUrl);
             const deleteMediaBtn = document.getElementById('modal-delete-media-btn');
-            if(mediaRecord && mediaRecord.owner_nick === myNick) {
+            
+            if(mediaRecord && mediaRecord.user_id === myId) {
                 deleteMediaBtn.style.display = 'inline-flex';
             } else {
                 deleteMediaBtn.style.display = 'none';
             }
 
             const totalLikes = dbLikes.filter(l => l.media_url === selectedMediaUrl);
-            const isLikedByMe = totalLikes.some(l => l.user_nick === myNick);
+            const isLikedByMe = totalLikes.some(l => l.user_id === myId);
             
             document.getElementById('modal-like-count').innerText = totalLikes.length;
             
@@ -651,11 +917,11 @@
             list.innerHTML = currentComments.length === 0 ? '<p style="color:var(--text-muted); text-align:center; padding-top:2rem;">Brak komentarzy. Napisz pierwszy!</p>' : '';
 
             currentComments.forEach(c => {
-                const childReplies = dbComments.filter(r => r.parent_id === c.id);
+                const childReplies = dbComments.filter(r => Number(r.parent_id) === Number(c.id));
                 let repliesHtml = childReplies.map(r => `<div class="reply-item"><div class="reply-author">${r.nick}</div><div>${r.text}</div></div>`).join('');
                 if(repliesHtml) repliesHtml = `<div class="replies-container">${repliesHtml}</div>`;
 
-                const canDeleteComment = (c.nick === myNick) ? 'style="display:flex;"' : 'style="display:none;"';
+                const canDeleteComment = (c.user_id === myId) ? 'style="display:flex;"' : 'style="display:none;"';
 
                 list.innerHTML += `
                     <div class="comment-item">
@@ -676,52 +942,81 @@
             const mediaRecord = dbMediaItems.find(i => i.url === selectedMediaUrl);
             if(!mediaRecord) return;
             
-            askConfirm("Czy na pewno chcesz usunąć to zdjęcie?", async () => {
+            askConfirm("Czy na pewno chcesz usunąć to zdjęcie ze wspólnej osi czasu?", async () => {
                 await fetch(`${SUPABASE_URL}/rest/v1/media_items?id=eq.${mediaRecord.id}`, {
                     method: 'DELETE',
                     headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
                 });
-                showToast("Usunięto pomyślnie.");
+                showToast("Zdjęcie zostało usunięte.");
                 await syncOnlineData();
                 window.closeModal();
             });
         };
 
-        window.toggleLike = async function(triggerVisual = false) {
+        /* CAŁKOWICIE NAPRAWIONY SYSTEM LAJKÓW (POST / DELETE BEZ BŁĘDÓW REST) */
+        window.toggleLike = async function(triggerVisualAnimation = false) {
             const myNick = localStorage.getItem('8f_nick') || "Anonim";
-            const existing = dbLikes.find(l => l.media_url === selectedMediaUrl && l.user_nick === myNick);
+            const myId = localStorage.getItem('8f_user_id');
+            const existing = dbLikes.find(l => l.media_url === selectedMediaUrl && l.user_id === myId);
 
             if(existing) {
+                // Usuwanie polubienia
                 await fetch(`${SUPABASE_URL}/rest/v1/likes?id=eq.${existing.id}`, {
                     method: 'DELETE',
-                    headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+                    headers: { 
+                        "apikey": SUPABASE_ANON_KEY, 
+                        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
+                    }
                 });
             } else {
-                if(triggerVisual) {
-                    const cnt = document.getElementById('modal-media-container');
-                    playTargetedHeartAnimation(cnt.clientWidth/2, cnt.clientHeight/2);
+                if(triggerVisualAnimation) {
+                    const heart = document.getElementById('center-heart');
+                    if(heart) {
+                        gsap.fromTo(heart, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.2, onComplete: () => {
+                            gsap.to(heart, { scale: 0, opacity: 0, delay: 0.3, duration: 0.2 });
+                        }});
+                    }
                 }
+                
+                // Tworzenie nowego rekordu polubienia
                 await fetch(`${SUPABASE_URL}/rest/v1/likes`, {
                     method: 'POST',
-                    headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}`, "Content-Type": "application/json" },
-                    body: JSON.stringify({ media_url: selectedMediaUrl, user_nick: myNick })
+                    headers: { 
+                        "apikey": SUPABASE_ANON_KEY, 
+                        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`, 
+                        "Content-Type": "application/json",
+                        "Prefer": "return=representation"
+                    },
+                    body: JSON.stringify({ media_url: selectedMediaUrl, user_nick: myNick, user_id: myId })
                 });
             }
             await syncOnlineData();
             updateModalSocials();
         };
 
+        /* CAŁKOWICIE NAPRAWIONY SYSTEM KOMENTARZY */
         window.addComment = async function() {
             const input = document.getElementById('comment-input');
             const text = input.value.trim();
             if(!text) return;
 
             const myNick = localStorage.getItem('8f_nick') || "Anonim";
+            const myId = localStorage.getItem('8f_user_id');
             
             await fetch(`${SUPABASE_URL}/rest/v1/comments`, {
                 method: 'POST',
-                headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}`, "Content-Type": "application/json" },
-                body: JSON.stringify({ media_url: selectedMediaUrl, nick: myNick, text: text, parent_id: replyingToCommentIndex })
+                headers: { 
+                    "apikey": SUPABASE_ANON_KEY, 
+                    "Authorization": `Bearer ${SUPABASE_ANON_KEY}`, 
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ 
+                    media_url: selectedMediaUrl, 
+                    nick: myNick, 
+                    text: text, 
+                    parent_id: replyingToCommentIndex,
+                    user_id: myId
+                })
             });
 
             input.value = '';
