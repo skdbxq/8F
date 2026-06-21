@@ -14,13 +14,15 @@
     
     <style>
         :root {
-            --bg-color: #0d1117;       
-            --card-bg: #161b22;        
-            --primary: #00bcd4;        
-            --primary-hover: #00a8c2;
-            --text-main: #f0f3f5;      
-            --text-muted: #8b9bb4;     
-            --shadow-soft: 0 12px 30px rgba(0, 188, 212, 0.1); 
+            --bg-color: #0a0e17;       
+            --card-bg: #161f30;        
+            --primary: #3b82f6;        
+            --primary-hover: #2563eb;
+            --heart-red: #ff2a4b;
+            --text-main: #f1f5f9;      
+            --text-muted: #64748b;     
+            --shadow-glow: 0 0 25px rgba(59, 130, 246, 0.3);
+            --heart-glow: 0 0 40px rgba(255, 42, 75, 0.7);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -36,118 +38,147 @@
         .ambient-layer {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: 1; pointer-events: none; overflow: hidden;
-            background: radial-gradient(circle at top right, #1d2731, var(--bg-color));
+            background: radial-gradient(circle at top right, #1e293b, var(--bg-color));
         }
 
         /* --- NAVI --- */
         .navbar {
             position: fixed; top: 0; left: 0; width: 100%; padding: 1rem 2rem;
-            background: rgba(13, 17, 23, 0.9); backdrop-filter: blur(12px);
-            border-bottom: 2px solid rgba(0, 188, 212, 0.1);
+            background: rgba(10, 14, 23, 0.95); backdrop-filter: blur(16px);
+            border-bottom: 2px solid rgba(59, 130, 246, 0.15);
             display: none; justify-content: space-between; align-items: center; z-index: 100;
         }
         .nav-left { display: flex; align-items: center; gap: 1rem; }
         
         .btn-back {
             display: none;
-            background: none; border: 2px solid rgba(0, 188, 212, 0.3); color: var(--text-main);
+            background: none; border: 2px solid rgba(59, 130, 246, 0.4); color: var(--text-main);
             width: 40px; height: 40px; border-radius: 50%; cursor: pointer; transition: 0.2s;
             justify-content: center; align-items: center;
         }
-        .btn-back:hover { background: rgba(0, 188, 212, 0.2); border-color: var(--primary); }
+        .btn-back:hover { background: rgba(59, 130, 246, 0.2); border-color: var(--primary); transform: scale(1.1); }
 
-        .nav-logo { font-weight: 900; font-size: 1.5rem; color: var(--text-main); }
-        .nav-logo span { color: var(--primary); }
-        .nav-links { display: flex; gap: 0.8rem; }
-        .nav-btn { background: none; border: 2px solid rgba(0, 188, 212, 0.2); padding: 0.5rem 1rem; border-radius: 20px; font-weight: 700; color: var(--text-main); cursor: pointer; transition: all 0.2s; font-family: 'Nunito', sans-serif; }
-        .nav-btn:hover { background: var(--primary); border-color: var(--primary); color: #fff; }
+        .nav-logo { font-weight: 900; font-size: 1.6rem; color: var(--text-main); letter-spacing: 1px; }
+        .nav-logo span { color: var(--primary); text-shadow: 0 0 10px rgba(59, 130, 246, 0.5); }
+        .nav-links { display: flex; gap: 0.8rem; align-items: center; }
+        .nav-btn { background: rgba(255,255,255,0.03); border: 2px solid rgba(59, 130, 246, 0.2); padding: 0.5rem 1.2rem; border-radius: 20px; font-weight: 700; color: var(--text-main); cursor: pointer; transition: all 0.2s; font-family: 'Nunito', sans-serif; display: flex; align-items: center; gap: 0.4rem; }
+        .nav-btn:hover { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: var(--shadow-glow); transform: translateY(-2px); }
 
         main { position: relative; z-index: 5; width: 100%; }
-        .screen { display: none; min-height: 100vh; width: 100%; padding: 2rem; flex-direction: column; justify-content: center; align-items: center; }
-        .screen.active { display: flex; }
+        .screen { display: none; min-height: 100vh; width: 100%; padding: 2rem; flex-direction: column; justify-content: center; align-items: center; opacity: 0; }
+        .screen.active { display: flex; opacity: 1; }
 
-        /* ==================== WERYFIKACJA ==================== */
+        /* ==================== ONBOARDING ==================== */
         .verify-box {
             background: var(--card-bg); padding: 3rem; border-radius: 24px;
-            box-shadow: var(--shadow-soft); text-align: center; max-width: 400px; width: 100%;
-            border: 2px solid rgba(0, 188, 212, 0.1);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5); text-align: center; max-width: 400px; width: 100%;
+            border: 2px solid rgba(59, 130, 246, 0.15);
         }
-        .verify-box img { width: 120px; height: 120px; object-fit: contain; border-radius: 50%; margin-bottom: 1.5rem; border: 4px solid var(--primary); background: #000; }
-        .verify-box h2 { font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--text-main); font-weight: 800; }
+        .verify-box img { width: 120px; height: 120px; object-fit: contain; border-radius: 50%; margin-bottom: 1.5rem; border: 4px solid var(--primary); background: #000; box-shadow: var(--shadow-glow); }
+        .verify-box h2 { font-size: 1.9rem; margin-bottom: 1.5rem; color: var(--text-main); font-weight: 800; }
         .verify-box input { width: 100%; padding: 1rem; background: var(--bg-color); border: 2px solid rgba(255,255,255,0.1); border-radius: 16px; font-size: 1.1rem; text-align: center; margin-bottom: 1rem; color: var(--text-main); outline: none; transition: 0.3s; font-family: 'Nunito', sans-serif; font-weight: 600; }
-        .verify-box input:focus { border-color: var(--primary); }
-        .btn-verify { width: 100%; padding: 1rem; background: var(--primary); color: #fff; border: none; border-radius: 16px; font-size: 1.2rem; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; }
-        .btn-verify:hover { background: var(--primary-hover); transform: translateY(-2px); }
+        .verify-box input:focus { border-color: var(--primary); box-shadow: var(--shadow-glow); }
+        .btn-verify { width: 100%; padding: 1rem; background: var(--primary); color: #fff; border: none; border-radius: 16px; font-size: 1.2rem; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; transition: 0.3s; }
+        .btn-verify:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: var(--shadow-glow); }
         .msg-text { font-weight: 700; margin-top: 1rem; display: none; font-size: 1.1rem; }
-
-        /* ==================== HERO ==================== */
-        #hero-screen { text-align: center; }
-        .hero-title { font-size: clamp(3.5rem, 10vw, 7rem); font-weight: 900; color: var(--text-main); margin-bottom: 0.5rem; }
-        .hero-title span { color: var(--primary); }
-        .hero-subtitle { font-size: 1.4rem; color: var(--text-muted); margin-bottom: 3rem; font-weight: 600; }
-        .btn-main { display: inline-flex; align-items: center; gap: 0.8rem; padding: 1.1rem 2.5rem; background: none; border: 2px solid var(--primary); color: var(--text-main); font-size: 1.1rem; font-weight: 800; border-radius: 20px; cursor: pointer; transition: all 0.3s; font-family: 'Nunito', sans-serif; }
-        .btn-main:hover { background: var(--primary); color: #fff; transform: translateY(-3px); }
 
         /* ==================== ALBUMY ==================== */
         #albums-screen { justify-content: flex-start; padding-top: 7rem; max-width: 1000px; margin: 0 auto; }
-        .screen-header h2 { font-size: 2.5rem; margin-bottom: 1.5rem; color: var(--text-main); text-align: center; font-weight: 900; }
-        .albums-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2rem; width: 100%; padding: 2rem; }
-        .album-card { background: var(--card-bg); border-radius: 24px; height: 300px; display: flex; flex-direction: column; justify-content: flex-end; position: relative; cursor: pointer; transition: all 0.3s ease; border: 2px solid rgba(255,255,255,0.05); }
-        .album-card:hover { transform: translateY(-10px); border-color: var(--primary); box-shadow: var(--shadow-soft); }
-        .album-info { background: #fff; padding: 1.2rem; border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; text-align: center; font-weight: 800; font-size: 1.2rem; color: var(--bg-color); z-index: 10; border-top: 1px solid rgba(0,0,0,0.1); }
-        .card-stack { position: absolute; top: 1.5rem; left: 50%; transform: translateX(-50%); width: 80%; height: 60%; }
-        .stack-img { position: absolute; width: 100%; height: 100%; object-fit: cover; border-radius: 16px; border: 4px solid #fff; transition: transform 0.4s; background: #000; }
-        .stack-img:nth-child(1) { transform: rotate(-4deg); z-index: 3; }
-        .stack-img:nth-child(2) { transform: rotate(4deg) translate(5px, -5px); z-index: 2; }
-        .album-card:hover .stack-img:nth-child(1) { transform: rotate(-6deg) translate(-10px, -10px); }
+        .screen-header h2 { font-size: 2.6rem; margin-bottom: 1.5rem; color: var(--text-main); text-align: center; font-weight: 900; }
+        .albums-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2.5rem; width: 100%; padding: 2rem; }
+        
+        .album-card { background: var(--card-bg); border-radius: 24px; height: 310px; display: flex; flex-direction: column; justify-content: flex-end; position: relative; cursor: pointer; border: 2px solid rgba(255,255,255,0.05); overflow: hidden; }
+        .album-info { background: #fff; padding: 1.3rem; border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; text-align: center; font-weight: 800; font-size: 1.25rem; color: #000; z-index: 10; border-top: 1px solid rgba(0,0,0,0.1); transition: background 0.3s, color 0.3s; }
+        .card-stack { position: absolute; top: 1.5rem; left: 50%; transform: translateX(-50%); width: 82%; height: 62%; }
+        .stack-img { position: absolute; width: 100%; height: 100%; object-fit: cover; border-radius: 16px; border: 4px solid #fff; background: #000; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .stack-img:nth-child(1) { z-index: 3; }
+        .stack-img:nth-child(2) { z-index: 2; }
 
-        /* ==================== KATEGORIA (ZDJĘCIA / FILMY) ==================== */
+        /* ==================== KATEGORIA ZDJĘĆ ==================== */
         #gallery-screen { justify-content: flex-start; padding-top: 7rem; max-width: 1200px; margin: 0 auto; }
-        
-        .sub-nav { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; justify-content: center; background: rgba(0,188,212,0.05); padding: 0.5rem; border-radius: 30px; border: 1px solid rgba(0,188,212,0.1); }
-        .sub-btn { background: none; border: none; padding: 0.8rem 2rem; font-family: 'Nunito'; font-weight: 800; font-size: 1.1rem; border-radius: 25px; cursor: pointer; color: var(--text-muted); transition: 0.2s; display: flex; align-items: center; gap: 0.5rem; }
-        .sub-btn.active { background: var(--primary); color: #fff; box-shadow: 0 4px 12px rgba(0,188,212,0.25); }
-        
-        /* Upload Przycisk */
-        .upload-label { background: rgba(0, 188, 212, 0.15); border: 1px dashed var(--primary); color: var(--primary); }
-        .upload-label:hover { background: var(--primary); color: #fff; }
-
         .domino-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 2rem; width: 100%; padding: 0 1.5rem 3rem 1.5rem; }
-        .domino-item { position: relative; aspect-ratio: 1; border-radius: 18px; cursor: pointer; border: 4px solid #fff; transition: transform 0.3s; box-shadow: 0 6px 18px rgba(0,0,0,0.1); overflow: hidden; background: #000; }
-        .domino-item:hover { transform: scale(1.04); border-color: var(--primary); z-index: 5; }
-        .domino-item img, .domino-item video { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .video-badge { position: absolute; top: 10px; left: 10px; background: rgba(0, 0, 0, 0.6); color: #fff; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px); z-index: 2; }
+        .domino-item { position: relative; aspect-ratio: 1; border-radius: 20px; cursor: pointer; border: 4px solid #fff; box-shadow: 0 6px 18px rgba(0,0,0,0.2); overflow: hidden; background: #000; }
+        .domino-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
+        .domino-item:hover img { transform: scale(1.1); }
         
-        /* Loader */
-        #upload-loader { display: none; text-align: center; width: 100%; padding: 2rem; color: var(--primary); font-weight: bold; }
+        .likes-badge { position: absolute; bottom: 12px; right: 12px; background: rgba(0, 0, 0, 0.8); color: var(--heart-red); padding: 6px 14px; border-radius: 20px; font-weight: 900; display: flex; align-items: center; gap: 5px; backdrop-filter: blur(4px); z-index: 2; font-size: 0.95rem; border: 1px solid rgba(255, 42, 75, 0.3); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .likes-badge i { fill: var(--heart-red); color: var(--heart-red); }
 
-        /* ==================== MODAL Z PODGLĄDEM MIEJSCA ==================== */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(13, 17, 23, 0.8); backdrop-filter: blur(8px); z-index: 1000; display: none; justify-content: center; align-items: center; padding: 1rem; }
-        .modal-box { background: var(--card-bg); border-radius: 24px; padding: 2rem; max-width: 500px; width: 100%; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); }
+        /* ==================== DYNAMICZNY MODAL PODGLĄDU ==================== */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5, 7, 13, 0.96); backdrop-filter: blur(16px); z-index: 1000; display: none; justify-content: center; align-items: center; padding: 2rem; }
+        .modal-box { background: var(--card-bg); border-radius: 28px; max-width: 1100px; width: 100%; height: 85vh; box-shadow: 0 30px 60px rgba(0,0,0,0.6); border: 2px solid rgba(255,255,255,0.05); display: flex; overflow: hidden; }
         
-        .media-container { width: 100%; max-height: 45vh; margin-bottom: 1.5rem; border-radius: 12px; overflow: hidden; background: #000; display: flex; justify-content: center; align-items: center; }
-        .modal-preview-img, .modal-preview-video { max-width: 100%; max-height: 45vh; object-fit: contain; }
+        .media-container { flex: 1.4; background: #05080f; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative; user-select: none; cursor: pointer; }
+        .modal-preview-img { max-width: 100%; max-height: 100%; object-fit: contain; pointer-events: none; }
         
-        .modal-choices { display: flex; flex-direction: column; gap: 1rem; }
-        .choice-btn { display: flex; align-items: center; justify-content: center; gap: 0.8rem; padding: 1rem; border-radius: 16px; font-weight: 800; cursor: pointer; transition: 0.2s; font-size: 1.1rem; font-family: 'Nunito', sans-serif; border: none; }
-        .btn-open-file { background: none; border: 2px solid var(--primary); color: var(--text-main); }
-        .btn-delete { background: rgba(255, 75, 75, 0.1); border: 2px solid #ff4b4b; color: #ff4b4b; display: none; }
-        .btn-delete:hover { background: #ff4b4b; color: #fff; }
-        .btn-cancel { margin-top: 1.2rem; background: none; border: none; color: var(--text-muted); cursor: pointer; text-decoration: underline; font-family: 'Nunito'; font-weight: 700; font-size: 1rem; }
+        /* Wielkie, kolorowe, pełne serce pojawiające się w miejscu kliknięcia */
+        .center-pop-heart { position: absolute; color: var(--heart-red); fill: var(--heart-red); font-size: 11rem; opacity: 0; scale: 0; pointer-events: none; z-index: 15; filter: drop-shadow(var(--heart-glow)); transform: translate(-50%, -50%); }
 
-        /* ==================== CZAT ONLINE ==================== */
-        #chat-panel { position: fixed; top: 0; right: -400px; width: 100%; max-width: 350px; height: 100vh; background: var(--card-bg); border-left: 2px solid rgba(0,188,212,0.2); z-index: 200; transition: right 0.3s ease; display: flex; flex-direction: column; box-shadow: -10px 0 30px rgba(0,0,0,0.5); }
-        #chat-panel.open { right: 0; }
-        .chat-header { padding: 1.5rem; background: rgba(0,188,212,0.1); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .chat-header h3 { display: flex; align-items: center; gap: 0.5rem; }
-        .btn-close-chat { background: none; border: none; color: var(--text-main); cursor: pointer; }
-        .chat-messages { flex-grow: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 0.8rem; }
-        .msg-bubble { background: rgba(255,255,255,0.05); padding: 0.8rem 1rem; border-radius: 16px; border-bottom-left-radius: 4px; font-size: 0.95rem; }
-        .msg-bubble.mine { background: rgba(0,188,212,0.2); border-bottom-left-radius: 16px; border-bottom-right-radius: 4px; align-self: flex-end; }
-        .msg-author { font-weight: 800; font-size: 0.8rem; color: var(--primary); margin-bottom: 0.2rem; }
-        .chat-input-area { padding: 1rem; background: var(--bg-color); border-top: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; gap: 0.5rem; }
-        .chat-input-area input { padding: 0.8rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: var(--card-bg); color: var(--text-main); outline: none; font-family: 'Nunito'; }
-        .chat-input-area button { padding: 0.8rem; border-radius: 12px; border: none; background: var(--primary); color: #fff; font-weight: 800; cursor: pointer; font-family: 'Nunito'; }
+        /* Prawy Panel */
+        .social-panel { flex: 1; display: flex; flex-direction: column; border-left: 2px solid rgba(255,255,255,0.05); background: #111827; padding: 1.8rem; }
+        .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .panel-header h4 { font-weight: 800; color: var(--text-main); font-size: 1.2rem; }
+        .btn-close-modal { background: none; border: none; color: var(--text-muted); cursor: pointer; transition: 0.2s; }
+        .btn-close-modal:hover { color: var(--heart-red); transform: scale(1.2) rotate(90deg); }
+
+        /* Minimalistyczny rządek akcji (Samo serce + statystyki) */
+        .modal-actions-row { margin-bottom: 1.2rem; padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 1.2rem; }
+        
+        .btn-only-heart { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
+        .btn-only-heart:hover { background: rgba(255, 42, 75, 0.1); border-color: rgba(255, 42, 75, 0.4); transform: scale(1.1); color: var(--heart-red); }
+        
+        .btn-only-heart.liked { color: var(--heart-red); background: rgba(255, 42, 75, 0.15); border-color: var(--heart-red); box-shadow: var(--heart-glow); }
+        .btn-only-heart.liked i { fill: var(--heart-red); color: var(--heart-red); }
+        
+        .stats-display { display: flex; align-items: center; gap: 1rem; font-weight: 800; font-size: 1rem; color: var(--text-main); }
+        .stat-item { display: flex; align-items: center; gap: 0.4rem; background: rgba(255,255,255,0.02); padding: 0.4rem 0.8rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
+        .stat-item i { width: 16px; height: 16px; }
+        .stat-item.heart-stat i { color: var(--heart-red); fill: var(--heart-red); }
+        .stat-item.comment-stat i { color: var(--primary); }
+
+        /* Czat / Komentarze */
+        .comments-section { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; }
+        .comments-list { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 1.2rem; padding-right: 0.5rem; }
+        
+        .comment-item { background: rgba(255,255,255,0.03); padding: 0.9rem; border-radius: 16px; font-size: 0.95rem; border: 1px solid rgba(255,255,255,0.04); display: flex; flex-direction: column; gap: 0.3rem; position: relative; }
+        .comment-top { display: flex; justify-content: space-between; align-items: flex-start; }
+        .comment-author { font-weight: 800; color: var(--primary); font-size: 0.9rem; }
+        .comment-text { color: var(--text-main); line-height: 1.4; word-break: break-word; padding-right: 1.5rem; }
+        
+        .comment-actions { display: flex; gap: 1rem; margin-top: 0.2rem; align-items: center; }
+        .btn-cmt-action { background: none; border: none; color: var(--text-muted); font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 0.3rem; font-family: 'Nunito'; transition: 0.2s; }
+        .btn-cmt-action:hover { color: var(--primary); }
+        .btn-cmt-action.cmt-liked { color: var(--heart-red); }
+        .btn-cmt-action.cmt-liked i { fill: var(--heart-red); color: var(--heart-red); }
+
+        /* Przycisk usuwania komentarza */
+        .btn-delete-comment { background: none; border: none; color: var(--text-muted); cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; position: absolute; top: 0.9rem; right: 0.9rem; }
+        .btn-delete-comment:hover { color: #ef4444; transform: scale(1.15); }
+
+        .replies-container { margin-top: 0.4rem; padding-left: 1rem; border-left: 2px dashed rgba(255,255,255,0.1); display: flex; flex-direction: column; gap: 0.4rem; }
+        .reply-item { background: rgba(255,255,255,0.01); padding: 0.5rem 0.7rem; border-radius: 10px; font-size: 0.88rem; }
+        .reply-author { font-weight: 800; color: #f59e0b; font-size: 0.8rem; }
+
+        .reply-indicator { background: rgba(59, 130, 246, 0.15); padding: 0.4rem 1rem; border-radius: 10px; font-size: 0.85rem; color: var(--primary); font-weight: 700; margin-bottom: 0.5rem; display: none; justify-content: space-between; align-items: center; }
+        .reply-indicator i { cursor: pointer; color: var(--text-muted); }
+        .reply-indicator i:hover { color: var(--heart-red); }
+
+        .comment-input-row { display: flex; gap: 0.6rem; margin-top: auto; }
+        .comment-input-row input { flex-grow: 1; padding: 0.9rem; border-radius: 14px; border: 2px solid rgba(255,255,255,0.08); background: #0a0e17; color: var(--text-main); outline: none; font-family: 'Nunito'; font-weight: 600; transition: border-color 0.2s; }
+        .comment-input-row input:focus { border-color: var(--primary); }
+        .comment-input-row button { padding: 0.9rem 1.2rem; border-radius: 14px; border: none; background: var(--primary); color: #fff; font-weight: 800; cursor: pointer; font-family: 'Nunito'; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
+        .comment-input-row button:hover { background: var(--primary-hover); transform: scale(1.05); }
+
+        @media (max-width: 768px) {
+            .modal-box { flex-direction: column; height: 90vh; }
+            .media-container { flex: 1; }
+            .social-panel { flex: 1.4; }
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.3); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
     </style>
 </head>
 <body>
@@ -160,415 +191,519 @@
             <div class="nav-logo">Klasa <span>8F</span></div>
         </div>
         <div class="nav-links">
-            <button class="nav-btn" onclick="window.toggleChat()"><i data-lucide="message-circle" style="width:18px;height:18px;vertical-align:middle;margin-right:5px;"></i> Czat</button>
-            <button class="nav-btn" onclick="window.showScreen('albums-screen')">Albumy</button>
+            <button class="nav-btn" onclick="window.showScreen('albums-screen')"><i data-lucide="images"></i> Albumy</button>
         </div>
     </nav>
 
-    <!-- PANEL CZATU -->
-    <div id="chat-panel">
-        <div class="chat-header">
-            <h3><i data-lucide="message-square"></i> Czat na żywo</h3>
-            <button class="btn-close-chat" onclick="window.toggleChat()"><i data-lucide="x"></i></button>
-        </div>
-        <div class="chat-messages" id="chat-messages">
-            <!-- Wiadomości -->
-        </div>
-        <div class="chat-input-area">
-            <input type="text" id="chat-nick" placeholder="Twój nick..." maxlength="15">
-            <input type="text" id="chat-text" placeholder="Napisz wiadomość...">
-            <button onclick="window.sendChatMessage()">Wyślij</button>
-        </div>
-    </div>
-
     <main>
         <section id="verify-screen" class="screen active">
-            <div class="verify-box">
+            <div class="verify-box" id="box-step-nick">
+                <img src="https://raw.githubusercontent.com/skdbxq/8F/refs/heads/main/IMG_E4646.JPG" alt="Kotlet">
+                <h2>Jak się nazywasz?</h2>
+                <input type="text" id="nick-input" placeholder="Wpisz swoje imię..." onkeypress="if(event.key === 'Enter') handleNickSubmit()">
+                <button class="btn-verify" onclick="handleNickSubmit()">Zapisz i przejdź dalej</button>
+            </div>
+
+            <div class="verify-box" id="box-step-password" style="display: none; opacity: 0;">
                 <img src="https://raw.githubusercontent.com/skdbxq/8F/refs/heads/main/IMG_E4646.JPG" alt="Kotlet">
                 <h2>Kto to jest?</h2>
-                <input type="text" id="verify-input" placeholder="Wpisz tekst...">
-                <button class="btn-verify" id="verify-btn">Sprawdź</button>
+                <input type="text" id="verify-input" placeholder="Wpisz hasło..." onkeypress="if(event.key === 'Enter') handlePasswordSubmit()">
+                <button class="btn-verify" onclick="handlePasswordSubmit()">Sprawdź i wejdź</button>
                 <p class="msg-text" id="verify-msg"></p>
-            </div>
-        </section>
-
-        <section id="hero-screen" class="screen">
-            <h1 class="hero-title">Klasa <span>8F</span></h1>
-            <p class="hero-subtitle">Baza naszych wspomnień</p>
-            <div class="hero-actions">
-                <button class="btn-main" onclick="window.showScreen('albums-screen')"><i data-lucide="image"></i> Otwórz Galerię</button>
             </div>
         </section>
 
         <section id="albums-screen" class="screen">
             <div class="screen-header"><h2>Nasze Albumy</h2></div>
-            <div class="albums-grid">
-                <div class="album-card" data-category="krosnice">
-                    <div class="card-stack">
-                        <img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=400" class="stack-img">
-                        <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=400" class="stack-img">
-                    </div>
-                    <div class="album-info">Krośnice</div>
-                </div>
-                <div class="album-card" data-category="bal">
-                    <div class="card-stack">
-                        <img src="https://raw.githubusercontent.com/skdbxq/8F/refs/heads/main/IMG_E4641.JPG" class="stack-img">
-                        <img src="https://raw.githubusercontent.com/skdbxq/8F/refs/heads/main/IMG_4636%5B1%5D.PNG" class="stack-img">
-                    </div>
-                    <div class="album-info">Bal Ósmoklasisty</div>
-                </div>
-                <div class="album-card" data-category="wycieczki">
-                    <div class="card-stack">
-                        <img src="https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=400" class="stack-img">
-                        <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=400" class="stack-img">
-                    </div>
-                    <div class="album-info">Wycieczki</div>
-                </div>
-            </div>
+            <div class="albums-grid" id="albums-grid-container"></div>
         </section>
 
         <section id="gallery-screen" class="screen">
             <div class="screen-header"><h2 id="gallery-title">Galeria</h2></div>
-            
-            <div class="sub-nav">
-                <button class="sub-btn active" id="sub-photos-btn" onclick="window.switchSubCategory('photos')"><i data-lucide="camera"></i> Zdjęcia</button>
-                <button class="sub-btn" id="sub-videos-btn" onclick="window.switchSubCategory('videos')"><i data-lucide="clapperboard"></i> Filmy</button>
-                
-                <!-- Przycisk wgrywania -->
-                <input type="file" id="file-upload" hidden accept="image/*,video/*">
-                <label for="file-upload" class="sub-btn upload-label"><i data-lucide="upload"></i> Dodaj plik</label>
-            </div>
-            
-            <div id="upload-loader"><i data-lucide="loader" class="spin"></i> Wgrywanie... proszę czekać</div>
-
             <div class="domino-grid" id="domino-grid"></div>
         </section>
 
         <div class="modal-overlay" id="choice-modal">
             <div class="modal-box">
-                <div class="media-container" id="modal-media-container"></div>
-                <div class="modal-choices">
-                    <button class="choice-btn btn-open-file" id="opt-download"><i data-lucide="download"></i> Pobierz plik</button>
-                    <button class="choice-btn btn-delete" id="opt-delete"><i data-lucide="trash-2"></i> Usuń swój plik</button>
+                <div class="media-container" id="modal-media-container" onclick="window.handleSingleOrDouble(event)">
+                    </div>
+                
+                <div class="social-panel">
+                    <div class="panel-header">
+                        <h4>Wspomnienie</h4>
+                        <button class="btn-close-modal" onclick="window.closeModal()"><i data-lucide="x"></i></button>
+                    </div>
+
+                    <div class="modal-actions-row">
+                        <button class="btn-only-heart" id="modal-like-btn" onclick="window.toggleLike(true)">
+                            <i data-lucide="heart"></i>
+                        </button>
+                        <div class="stats-display">
+                            <div class="stat-item heart-stat">
+                                <i data-lucide="heart"></i> <span id="modal-like-count">0</span>
+                            </div>
+                            <div class="stat-item comment-stat">
+                                <i data-lucide="message-circle"></i> <span id="modal-comment-count">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="comments-section">
+                        <div class="comments-list" id="modal-comments-list"></div>
+                        
+                        <div class="reply-indicator" id="reply-box-indicator">
+                            <span id="reply-indicator-text">Odpowiadasz...</span>
+                            <i data-lucide="x" style="width:16px;height:16px;" onclick="window.cancelReply()"></i>
+                        </div>
+
+                        <div class="comment-input-row">
+                            <input type="text" id="comment-input" placeholder="Napisz coś..." onkeypress="if(event.key === 'Enter') window.addComment()">
+                            <button onclick="window.addComment()"><i data-lucide="send" style="width:18px;height:18px;"></i></button>
+                        </div>
+                    </div>
                 </div>
-                <button onclick="window.closeModal()" class="btn-cancel">Zamknij</button>
             </div>
         </div>
-
     </main>
 
-    <!-- Skrypty Firebase jako ES Modules -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getDatabase, ref as dbRef, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
-
-        // Twoja konfiguracja z Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyBYVVYBVaE8gVLew-lZ0ewfM9wNoC1gjiM",
-            authDomain: "f-pic-79578.firebaseapp.com",
-            projectId: "f-pic-79578",
-            storageBucket: "f-pic-79578.firebasestorage.app",
-            messagingSenderId: "498667585272",
-            appId: "1:498667585272:web:a7aa9601989f86db81850d",
-            measurementId: "G-QVCNHGLMFQ"
+    <script>
+        const defaultHardcodedItems = {
+            krosnice: ["https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=500"],
+            bal: [
+                "https://raw.githubusercontent.com/skdbxq/8F/refs/heads/main/IMG_E4641.JPG",
+                "https://raw.githubusercontent.com/skdbxq/8F/refs/heads/main/IMG_4636%5B1%5D.PNG",
+                "https://raw.githubusercontent.com/skdbxq/8F/refs/heads/main/BPYA0776.JPG"
+            ],
+            wycieczki: ["https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=500"]
         };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-        const storage = getStorage(app);
+        const categoryNames = { krosnice: "Krośnice", bal: "Bal Ósmoklasisty", wycieczki: "Wycieczki" };
+        const inputPlaceholders = [
+            "Napisz coś miłego...",
+            "Podziel się wspomnieniem...",
+            "Ale to były czasy! Skomentuj...",
+            "Co wtedy robiliśmy? Napisz..."
+        ];
+        
+        let localLikes = JSON.parse(localStorage.getItem('8f_local_likes')) || {};
+        let localComments = JSON.parse(localStorage.getItem('8f_local_comments')) || {};
 
-        // --- UNIKALNE ID UŻYTKOWNIKA (do usuwania swoich plików) ---
-        let myUploaderId = localStorage.getItem('8f_uploader_id');
-        if (!myUploaderId) {
-            myUploaderId = 'user_' + Math.random().toString(36).substr(2, 9);
-            localStorage.setItem('8f_uploader_id', myUploaderId);
-        }
+        window.currentCategory = "";
+        let selectedMediaUrl = "";
+        let screenHistory = [];
+        let replyingToCommentIndex = null;
+        let lastTap = 0; // Obsługa precyzyjnego double tap na mobile i desktop
 
         lucide.createIcons();
 
-        // Podstawowe wpisy początkowe
-        const defaultHardcodedItems = {
-            krosnice: { photos: ["https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=500"], videos: [] },
-            bal: { 
-                photos: [
-                    "https://raw.githubusercontent.com/skdbxq/8F/refs/heads/main/IMG_E4641.JPG",
-                    "https://raw.githubusercontent.com/skdbxq/8F/refs/heads/main/IMG_4636%5B1%5D.PNG",
-                    "https://raw.githubusercontent.com/skdbxq/8F/refs/heads/main/BPYA0776.JPG"
-                ], 
-                videos: [] 
-            },
-            wycieczki: { photos: ["https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=500"], videos: [] }
-        };
+        // --- ONBOARDING: KROK 1 (NICK) ---
+        function handleNickSubmit() {
+            const nickVal = document.getElementById('nick-input').value.trim();
+            if(!nickVal) {
+                alert("Najpierw musisz wpisać swoje imię!");
+                return;
+            }
+            localStorage.setItem('8f_nick', nickVal);
+            
+            // Przejście gładkie do kroku z hasłem
+            gsap.to('#box-step-nick', { scale: 0.8, opacity: 0, duration: 0.3, onComplete: () => {
+                document.getElementById('box-step-nick').style.style = 'none';
+                const pwdBox = document.getElementById('box-step-password');
+                pwdBox.style.display = 'block';
+                gsap.to(pwdBox, { scale: 1, opacity: 1, duration: 0.3 });
+                document.getElementById('verify-input').focus();
+            }});
+        }
 
-        // Zmienne globalne stanu
-        window.currentCategory = "";
-        window.currentSubCategory = "photos";
-        let currentDbItems = []; // Przechowuje elementy pobrane z bazy
-        let selectedMediaUrl = "";
-        let selectedMediaKey = ""; // klucz w bazie do usunięcia
-        let selectedMediaUploader = "";
-        let screenHistory = [];
-        const categoryNames = { krosnice: "Krośnice", bal: "Bal Ósmoklasisty", wycieczki: "Wycieczki" };
+        // --- ONBOARDING: KROK 2 (HASŁO Klasowe) ---
+        function handlePasswordSubmit() {
+            const input = document.getElementById('verify-input').value.trim().toLowerCase();
+            const msgBox = document.getElementById('verify-msg');
+            msgBox.style.display = 'block';
 
-        // --- NAWIGACJA ---
+            if(input === 'kotlet') {
+                msgBox.innerText = "Dobra odpowiedź 😊";
+                msgBox.style.color = "#4CAF50"; 
+                
+                setTimeout(() => {
+                    enterAppDirectly();
+                }, 400);
+            } else {
+                msgBox.innerText = "Zła odpowiedź 😞 Sprawdź hasło klasowe.";
+                msgBox.style.color = "#FF6B6B"; 
+                gsap.fromTo('#box-step-password', {x:-12}, {x:12, duration:0.08, yoyo:true, repeat:4});
+            }
+        }
+
+        function enterAppDirectly() {
+            gsap.to('.verify-box', { scale: 0.8, opacity: 0, duration: 0.4, onComplete: () => {
+                document.getElementById('main-nav').style.display = 'flex';
+                window.showScreen('albums-screen'); // Od razu lądujemy w albumach!
+            }});
+        }
+
+        // Automatyczne logowanie, jeśli dane już są w przeglądarce
+        window.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('8f_nick')) {
+                // Skoro nick istnieje, od razu pokazujemy krok z hasłem, pomijając wybór nicku
+                document.getElementById('box-step-nick').style.display = 'none';
+                document.getElementById('box-step-password').style.display = 'block';
+                document.getElementById('box-step-password').style.opacity = '1';
+            }
+        });
+
+        // --- SYSTEM NAWIGACJI EKRANÓW ---
         window.showScreen = function(screenId, isGoingBack = false) {
             const currentScreen = document.querySelector('.screen.active');
-            if (!isGoingBack && currentScreen && currentScreen.id !== 'verify-screen' && currentScreen.id !== screenId) {
+            if (currentScreen && currentScreen.id === screenId) return;
+
+            if (!isGoingBack && currentScreen && currentScreen.id !== 'verify-screen') {
                 screenHistory.push(currentScreen.id);
             }
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
-            window.scrollTo(0,0);
             
+            if (currentScreen) {
+                gsap.to(currentScreen, { opacity: 0, scale: 0.95, y: -10, duration: 0.3, onComplete: () => {
+                    currentScreen.classList.remove('active');
+                    showNewScreen(screenId);
+                }});
+            } else {
+                showNewScreen(screenId);
+            }
+
             const backBtn = document.getElementById('back-btn');
-            if (screenHistory.length > 0 && screenId !== 'verify-screen' && screenId !== 'hero-screen') {
+            if (screenHistory.length > 0 && screenId !== 'verify-screen') {
                 backBtn.style.display = 'inline-flex';
             } else {
                 backBtn.style.display = 'none';
             }
         };
 
+        function showNewScreen(screenId) {
+            const nextScreen = document.getElementById(screenId);
+            nextScreen.classList.add('active');
+            window.scrollTo(0,0);
+            
+            gsap.fromTo(nextScreen, { opacity: 0, scale: 0.95, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: "power3.out" });
+            
+            if(screenId === 'albums-screen') renderAlbums();
+        }
+
         window.goBack = function() {
             if (screenHistory.length > 0) window.showScreen(screenHistory.pop(), true);
         };
 
-        // --- HASŁO ---
-        document.getElementById('verify-btn').addEventListener('click', () => {
-            const input = document.getElementById('verify-input').value.trim().toLowerCase();
-            const msgBox = document.getElementById('verify-msg');
-            msgBox.style.display = 'block';
-            if(input === 'kotlet') {
-                msgBox.innerText = "Dobra odpowiedź 😊";
-                msgBox.style.color = "#4CAF50"; 
-                setTimeout(() => {
-                    document.getElementById('verify-screen').classList.remove('active');
-                    document.getElementById('main-nav').style.display = 'flex';
-                    window.showScreen('hero-screen');
-                }, 800);
-            } else {
-                msgBox.innerText = "Zła odpowiedź 😞";
-                msgBox.style.color = "#FF6B6B"; 
-                gsap.fromTo('.verify-box', {x:-10}, {x:10, duration:0.1, yoyo:true, repeat:2});
-            }
-        });
+        // --- GENEROWANIE ALBUMÓW ---
+        function renderAlbums() {
+            const container = document.getElementById('albums-grid-container');
+            if (!container) return;
+            container.innerHTML = "";
 
-        // --- ALBUMY KLIK ---
-        document.querySelectorAll('.album-card').forEach(card => {
-            card.addEventListener('click', () => {
-                window.currentCategory = card.getAttribute('data-category');
-                document.getElementById('gallery-title').innerText = categoryNames[window.currentCategory];
-                window.switchSubCategory('photos');
-                window.showScreen('gallery-screen');
-                loadGalleryFromFirebase();
-            });
-        });
+            Object.keys(categoryNames).forEach((catKey, index) => {
+                const name = categoryNames[catKey];
+                const cover = defaultHardcodedItems[catKey][0];
 
-        window.switchSubCategory = function(type) {
-            window.currentSubCategory = type;
-            document.getElementById('sub-photos-btn').classList.toggle('active', type === 'photos');
-            document.getElementById('sub-videos-btn').classList.toggle('active', type === 'videos');
-            renderGalleryGrid();
-        };
-
-        // --- POBIERANIE Z BAZY DANYCH ---
-        let currentListener = null;
-        function loadGalleryFromFirebase() {
-            const catRef = dbRef(db, 'albums/' + window.currentCategory);
-            
-            // Nasłuchiwanie zmian na żywo
-            onValue(catRef, (snapshot) => {
-                currentDbItems = [];
-                snapshot.forEach((childSnapshot) => {
-                    const data = childSnapshot.val();
-                    currentDbItems.push({
-                        key: childSnapshot.key,
-                        url: data.url,
-                        type: data.type,
-                        uploaderId: data.uploaderId || 'unknown'
-                    });
-                });
-                renderGalleryGrid();
-            });
-        }
-
-        function renderGalleryGrid() {
-            const grid = document.getElementById('domino-grid');
-            grid.innerHTML = "";
-
-            // Łączymy twardo wpisane dane z tymi z bazy na dany moment
-            let combinedItems = [];
-            
-            // Hardcodowane złączamy udając, że to uploader "system"
-            const hcItems = defaultHardcodedItems[window.currentCategory][window.currentSubCategory] || [];
-            hcItems.forEach(url => combinedItems.push({ url, type: window.currentSubCategory, key: null, uploaderId: 'system' }));
-
-            // Filtrujemy z bazy tylko obecny pod-typ (zdjęcia albo filmy)
-            const dbFiltered = currentDbItems.filter(item => item.type === window.currentSubCategory);
-            combinedItems = combinedItems.concat(dbFiltered);
-
-            if (combinedItems.length === 0) {
-                grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-weight: 700; padding: 3rem;">Jeszcze nic tu nie ma! Dodaj coś!</p>`;
-                return;
-            }
-
-            // Renderowanie od najnowszego
-            combinedItems.reverse().forEach((item) => {
                 const div = document.createElement('div');
-                div.classList.add('domino-item');
-                div.onclick = () => window.openMediaModal(item.url, item.type, item.key, item.uploaderId);
+                div.className = 'album-card';
+                div.style.opacity = '0';
+                div.innerHTML = `
+                    <div class="card-stack">
+                        <img src="${cover}" class="stack-img img-s1">
+                        <img src="${cover}" class="stack-img img-s2">
+                    </div>
+                    <div class="album-info">${name}</div>
+                `;
+                
+                div.onclick = () => {
+                    window.currentCategory = catKey;
+                    document.getElementById('gallery-title').innerText = name;
+                    window.showScreen('gallery-screen');
+                    renderGalleryGrid();
+                };
 
-                if (item.type === 'photos') {
-                    div.innerHTML = `<img src="${item.url}" loading="lazy">`;
-                } else {
-                    div.innerHTML = `
-                        <div class="video-badge"><i data-lucide="play" style="width:16px;height:16px;"></i></div>
-                        <video src="${item.url}" muted playsinline loop></video>
-                    `;
-                    div.addEventListener('mouseenter', () => div.querySelector('video').play());
-                    div.addEventListener('mouseleave', () => { const v = div.querySelector('video'); v.pause(); v.currentTime = 0; });
-                }
-                grid.appendChild(div);
+                div.addEventListener('mouseenter', () => {
+                    gsap.to(div, { borderColor: 'var(--primary)', boxShadow: 'var(--shadow-glow)', y: -10, duration: 0.3 });
+                    gsap.to(div.querySelector('.img-s1'), { rotate: -8, x: -10, y: -10, duration: 0.3 });
+                    gsap.to(div.querySelector('.img-s2'), { rotate: 8, x: 10, y: -5, duration: 0.3 });
+                    gsap.to(div.querySelector('.album-info'), { background: 'var(--primary)', color: '#fff', duration: 0.3 });
+                });
+                div.addEventListener('mouseleave', () => {
+                    gsap.to(div, { borderColor: 'rgba(255,255,255,0.05)', boxShadow: 'none', y: 0, duration: 0.3 });
+                    gsap.to(div.querySelectorAll('.stack-img'), { rotate: 0, x: 0, y: 0, duration: 0.3 });
+                    gsap.to(div.querySelector('.album-info'), { background: '#fff', color: '#000', duration: 0.3 });
+                });
+
+                container.appendChild(div);
+                gsap.fromTo(div, {opacity: 0, y: 30, scale: 0.9}, {opacity: 1, y: 0, scale: 1, duration: 0.4, delay: index * 0.1, ease: "power2.out"});
             });
             lucide.createIcons();
         }
 
-        // --- WGRYWANIE PLIKU DO FIREBASE ---
-        document.getElementById('file-upload').addEventListener('change', async (e) => {
-            const file = e.target.files[0];
-            if(!file || !window.currentCategory) return;
+        // --- SIATKA ZDJĘĆ W GALERII ---
+        function renderGalleryGrid() {
+            const grid = document.getElementById('domino-grid');
+            if(!grid) return;
+            grid.innerHTML = "";
 
-            const loader = document.getElementById('upload-loader');
-            loader.style.display = 'block';
+            let items = [...defaultHardcodedItems[window.currentCategory]];
+            let mappedItems = items.map(url => ({ url: url, likes: localLikes[url] || 0 }));
+            mappedItems.sort((a, b) => b.likes - a.likes);
 
-            // Ustalanie typu (zdjęcie czy film)
-            const fileType = file.type.startsWith('video') ? 'videos' : 'photos';
-            const uniqueName = Date.now() + "_" + file.name;
-            const fileRef = storageRef(storage, `klasa8f/${window.currentCategory}/${uniqueName}`);
-
-            try {
-                // Wrzucanie do Storage
-                await uploadBytes(fileRef, file);
-                const downloadURL = await getDownloadURL(fileRef);
-
-                // Zapis linku do bazy Realtime
-                await push(dbRef(db, 'albums/' + window.currentCategory), {
-                    url: downloadURL,
-                    type: fileType,
-                    uploaderId: myUploaderId,
-                    timestamp: Date.now()
-                });
+            mappedItems.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'domino-item';
+                div.style.opacity = '0';
                 
-                // Automatycznie przełącz na zakładkę, do której wgrano plik
-                window.switchSubCategory(fileType);
+                div.onclick = () => window.openMediaModal(item.url);
 
-            } catch (err) {
-                alert("Wystąpił błąd! Upewnij się, że w Firebase włączyłeś reguły (Rules) na tryb testowy. Błąd: " + err.message);
-            } finally {
-                loader.style.display = 'none';
-                e.target.value = ""; // reset inputa
+                div.addEventListener('mouseenter', () => gsap.to(div, { scale: 1.05, borderColor: 'var(--primary)', boxShadow: 'var(--shadow-glow)', zIndex: 10, duration: 0.2 }));
+                div.addEventListener('mouseleave', () => gsap.to(div, { scale: 1, borderColor: '#fff', boxShadow: '0 6px 18px rgba(0,0,0,0.2)', zIndex: 1, duration: 0.2 }));
+
+                let inner = `<img src="${item.url}" loading="lazy">`;
+                if(item.likes > 0) {
+                    inner += `<div class="likes-badge"><i data-lucide="heart" style="width:14px;height:14px;"></i> ${item.likes}</div>`;
+                }
+
+                div.innerHTML = inner;
+                grid.appendChild(div);
+
+                const badge = div.querySelector('.likes-badge i');
+                if(badge) {
+                    gsap.to(badge, {scale: 1.2, duration: 0.6, repeat: -1, yoyo: true, ease: "power1.inOut"});
+                }
+                
+                gsap.fromTo(div, { opacity: 0, scale: 0.8, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.4, delay: index * 0.05, ease: "back.out(1.2)" });
+            });
+            lucide.createIcons();
+        }
+
+        // --- OBSŁUGA DOKŁADNEGO MIEJSCA DLA DOUBLE-TAP ---
+        window.handleSingleOrDouble = function(e) {
+            const now = new Date().getTime();
+            const timesince = now - lastTap;
+            if((timesince < 300) && (timesince > 0)){
+                // Pobranie pozycji kliknięcia względem kontenera zdjęcia
+                const rect = e.currentTarget.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                // Wymuszenie polubienia i odpalenie precyzyjnej lokalizacji serca
+                if(!localLikes[selectedMediaUrl] || localLikes[selectedMediaUrl] === 0) {
+                    window.toggleLike(false); 
+                }
+                playTargetedHeartAnimation(x, y);
             }
-        });
+            lastTap = now;
+        };
 
-        // --- MODAL & USUWANIE ---
-        window.openMediaModal = function(url, type, key, uploaderId) {
+        function playTargetedHeartAnimation(x, y) {
+            const centerHeart = document.getElementById('center-heart');
+            if(!centerHeart) return;
+            
+            // Przypisanie pozycji dokładnie tam, gdzie nastąpił klik
+            centerHeart.style.left = `${x}px`;
+            centerHeart.style.top = `${y}px`;
+            
+            gsap.killTweensOf(centerHeart);
+            gsap.fromTo(centerHeart, 
+                { scale: 0, opacity: 0, rotation: -25 },
+                { scale: 1, opacity: 1, rotation: 10, duration: 0.25, ease: "back.out(2)", onComplete: () => {
+                    gsap.to(centerHeart, { scale: 0, opacity: 0, delay: 0.3, duration: 0.2, ease: "power2.in" });
+                }}
+            );
+        }
+
+        // --- MODAL PODGLĄDU ---
+        window.openMediaModal = function(url) {
             selectedMediaUrl = url;
-            selectedMediaKey = key;
-            selectedMediaUploader = uploaderId;
+            replyingToCommentIndex = null;
+            document.getElementById('reply-box-indicator').style.display = 'none';
+
+            // Zmień placeholder pola tekstowego na losowy (Upgrade!)
+            const randPlaceholder = inputPlaceholders[Math.floor(Math.random() * inputPlaceholders.length)];
+            document.getElementById('comment-input').placeholder = randPlaceholder;
 
             const container = document.getElementById('modal-media-container');
-            if (type === 'photos') {
-                container.innerHTML = `<img src="${url}" class="modal-preview-img">`;
-            } else {
-                container.innerHTML = `<video src="${url}" controls autoplay class="modal-preview-video"></video>`;
-            }
+            container.innerHTML = `
+                <img src="${url}" class="modal-preview-img">
+                <i data-lucide="heart" class="center-pop-heart" id="center-heart"></i>
+            `;
 
-            const btnDelete = document.getElementById('opt-delete');
-            // Pokaż przycisk usuwania TYLKO jeśli token się zgadza
-            if (uploaderId === myUploaderId && key !== null) {
-                btnDelete.style.display = 'flex';
-            } else {
-                btnDelete.style.display = 'none';
-            }
+            updateModalSocials();
 
-            document.getElementById('choice-modal').style.display = 'flex';
+            const modal = document.getElementById('choice-modal');
+            modal.style.display = 'flex';
+            
+            gsap.fromTo('.modal-box', { scale: 0.7, opacity: 0, rotationX: -15 }, { scale: 1, opacity: 1, rotationX: 0, duration: 0.4, ease: "back.out(1.5)" });
+            gsap.fromTo('.social-panel', { x: 50, opacity: 0 }, { x: 0, opacity: 1, delay: 0.1, duration: 0.3 });
+            lucide.createIcons();
         };
 
         window.closeModal = function() {
-            const video = document.querySelector('.modal-preview-video');
-            if(video) video.pause();
-            document.getElementById('choice-modal').style.display = 'none';
+            gsap.to('.modal-box', { scale: 0.8, opacity: 0, duration: 0.2, onComplete: () => {
+                document.getElementById('choice-modal').style.display = 'none';
+                renderGalleryGrid(); 
+            }});
         };
 
-        document.getElementById('opt-download').addEventListener('click', () => {
-            const a = document.createElement('a');
-            a.href = selectedMediaUrl;
-            a.download = window.currentSubCategory === 'photos' ? '8f_foto.jpg' : '8f_wideo.mp4';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        });
+        // --- AKTUALIZACJA DANYCH SPOŁECZNOŚCIOWYCH (POLUBIENIA / CZAT / LICZNIKI) ---
+        function updateModalSocials() {
+            const likesCount = localLikes[selectedMediaUrl] || 0;
+            document.getElementById('modal-like-count').innerText = likesCount;
 
-        document.getElementById('opt-delete').addEventListener('click', async () => {
-            if(confirm("Na pewno usunąć ten plik?") && selectedMediaKey) {
-                const itemRef = dbRef(db, `albums/${window.currentCategory}/${selectedMediaKey}`);
-                await remove(itemRef);
-                window.closeModal();
+            const comments = localComments[selectedMediaUrl] || [];
+            document.getElementById('modal-comment-count').innerText = comments.length;
+
+            const likeBtn = document.getElementById('modal-like-btn');
+            if(likesCount > 0) likeBtn.classList.add('liked');
+            else likeBtn.classList.remove('liked');
+
+            const commentsList = document.getElementById('modal-comments-list');
+            commentsList.innerHTML = '';
+            
+            if(comments.length === 0) {
+                commentsList.innerHTML = '<p style="color:var(--text-muted); font-size:0.95rem; text-align:center; padding-top: 2rem;">Brak wiadomości. Napisz coś!</p>';
+            } else {
+                comments.forEach((c, i) => {
+                    let cmtLikes = c.likes || 0;
+                    let isCmtLiked = c.isLiked ? 'cmt-liked' : '';
+                    
+                    let repliesHtml = '';
+                    if(c.replies && c.replies.length > 0) {
+                        repliesHtml = '<div class="replies-container">';
+                        c.replies.forEach(r => {
+                            repliesHtml += `
+                                <div class="reply-item">
+                                    <div class="reply-author">${r.nick}</div>
+                                    <div>${r.text}</div>
+                                </div>
+                            `;
+                        });
+                        repliesHtml += '</div>';
+                    }
+
+                    commentsList.innerHTML += `
+                        <div class="comment-item" id="cmt-${i}" style="opacity:0; transform:scale(0.9) translateY(10px);">
+                            <div class="comment-top">
+                                <div class="comment-author">${c.nick}</div>
+                                <button class="btn-cmt-action ${isCmtLiked}" onclick="window.likeComment(${i})">
+                                    <i data-lucide="heart" style="width:14px;height:14px;"></i> <span>${cmtLikes}</span>
+                                </button>
+                            </div>
+                            <div class="comment-text">${c.text}</div>
+                            
+                            <button class="btn-delete-comment" onclick="window.deleteComment(${i})" title="Usuń komentarz">
+                                <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
+                            </button>
+
+                            <div class="comment-actions">
+                                <button class="btn-cmt-action" onclick="window.prepareReply(${i}, '${c.nick}')">
+                                    <i data-lucide="message-square" style="width:12px;height:12px;"></i> Odpowiedz
+                                </button>
+                            </div>
+                            ${repliesHtml}
+                        </div>
+                    `;
+                });
+
+                gsap.to('.comment-item', { opacity: 1, scale: 1, translateY: 0, stagger: 0.05, duration: 0.3, ease: "back.out(1.2)" });
             }
-        });
+            commentsList.scrollTop = commentsList.scrollHeight;
+            lucide.createIcons();
+        }
 
-        // ==================== CZAT ONLINE LOGIKA ====================
-        const chatPanel = document.getElementById('chat-panel');
-        window.toggleChat = function() {
-            chatPanel.classList.toggle('open');
+        // --- PRZYCISK POLUBIENIA ---
+        window.toggleLike = function(triggerVisualHeart = false) {
+            if(!localLikes[selectedMediaUrl]) {
+                localLikes[selectedMediaUrl] = 1;
+                // Wywołaj animację serducha w centrum, jeśli kliknięto małe serduszko
+                if(triggerVisualHeart) {
+                    const container = document.getElementById('modal-media-container');
+                    playTargetedHeartAnimation(container.clientWidth / 2, container.clientHeight / 2);
+                }
+            } else {
+                localLikes[selectedMediaUrl] = 0; 
+            }
+            localStorage.setItem('8f_local_likes', JSON.stringify(localLikes));
+            gsap.fromTo('#modal-like-btn i', { scale: 1 }, { scale: 1.5, duration: 0.15, yoyo: true, repeat: 1, ease: "back.out(1.5)" });
+            updateModalSocials();
         };
 
-        const chatDbRef = dbRef(db, 'chat_messages');
-        const chatBox = document.getElementById('chat-messages');
-        
-        // Nasłuchiwanie wiadomości czatu na żywo
-        onValue(chatDbRef, (snapshot) => {
-            chatBox.innerHTML = '';
-            let myNick = document.getElementById('chat-nick').value.trim();
-            if(!myNick) myNick = localStorage.getItem('8f_nick') || "Ktoś";
+        // --- USUWANIE KOMENTARZA Z ANIMACJĄ (UPGRADE) ---
+        window.deleteComment = function(index) {
+            let comments = localComments[selectedMediaUrl] || [];
+            if(!comments[index]) return;
 
-            snapshot.forEach((childSnapshot) => {
-                const msg = childSnapshot.val();
-                const div = document.createElement('div');
-                const isMine = msg.uploaderId === myUploaderId;
-                div.className = `msg-bubble ${isMine ? 'mine' : ''}`;
-                div.innerHTML = `<div class="msg-author">${msg.nick}</div><div>${msg.text}</div>`;
-                chatBox.appendChild(div);
-            });
-            // Zjechanie na dół czatu
-            chatBox.scrollTop = chatBox.scrollHeight;
-        });
+            // Płynna animacja zwijania i znikania przed usunięciem z pamięci DOM
+            gsap.to(`#cmt-${index}`, { opacity: 0, scale: 0.8, x: -50, filter: "blur(5px)", duration: 0.25, onComplete: () => {
+                comments.splice(index, 1);
+                localComments[selectedMediaUrl] = comments;
+                localStorage.setItem('8f_local_comments', JSON.stringify(localComments));
+                updateModalSocials();
+            }});
+        };
 
-        window.sendChatMessage = async function() {
-            const nickInput = document.getElementById('chat-nick');
-            const textInput = document.getElementById('chat-text');
-            const nick = nickInput.value.trim() || "Ktoś";
-            const text = textInput.value.trim();
+        // --- ODPOWIADANIE NA INNY KOMENTARZ ---
+        window.prepareReply = function(index, authorNick) {
+            replyingToCommentIndex = index;
+            document.getElementById('reply-indicator-text').innerText = `Odpowiadasz użytkownikowi ${authorNick}`;
+            const indicator = document.getElementById('reply-box-indicator');
+            indicator.style.display = 'flex';
+            gsap.fromTo(indicator, {y: 10, opacity: 0}, {y: 0, opacity: 1, duration: 0.2});
+            document.getElementById('comment-input').focus();
+        };
 
+        window.cancelReply = function() {
+            replyingToCommentIndex = null;
+            document.getElementById('reply-box-indicator').style.display = 'none';
+        };
+
+        // --- LAJKOWANIE KOMENTARZA ---
+        window.likeComment = function(index) {
+            let comments = localComments[selectedMediaUrl] || [];
+            if(!comments[index]) return;
+
+            if(!comments[index].likes) comments[index].likes = 0;
+
+            if(comments[index].isLiked) {
+                comments[index].likes--;
+                comments[index].isLiked = false;
+            } else {
+                comments[index].likes++;
+                comments[index].isLiked = true;
+                const heartIcon = document.querySelector(`#cmt-${index} .btn-cmt-action i`);
+                if(heartIcon) gsap.fromTo(heartIcon, {scale: 1}, {scale: 1.5, duration: 0.15, yoyo: true, repeat: 1});
+            }
+
+            localComments[selectedMediaUrl] = comments;
+            localStorage.setItem('8f_local_comments', JSON.stringify(localComments));
+            updateModalSocials();
+        };
+
+        // --- WYŚLIJ KOMENTARZ / ODPOWIEDŹ ---
+        window.addComment = function() {
+            const input = document.getElementById('comment-input');
+            const text = input.value.trim();
             if(!text) return;
 
-            localStorage.setItem('8f_nick', nick);
+            let myNick = localStorage.getItem('8f_nick') || "Anonim";
+            let comments = localComments[selectedMediaUrl] || [];
 
-            await push(chatDbRef, {
-                nick: nick,
-                text: text,
-                uploaderId: myUploaderId,
-                timestamp: Date.now()
-            });
+            if(replyingToCommentIndex !== null) {
+                if(!comments[replyingToCommentIndex].replies) {
+                    comments[replyingToCommentIndex].replies = [];
+                }
+                comments[replyingToCommentIndex].replies.push({ nick: myNick, text: text });
+                window.cancelReply();
+            } else {
+                comments.push({ nick: myNick, text: text, likes: 0, isLiked: false, replies: [] });
+            }
 
-            textInput.value = '';
+            localComments[selectedMediaUrl] = comments;
+            localStorage.setItem('8f_local_comments', JSON.stringify(localComments));
+            input.value = '';
+            
+            updateModalSocials();
         };
-
-        // Klawisz Enter do wysyłania wiadomości
-        document.getElementById('chat-text').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') window.sendChatMessage();
-        });
-
     </script>
 </body>
 </html>
