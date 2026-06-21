@@ -2,309 +2,227 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>8F — Ekskluzywna Platforma Klasowa</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Wspomnienia 8F</title>
     
-    <!-- Google Fonts & Tailwind & GSAP & Lucide Icons -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-
+    
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
                     colors: {
                         brand: {
-                            bg: '#0b0f19',
-                            card: '#151b2c',
-                            accent: '#4f46e5',
-                            accentHover: '#4338ca',
-                            heart: '#ff2a54',
-                            textMuted: '#64748b'
+                            bg: '#0f172a', /* slate-900 */
+                            textMuted: '#94a3b8' /* slate-400 */
                         }
                     }
                 }
             }
         }
     </script>
-
+    
     <style>
-        body {
-            background-color: #0b0f19;
-            color: #f8fafc;
-            overflow-x: hidden;
-        }
-        .glass-panel {
-            background: rgba(21, 27, 44, 0.75);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        .album-card-stack:hover .stack-1 { transform: translate(-50%, -65%) rotate(-8deg) scale(1.03); }
-        .album-card-stack:hover .stack-2 { transform: translate(-50%, -55%) rotate(6deg) scale(1.02); }
-        .album-card-stack:hover .stack-3 { transform: translate(-50%, -50%) scale(1.01); }
-        
-        .heart-pop-animation {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            color: #ff2a54;
-            fill: #ff2a54;
-            pointer-events: none;
-            opacity: 0;
-            z-index: 50;
-            filter: drop-shadow(0 0 15px rgba(255, 42, 84, 0.6));
-        }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(79, 70, 229, 0.3); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #4f46e5; }
+        body { background-color: #0f172a; color: white; -webkit-tap-highlight-color: transparent; }
+        .glass-panel { background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="font-sans antialiased">
+<body class="bg-brand-bg text-white overflow-x-hidden selection:bg-indigo-500/30">
 
-    <!-- Tło dekoracyjne -->
-    <div class="fixed top-0 left-0 w-full h-full pointer-events-none z-0 overflow-hidden">
-        <div class="absolute top-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-indigo-900/20 blur-[120px]"></div>
-        <div class="absolute bottom-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-purple-900/10 blur-[120px]"></div>
+    <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 bg-indigo-600 px-6 py-3 rounded-2xl font-bold text-sm shadow-xl shadow-indigo-600/20 z-[100] opacity-0 translate-y-[-100px] pointer-events-none whitespace-nowrap">
+        <span id="toast-msg"></span>
     </div>
 
-    <!-- Okno Potwierdzeń -->
-    <div id="confirm-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[9999] hidden items-center justify-center p-4">
-        <div class="glass-panel p-6 rounded-3xl max-w-sm w-full text-center shadow-2xl">
-            <h3 id="confirm-title" class="text-xl font-bold mb-2">Czy jesteś pewien?</h3>
-            <p id="confirm-desc" class="text-brand-textMuted text-sm mb-6">Tej operacji nie można cofnąć.</p>
-            <div class="flex gap-3 justify-center">
-                <button id="confirm-yes" class="px-5 py-2.5 bg-red-500 hover:bg-red-600 font-bold rounded-xl transition text-sm">Usuń</button>
-                <button onclick="closeConfirm()" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 font-bold rounded-xl transition text-sm">Anuluj</button>
+    <div id="screen-auth" class="min-h-screen flex items-center justify-center p-6 relative z-50 bg-slate-900 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-900/20 via-brand-bg to-brand-bg">
+        <div class="glass-panel w-full max-w-sm p-8 rounded-[32px] shadow-2xl text-center">
+            <div class="w-20 h-20 mx-auto bg-indigo-500 rounded-2xl flex items-center justify-center mb-6 rotate-3 shadow-lg shadow-indigo-500/30">
+                <i data-lucide="camera" class="w-10 h-10 text-white -rotate-3"></i>
             </div>
-        </div>
-    </div>
-
-    <!-- Powiadomienia Toast -->
-    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 glass-panel px-6 py-3.5 rounded-2xl shadow-2xl z-[9000] flex items-center gap-3 translate-y-28 opacity-0 pointer-events-none transition-all duration-300">
-        <div class="w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400">
-            <i data-lucide="bell" class="w-4 h-4"></i>
-        </div>
-        <span id="toast-msg" class="text-sm font-semibold">Komunikat systemowy</span>
-    </div>
-
-    <!-- Ekran Autoryzacji / Weryfikacji -->
-    <section id="screen-auth" class="relative z-10 min-h-screen flex items-center justify-center p-4">
-        <div class="glass-panel p-8 rounded-[32px] shadow-2xl max-w-md w-full text-center">
-            <div class="relative w-24 h-24 mx-auto mb-6">
-                <img src="https://raw.githubusercontent.com/skdbxq/8F/refs/heads/main/IMG_E4646.JPG" class="w-full h-full object-cover rounded-full border-4 border-indigo-500 shadow-xl" alt="Kotlet">
-                <div class="absolute -bottom-1 -right-1 bg-indigo-500 text-white p-1.5 rounded-full shadow-lg"><i data-lucide="shield" class="w-4 h-4"></i></div>
-            </div>
+            <h1 class="text-3xl font-extrabold tracking-tight mb-2">Galeria 8F</h1>
+            <p class="text-brand-textMuted text-sm font-medium mb-8">Zaloguj się swoją ksywką, aby przeglądać wspomnienia.</p>
             
-            <div id="auth-step-1">
-                <h2 class="text-2xl font-extrabold mb-1 tracking-tight">Dołącz do Społeczności</h2>
-                <p class="text-brand-textMuted text-sm mb-6">Wpisz imię lub ksywkę, którą będą widzieć inni.</p>
-                <input type="text" id="input-auth-nick" class="w-full bg-brand-bg border border-slate-800 rounded-2xl px-4 py-3.5 text-center font-semibold focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition mb-4 text-white" placeholder="Twoja ksywka...">
-                <button onclick="submitAuthNick()" class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 font-bold rounded-2xl shadow-lg shadow-indigo-600/20 transition active:scale-[0.98]">Dalej</button>
-            </div>
-
-            <div id="auth-step-2" class="hidden">
-                <h2 class="text-2xl font-extrabold mb-1 tracking-tight">Hasło Klasowe</h2>
-                <p class="text-brand-textMuted text-sm mb-6">Kim jest postać na zdjęciu powyżej?</p>
-                <input type="password" id="input-auth-pass" class="w-full bg-brand-bg border border-slate-800 rounded-2xl px-4 py-3.5 text-center font-semibold focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition mb-4 text-white" placeholder="Wpisz hasło...">
-                <button onclick="submitAuthPassword()" class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 font-bold rounded-2xl shadow-lg shadow-indigo-600/20 transition active:scale-[0.98]">Autoryzacja</button>
+            <div class="space-y-4">
+                <input type="text" id="input-auth-nick" placeholder="Twoja ksywka..." class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-5 py-3.5 text-base font-semibold text-white focus:border-indigo-500 outline-none transition placeholder:text-slate-500 text-center">
+                <input type="password" id="input-auth-admin-pass" placeholder="Hasło (tylko Admin)" class="hidden w-full bg-slate-800/50 border border-slate-700 rounded-xl px-5 py-3.5 text-base font-semibold text-white focus:border-indigo-500 outline-none transition text-center">
+                <button id="auth-button" class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 font-bold rounded-xl text-base transition shadow-lg shadow-indigo-600/20">Wejdź do galerii</button>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- GŁÓWNA STRUKTURA APLIKACJI (PO ZALOGOWANIU) -->
-    <div id="app-shell" class="hidden min-h-screen flex flex-col pb-24 md:pb-0 md:pl-64">
-        
-        <!-- NAWIGACJA BOCZNA (DESKTOP) / DOLNA (MOBILE) -->
-        <nav class="glass-panel fixed bottom-0 left-0 w-full h-20 md:h-full md:w-64 z-40 flex md:flex-col justify-between items-center px-6 py-4 md:py-8 border-t md:border-t-0 md:border-r border-white/8">
-            <div class="hidden md:flex flex-col items-center gap-2 mb-8 cursor-pointer" onclick="navigateTo('screen-albums')">
-                <div class="text-2xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">KLASA 8F</div>
-                <div class="h-0.5 w-12 bg-indigo-500 rounded-full"></div>
+    <div id="app-shell" class="hidden min-h-screen flex flex-col pb-24">
+        <header class="sticky top-0 z-40 glass-panel px-4 py-4 flex items-center justify-between border-b border-white/5">
+            <button id="back-nav" onclick="handleBackRoute()" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/10 transition hidden">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+            </button>
+            <h2 class="text-lg font-bold tracking-tight mx-auto absolute left-1/2 -translate-x-1/2">Wspomnienia</h2>
+            <div class="flex items-center gap-2 cursor-pointer group ml-auto" onclick="viewOwnProfile()">
+                <span id="shell-nick" class="text-sm font-bold hidden sm:block group-hover:text-indigo-400 transition">Nick</span>
+                <img id="shell-avatar" src="" class="w-9 h-9 rounded-full object-cover border-2 border-indigo-500 bg-slate-800" alt="Avatar">
             </div>
+        </header>
 
-            <div class="flex md:flex-col w-full justify-around md:justify-start gap-2 md:gap-4">
-                <button onclick="navigateTo('screen-albums')" class="nav-link flex flex-col md:flex-row items-center gap-1 md:gap-4 px-4 py-2 md:py-3.5 w-full rounded-2xl transition font-bold text-slate-400 hover:text-white hover:bg-white/5">
-                    <i data-lucide="layers" class="w-5 h-5"></i><span class="text-xs md:text-sm tracking-wide">Albumy</span>
-                </button>
-                <button onclick="openUploadWizard()" class="flex flex-col md:flex-row items-center gap-1 md:gap-4 px-4 py-2 md:py-3.5 w-full rounded-2xl transition font-bold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 hover:bg-indigo-500 hover:text-white">
-                    <i data-lucide="plus-square" class="w-5 h-5"></i><span class="text-xs md:text-sm tracking-wide">Dodaj foto</span>
-                </button>
-                <button onclick="viewOwnProfile()" class="nav-link flex flex-col md:flex-row items-center gap-1 md:gap-4 px-4 py-2 md:py-3.5 w-full rounded-2xl transition font-bold text-slate-400 hover:text-white hover:bg-white/5">
-                    <i data-lucide="user" class="w-5 h-5"></i><span class="text-xs md:text-sm tracking-wide">Mój Profil</span>
-                </button>
+        <main id="screen-albums" class="flex-1 p-4 max-w-5xl mx-auto w-full">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-extrabold">Foldery klasowe</h3>
+                <button onclick="openUploadWizard()" class="bg-indigo-600 hover:bg-indigo-700 text-white w-10 h-10 rounded-full flex items-center justify-center transition shadow-lg shadow-indigo-600/20"><i data-lucide="plus" class="w-5 h-5"></i></button>
             </div>
-
-            <div class="hidden md:flex items-center gap-3 w-full p-3 rounded-2xl bg-slate-900/40 border border-white/5">
-                <img id="shell-avatar" src="" class="w-10 h-10 object-cover rounded-full bg-slate-800" alt="">
-                <div class="overflow-hidden">
-                    <div id="shell-nick" class="font-bold text-sm truncate">User</div>
-                    <div class="text-[11px] text-brand-textMuted font-medium">Aktywny</div>
+            <div id="container-albums" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 </div>
+        </main>
+
+        <main id="screen-gallery" class="flex-1 p-4 hidden max-w-5xl mx-auto w-full">
+            <h3 id="gallery-header-title" class="text-2xl font-extrabold mb-6 text-center">Album</h3>
+            <div id="container-gallery" class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 md:gap-3">
+                </div>
+        </main>
+
+        <main id="screen-profile" class="flex-1 p-4 hidden max-w-3xl mx-auto w-full">
+            <div class="glass-panel rounded-[32px] p-6 mb-8 text-center relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-24 bg-gradient-to-r from-indigo-600 to-purple-600 opacity-20"></div>
+                <div class="relative w-24 h-24 mx-auto mb-4 mt-4">
+                    <img id="profile-card-avatar" src="" class="w-full h-full object-cover rounded-full border-4 border-brand-bg shadow-xl bg-slate-800">
+                </div>
+                <h3 id="profile-card-nick" class="text-2xl font-extrabold mb-1">Nick</h3>
+                <button id="profile-edit-btn" onclick="openEditProfileModal()" class="mt-4 px-5 py-2 bg-white/10 hover:bg-white/20 font-bold rounded-full text-sm transition inline-flex items-center gap-2">
+                    <i data-lucide="edit-2" class="w-4 h-4"></i> Edytuj profil
+                </button>
+                
+                <div class="flex justify-center gap-8 mt-8 border-t border-white/5 pt-6">
+                    <div class="text-center">
+                        <div id="profile-stat-posts" class="text-2xl font-black">0</div>
+                        <div class="text-xs text-brand-textMuted font-bold uppercase tracking-wider">Wstawionych</div>
+                    </div>
+                    <div class="text-center">
+                        <div id="profile-stat-likes" class="text-2xl font-black">0</div>
+                        <div class="text-xs text-brand-textMuted font-bold uppercase tracking-wider">Zebranych ❤</div>
+                    </div>
+                </div>
+            </div>
+            <h4 class="font-bold text-lg mb-4 pl-2">Zdjęcia użytkownika</h4>
+            <div id="container-profile-gallery" class="grid grid-cols-3 gap-2"></div>
+        </main>
+        
+        <nav class="fixed bottom-0 w-full glass-panel border-t border-white/5 z-40 sm:hidden">
+            <div class="flex justify-around items-center p-3">
+                <button onclick="navigateTo('screen-albums')" class="nav-link p-2 text-slate-400 hover:text-indigo-400 transition flex flex-col items-center gap-1">
+                    <i data-lucide="folder" class="w-6 h-6"></i>
+                    <span class="text-[10px] font-bold">Albumy</span>
+                </button>
+                <button onclick="openUploadWizard()" class="p-3 bg-indigo-600 text-white rounded-full -mt-6 shadow-lg shadow-indigo-600/30 border-4 border-brand-bg relative z-10 hover:scale-105 transition">
+                    <i data-lucide="plus" class="w-6 h-6"></i>
+                </button>
+                <button onclick="viewOwnProfile()" class="nav-link p-2 text-slate-400 hover:text-indigo-400 transition flex flex-col items-center gap-1">
+                    <i data-lucide="user" class="w-6 h-6"></i>
+                    <span class="text-[10px] font-bold">Profil</span>
+                </button>
             </div>
         </nav>
-
-        <!-- GLÓWNY KONTENER TREŚCI -->
-        <main class="relative z-10 flex-1 p-4 md:p-8 max-w-6xl w-full mx-auto">
-            
-            <!-- PRZYCISK WSTECZ (DYNAMICZNY) -->
-            <div id="back-nav" class="mb-6 hidden">
-                <button onclick="handleBackRoute()" class="inline-flex items-center gap-2 font-bold text-sm text-slate-400 hover:text-white transition py-2 px-4 rounded-xl bg-white/5 border border-white/5">
-                    <i data-lucide="chevron-left" class="w-4 h-4"></i> Wróć
-                </button>
-            </div>
-
-            <!-- EKRAN 1: WIDOK ALBUMÓW -->
-            <section id="screen-albums" class="app-screen hidden">
-                <div class="mb-8">
-                    <h1 class="text-3xl font-extrabold tracking-tight md:text-4xl mb-2">Klasowe Wspomnienia</h1>
-                    <p class="text-brand-textMuted text-sm md:text-base">Wybierz publiczny album, aby zobaczyć dodane zdjęcia.</p>
-                </div>
-                <div id="container-albums" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 pt-4">
-                    <!-- Generowane dynamicznie -->
-                </div>
-            </section>
-
-            <!-- EKRAN 2: SPERSONALIZOWANA GALERIA ALBUMU -->
-            <section id="screen-gallery" class="app-screen hidden">
-                <div class="mb-8">
-                    <h1 id="gallery-header-title" class="text-3xl font-extrabold tracking-tight md:text-4xl mb-2">Nazwa Albumu</h1>
-                    <p class="text-brand-textMuted text-sm">Kliknij zdjęcie, aby zobaczyć szczegóły, profil autora, lajki i komentarze.</p>
-                </div>
-                <div id="container-gallery" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                    <!-- Siatka zdjęć -->
-                </div>
-            </section>
-
-            <!-- EKRAN 3: SPERSONALIZOWANY ZAAWANSOWANY PROFIL -->
-            <section id="screen-profile" class="app-screen hidden">
-                <div class="glass-panel rounded-[32px] p-6 md:p-8 mb-8 relative overflow-hidden">
-                    <div class="flex flex-col sm:flex-row items-center text-center sm:text-left gap-6 relative z-10">
-                        <div class="relative w-28 h-28 shrink-0">
-                            <img id="profile-card-avatar" src="" class="w-full h-full object-cover rounded-full border-4 border-indigo-500 bg-slate-900 shadow-xl" alt="Avatar">
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-3">
-                                <h2 id="profile-card-nick" class="text-2xl font-extrabold tracking-tight">Ksywka</h2>
-                                <button id="profile-edit-btn" onclick="openEditProfileModal()" class="hidden px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-sm font-bold rounded-xl transition">
-                                    <i data-lucide="edit-3" class="w-4 h-4 inline mr-1.5"></i> Edytuj profil
-                                </button>
-                            </div>
-                            <div class="flex justify-center sm:justify-start gap-6 font-semibold text-sm text-slate-300">
-                                <div>Wpisy: <span id="profile-stat-posts" class="font-extrabold text-white">0</span></div>
-                                <div>Zebrane lajki: <span id="profile-stat-likes" class="font-extrabold text-white">0</span></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mb-6">
-                    <h3 class="text-xl font-bold tracking-tight">Kolekcja użytkownika</h3>
-                </div>
-                <div id="container-profile-gallery" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                    <!-- Zdjęcia dodane przez danego użytkownika -->
-                </div>
-            </section>
-        </main>
     </div>
 
-    <!-- MODAL 1: PREZENTACJA MULTIMEDIÓW (Z KOMENTARZAMI JAK NA IG) -->
-    <div id="modal-viewer" class="fixed inset-0 bg-black/95 z-50 hidden justify-center items-center p-2 md:p-6 backdrop-blur-xl">
-        <div class="glass-panel w-full max-w-5xl h-full md:h-[85vh] rounded-3xl overflow-hidden flex flex-col md:flex-row shadow-2xl">
-            
-            <!-- Lewa strona: Zdjęcie (Double Tap) -->
-            <div class="flex-1 bg-black/40 relative flex items-center justify-center overflow-hidden min-h-[40vh] md:min-h-0 select-none" ondblclick="triggerDoubleTapLike(event)">
-                <img id="viewer-img" src="" class="max-w-full max-h-full object-contain" alt="">
-                <i data-lucide="heart" class="heart-pop-animation w-20 h-20" id="viewer-pop-heart"></i>
-                <div class="absolute bottom-4 left-4 glass-panel px-3 py-1.5 rounded-xl flex items-center gap-2 cursor-pointer" id="viewer-author-badge">
-                    <img id="viewer-author-avatar" src="" class="w-6 h-6 object-cover rounded-full bg-slate-800" alt="">
-                    <span id="viewer-author-nick" class="text-xs font-bold hover:underline">Autor</span>
+    <div id="modal-viewer" class="fixed inset-0 bg-black/95 z-50 hidden flex-col sm:flex-row">
+        <button onclick="closeViewer()" class="absolute top-4 right-4 z-50 w-10 h-10 bg-black/50 hover:bg-black/80 rounded-full flex items-center justify-center text-white transition backdrop-blur-md">
+            <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+
+        <div class="flex-1 relative flex items-center justify-center bg-black min-h-[50vh]" ondblclick="triggerDoubleTapLike(event)">
+            <img id="viewer-img" src="" class="max-w-full max-h-full object-contain">
+            <div id="viewer-pop-heart" class="absolute inset-0 flex items-center justify-center opacity-0 pointer-events-none">
+                <i data-lucide="heart" class="w-32 h-32 text-red-500 fill-red-500 drop-shadow-2xl"></i>
+            </div>
+        </div>
+
+        <div class="w-full sm:w-96 bg-brand-bg border-l border-white/5 flex flex-col h-[50vh] sm:h-full flex-shrink-0">
+            <div class="p-4 border-b border-white/5 flex items-center justify-between shrink-0">
+                <div class="flex items-center gap-3">
+                    <img id="viewer-author-avatar" src="" class="w-10 h-10 rounded-full object-cover bg-slate-800">
+                    <div>
+                        <div id="viewer-author-nick" class="font-bold text-sm">Nick</div>
+                        <div id="viewer-author-badge" class="text-xs text-indigo-400 cursor-pointer font-semibold hover:underline">Zobacz profil</div>
+                    </div>
                 </div>
+                <button id="viewer-delete-media-btn" onclick="deleteCurrentMedia()" class="text-red-400 hover:text-red-300 hidden p-2">
+                    <i data-lucide="trash-2" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <div class="p-4 flex items-center gap-4 shrink-0 pb-2">
+                <button id="viewer-like-btn" onclick="executeLikeToggle()" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition group">
+                    <i data-lucide="heart" class="w-5 h-5 group-hover:scale-110 transition"></i>
+                </button>
+                <span class="font-extrabold"><span id="viewer-likes-count">0</span> polubień</span>
             </div>
 
-            <!-- Prawa strona: Panel społecznościowy -->
-            <div class="w-full md:w-[400px] bg-[#0f1322] flex flex-col h-full border-t md:border-t-0 md:border-l border-white/5 p-4 md:p-6">
-                <div class="flex justify-between items-center pb-4 border-b border-white/5 mb-4">
-                    <div class="flex items-center gap-3">
-                        <div class="flex items-center gap-1 text-brand-heart font-extrabold text-sm bg-brand-heart/10 px-3 py-1.5 rounded-xl border border-brand-heart/20">
-                            <i data-lucide="heart" class="w-4 h-4 fill-brand-heart"></i> <span id="viewer-likes-count">0</span>
-                        </div>
-                    </div>
-                    <button onclick="closeViewer()" class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 text-slate-400 hover:text-white transition">
-                        <i data-lucide="x" class="w-4 h-4"></i>
-                    </button>
+            <div id="viewer-comments-list" class="flex-1 overflow-y-auto p-4 space-y-4 hide-scrollbar">
                 </div>
 
-                <!-- Lista komentarzy -->
-                <div class="flex-1 overflow-y-auto space-y-4 pr-1 mb-4" id="viewer-comments-list">
-                    <!-- Komentarze -->
+            <div class="p-4 border-t border-white/5 shrink-0 bg-slate-900/50">
+                <div id="reply-alert" class="hidden items-center justify-between bg-indigo-500/20 text-indigo-300 px-3 py-2 rounded-lg mb-3 text-xs font-bold border border-indigo-500/30">
+                    <span id="reply-alert-text">Odpowiadasz...</span>
+                    <button onclick="cancelReply()"><i data-lucide="x" class="w-4 h-4"></i></button>
                 </div>
-
-                <!-- Pole wprowadzania -->
-                <div class="mt-auto">
-                    <div id="reply-alert" class="hidden justify-between items-center bg-indigo-500/10 border border-indigo-500/20 px-3 py-2 rounded-xl text-xs font-bold text-indigo-400 mb-2">
-                        <span id="reply-alert-text">Odpowiadasz...</span>
-                        <i data-lucide="x" class="w-3.5 h-3.5 cursor-pointer" onclick="cancelReply()"></i>
-                    </div>
-                    <div class="flex gap-2">
-                        <input type="text" id="input-comment" class="flex-grow bg-brand-bg border border-slate-800 focus:border-indigo-500 outline-none rounded-xl px-4 py-2.5 text-sm font-medium text-white placeholder-slate-500" placeholder="Dodaj komentarz...">
-                        <button onclick="postComment()" class="px-4 bg-indigo-600 hover:bg-indigo-700 font-bold rounded-xl transition flex items-center justify-center shadow-lg shadow-indigo-600/10"><i data-lucide="send" class="w-4 h-4"></i></button>
-                    </div>
-                    <button id="viewer-delete-media-btn" onclick="deleteCurrentMedia()" class="hidden w-full mt-3 py-2 bg-red-500/10 border border-red-500/20 hover:bg-red-500 text-red-400 hover:text-white font-bold text-xs rounded-xl transition items-center justify-center gap-2">
-                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Usuń to zdjęcie
-                    </button>
+                <div class="flex gap-2">
+                    <input type="text" id="input-comment" placeholder="Dodaj komentarz..." class="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-indigo-500 transition">
+                    <button onclick="postComment()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-xl font-bold text-sm transition">Wyślij</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL 2: KREATOR DODAWANIA ZDJĘĆ Z WYBOREM/TWORZENIEM ALBUMU -->
     <div id="modal-upload" class="fixed inset-0 bg-black/80 z-50 hidden justify-center items-center p-4 backdrop-blur-md">
-        <div class="glass-panel w-full max-w-md p-6 rounded-[32px] shadow-2xl">
-            <h3 class="text-xl font-bold tracking-tight mb-2">Dodaj nowe wspomnienie</h3>
-            <p class="text-brand-textMuted text-xs mb-5">Wybierz docelowy album z listy lub utwórz całkiem nowy, publiczny album dla klasy.</p>
+        <div class="glass-panel w-full max-w-sm p-6 rounded-[32px] shadow-2xl">
+            <h3 class="text-xl font-bold tracking-tight mb-5 text-center">Dodaj wspomnienie</h3>
             
             <div class="space-y-4 mb-6">
                 <div>
-                    <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase tracking-wider">Wybierz Album</label>
-                    <select id="upload-select-album" onchange="toggleNewAlbumField()" class="w-full bg-brand-bg border border-slate-800 rounded-xl px-3 py-2.5 font-semibold text-sm text-white focus:border-indigo-500 outline-none"></select>
+                    <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase tracking-wider">Wybierz folder</label>
+                    <select id="upload-select-album" onchange="toggleNewAlbumField()" class="w-full bg-brand-bg border border-slate-800 rounded-xl px-4 py-3 text-sm font-semibold text-white focus:border-indigo-500 outline-none appearance-none">
+                    </select>
                 </div>
                 <div id="upload-new-album-wrapper" class="hidden">
-                    <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase tracking-wider">Nazwa nowego albumu</label>
-                    <input type="text" id="input-new-album-title" class="w-full bg-brand-bg border border-slate-800 rounded-xl px-3 py-2.5 text-sm font-semibold text-white focus:border-indigo-500 outline-none" placeholder="Np. Klasowa Wigilia...">
+                    <input type="text" id="input-new-album-title" placeholder="Nazwa nowego folderu..." class="w-full bg-brand-bg border border-slate-800 rounded-xl px-4 py-3 text-sm font-semibold text-white focus:border-indigo-500 outline-none">
                 </div>
             </div>
 
             <div class="flex gap-3">
-                <button onclick="triggerFilePicker('file-picker-media')" class="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 font-bold rounded-xl text-sm transition text-center shadow-lg shadow-indigo-600/20">Wybierz z galerii</button>
+                <button onclick="triggerFilePicker('file-picker-media')" class="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 font-bold rounded-xl text-sm transition text-center shadow-lg shadow-indigo-600/20">Wybierz zdjęcie</button>
                 <button onclick="closeUploadWizard()" class="px-5 py-3 bg-slate-800 hover:bg-slate-700 font-bold rounded-xl text-sm transition">Anuluj</button>
             </div>
             <input type="file" id="file-picker-media" accept="image/*" class="hidden" onchange="processMediaUpload(event)">
         </div>
     </div>
 
-    <!-- MODAL 3: EDYCJA PROFILU (ZMIANA NICKU I PRAWDZIWEGO ZDJĘCIA) -->
+    <div id="upload-modal" class="fixed inset-0 bg-black/80 z-50 hidden justify-center items-center p-4 backdrop-blur-md">
+        <div class="glass-panel w-full max-w-sm p-6 rounded-[32px] shadow-2xl">
+            <h3 class="text-xl font-bold tracking-tight mb-5 text-center">Szybkie dodawanie</h3>
+            <div class="space-y-4 mb-6">
+                <input type="hidden" id="upload-album-name">
+                <input type="hidden" id="upload-owner-nick">
+                <input type="file" id="upload-file" accept="image/*" class="w-full bg-brand-bg border border-slate-800 rounded-xl px-4 py-3 text-sm font-semibold text-white focus:border-indigo-500 outline-none">
+            </div>
+            <div class="flex gap-3">
+                <button onclick="handleLocalSubmitUpload()" class="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 font-bold rounded-xl text-sm transition shadow-lg shadow-indigo-600/20">Prześlij plik</button>
+                <button onclick="closeLocalUploadModal()" class="px-5 py-3 bg-slate-800 hover:bg-slate-700 font-bold rounded-xl text-sm transition">Anuluj</button>
+            </div>
+        </div>
+    </div>
+
     <div id="modal-edit-profile" class="fixed inset-0 bg-black/80 z-50 hidden justify-center items-center p-4 backdrop-blur-md">
         <div class="glass-panel w-full max-w-sm p-6 rounded-[32px] shadow-2xl text-center">
             <h3 class="text-xl font-bold tracking-tight mb-4">Ustawienia Profilu</h3>
-            
             <div class="relative w-24 h-24 mx-auto mb-5 group cursor-pointer" onclick="triggerFilePicker('file-picker-avatar')">
                 <img id="modal-profile-preview" src="" class="w-full h-full object-cover rounded-full border-2 border-indigo-500 bg-slate-900 shadow-md group-hover:opacity-70 transition" alt="">
                 <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
                     <i data-lucide="camera" class="w-6 h-6 text-white drop-shadow-md"></i>
                 </div>
             </div>
-
             <div class="text-left mb-6">
                 <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase tracking-wider">Twoja nazwa (Nick)</label>
                 <input type="text" id="input-edit-nick" class="w-full bg-brand-bg border border-slate-800 rounded-xl px-4 py-2.5 text-sm font-semibold text-white focus:border-indigo-500 outline-none">
             </div>
-
             <div class="flex gap-3">
                 <button onclick="saveProfileChanges()" class="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-700 font-bold rounded-xl text-sm transition shadow-lg">Zapisz</button>
                 <button onclick="closeEditProfileModal()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 font-bold rounded-xl text-sm transition">Anuluj</button>
@@ -313,12 +231,24 @@
         </div>
     </div>
 
+    <div id="confirm-modal" class="fixed inset-0 bg-black/80 z-50 hidden justify-center items-center p-4 backdrop-blur-md">
+        <div class="glass-panel w-full max-w-xs p-6 rounded-[32px] shadow-2xl text-center border border-red-500/20">
+            <div class="w-12 h-12 bg-red-500/20 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+            </div>
+            <h3 id="confirm-title" class="text-lg font-bold mb-2">Potwierdź</h3>
+            <p id="confirm-desc" class="text-sm text-slate-300 mb-6">Czy na pewno chcesz to zrobić?</p>
+            <div class="flex gap-3">
+                <button id="confirm-yes" class="flex-1 py-2.5 bg-red-600 hover:bg-red-700 font-bold rounded-xl text-sm transition">Usuń</button>
+                <button onclick="closeConfirm()" class="flex-1 py-2.5 bg-slate-800 hover:bg-slate-700 font-bold rounded-xl text-sm transition">Anuluj</button>
+            </div>
+        </div>
+    </div>
 
-    <!-- CORE JAVASCRIPT ARCHITECTURE -->
     <script>
         // Dane konfiguracyjne połączenia Supabase REST
-        const SB_URL = "https://kxcirzmkjgxgkfiragfc.supabase.co";
-        const SB_KEY = "sb_publishable_E_0z_SOkrJc8jy89ZmUg4g_1zfbyWTt";
+        const SB_URL = "https://wsjesicoimvmqiaunapj.supabase.co";
+        const SB_KEY = "sb_publishable_rbiaXFlitCUVlDhD-jPrSQ_NFijTZOy";
         const BUCKET = "wspomnienia";
 
         // Domyślne dane początkowe, jeśli baza jest pusta
@@ -343,21 +273,55 @@
             replyingToId: null, viewedUserId: ''
         };
 
-        // Inicjalizacja identyfikatorów unikalnych urządzenia
+        // Zmienne do optymalizacji debouncingu Supabase
+        let isSyncing = false;
+        let lastSyncTime = 0;
+        const SYNC_COOLDOWN_MS = 15000; // 15 sekund przerwy między pobieraniem całości
+
+        // Track album creators and metadata
+        let albumsMetadata = JSON.parse(localStorage.getItem('8f_albums_metadata') || '{}');
+        function saveAlbumsMetadata() {
+            localStorage.setItem('8f_albums_metadata', JSON.stringify(albumsMetadata));
+        }
+
+        // Inicjalizacja identyfikatorów
         if(!localStorage.getItem('8f_user_id')) localStorage.setItem('8f_user_id', 'usr_' + Math.random().toString(36).substr(2, 9));
         if(!localStorage.getItem('8f_avatar')) localStorage.setItem('8f_avatar', 'https://api.dicebear.com/7.x/bottts/svg?seed=Felix');
+        
+        // Admin list (ksywki adminów) - tu możesz dodawać kolejne!
+        const ADMINS = ['Andrzej', 'Admin']; 
+        
+        function isAdminNick(nick) {
+            return ADMINS.includes(nick);
+        }
 
         window.addEventListener('DOMContentLoaded', async () => {
             lucide.createIcons();
+            
+            const authInput = document.getElementById('input-auth-nick');
+            const authButton = document.getElementById('auth-button');
+            
+            if(authInput) {
+                authInput.addEventListener('keypress', (e) => {
+                    if(e.key === 'Enter') submitAuthSimple();
+                });
+                authInput.focus();
+            }
+            if(authButton) authButton.addEventListener('click', submitAuthSimple);
+            
+            // Wczytaj z localStorage na start
+            state.likes = JSON.parse(localStorage.getItem('8f_likes') || '[]');
+            state.comments = JSON.parse(localStorage.getItem('8f_comments') || '[]');
+            
             if(localStorage.getItem('8f_authenticated') === 'true' && localStorage.getItem('8f_nick')) {
                 document.getElementById('screen-auth').style.display = 'none';
                 document.getElementById('app-shell').classList.remove('hidden');
-                await syncAllData();
+                syncAllData(); // Pobiera w tle
                 navigateTo('screen-albums');
             }
         });
 
-        // Pobieranie danych z Supabase za pomocą czystego interfejsu Fetch REST API
+        // Pobieranie danych z Supabase (Fetch REST)
         async function sbFetch(table) {
             try {
                 let r = await fetch(`${SB_URL}/rest/v1/${table}?select=*`, {
@@ -368,26 +332,51 @@
             } catch(e) { return []; }
         }
 
-        async function syncAllData() {
-            state.media = await sbFetch('media_items');
-            state.likes = await sbFetch('likes');
-            state.comments = await sbFetch('comments');
+        // Zoptymalizowana synchronizacja
+        async function syncAllData(force = false) {
+            const now = Date.now();
+            if (!force && (now - lastSyncTime < SYNC_COOLDOWN_MS)) return;
+            if (isSyncing) return;
+            isSyncing = true;
 
-            // Dynamiczne mapowanie unikalnych kategorii dodanych przez kogokolwiek w klasie
+            try {
+                // Wykorzystanie Promise.all pobiera wszystkie tabele równolegle = 3x szybciej!
+                const [mediaRes, likesRes, commentsRes] = await Promise.all([
+                    sbFetch('media_items'),
+                    sbFetch('likes'),
+                    sbFetch('comments')
+                ]);
+
+                if(mediaRes.length > 0) state.media = mediaRes;
+                if(likesRes.length > 0) state.likes = likesRes;
+                if(commentsRes.length > 0) state.comments = commentsRes;
+
+                lastSyncTime = now;
+            } catch(e) {
+                console.error("Błąd synchronizacji:", e);
+                // Fallback do localStorage zachowany z Inita
+            } finally {
+                isSyncing = false;
+            }
+
+            // Mapowanie kategorii
             state.media.forEach(m => {
                 if(m.category && !categories[m.category]) categories[m.category] = m.category_name || m.category;
             });
 
-            // Aktualizacja paska bocznego
-            document.getElementById('shell-nick').innerText = localStorage.getItem('8f_nick') || "Użytkownik";
+            // Aktualizacja paska bocznego/shell
+            const nick = localStorage.getItem('8f_nick');
+            const adminBadge = isAdminNick(nick) ? '🔑 ' : '';
+            document.getElementById('shell-nick').innerHTML = adminBadge + (nick || "Użytkownik");
             document.getElementById('shell-avatar').src = localStorage.getItem('8f_avatar');
         }
 
         function showToast(text) {
             const t = document.getElementById('toast');
             document.getElementById('toast-msg').innerText = text;
+            gsap.killTweensOf(t);
             gsap.to(t, { opacity: 1, y: 0, duration: 0.3 });
-            setTimeout(() => gsap.to(t, { opacity: 0, y: 100, duration: 0.3 }), 3000);
+            setTimeout(() => gsap.to(t, { opacity: 0, y: -100, duration: 0.3 }), 3000);
         }
 
         function askConfirm(title, desc, onYes) {
@@ -399,7 +388,16 @@
         }
         function closeConfirm() { document.getElementById('confirm-modal').style.display = 'none'; }
 
-        // ROUTER SYSTEM (Ekrany i nawigacja bez przeładowania)
+        // Local upload modal
+        function openLocalUploadModal() {
+            document.getElementById('upload-modal').style.display = 'flex';
+        }
+        function closeLocalUploadModal() {
+            document.getElementById('upload-modal').style.display = 'none';
+            document.getElementById('upload-file').value = '';
+        }
+
+        // Nawigacja
         function navigateTo(screenId, isBack = false) {
             const cur = document.getElementById(state.currentScreen);
             const target = document.getElementById(screenId);
@@ -408,8 +406,7 @@
             if(!isBack && state.currentScreen !== 'screen-auth') state.history.push(state.currentScreen);
             document.getElementById('back-nav').style.display = state.history.length > 0 ? 'block' : 'none';
 
-            // Podświetlanie linków nawigacyjnych
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('text-indigo-400', 'bg-white/5'));
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('text-indigo-400'));
 
             if(cur) {
                 gsap.to(cur, { opacity: 0, y: -10, duration: 0.2, onComplete: () => {
@@ -434,61 +431,109 @@
             if(state.history.length > 0) navigateTo(state.history.pop(), true);
         }
 
-        // KROKI LOGOWANIA KLASOWEGO
-        function submitAuthNick() {
+        // Logowanie
+        function submitAuthSimple() {
             const nick = document.getElementById('input-auth-nick').value.trim();
-            if(!nick) return showToast("Wpisz swoją ksywkę!");
-            localStorage.setItem('8f_nick', nick);
+            if(!nick || nick.length < 2) return showToast("Wpisz ksywkę (min 2 znaki)");
             
-            gsap.to('#auth-step-1', { opacity: 0, duration: 0.2, onComplete: () => {
-                document.getElementById('auth-step-1').classList.add('hidden');
-                document.getElementById('auth-step-2').classList.remove('hidden');
-                gsap.fromTo('#auth-step-2', { opacity: 0 }, { opacity: 1, duration: 0.2 });
-            }});
+            const isAdmin = isAdminNick(nick);
+            
+            localStorage.setItem('8f_nick', nick);
+            localStorage.setItem('8f_authenticated', 'true');
+            localStorage.setItem('8f_is_admin', isAdmin ? 'true' : 'false');
+            
+            showToast(`Witaj ${isAdmin ? '🔑 ' : ''}${nick}!`);
+            document.getElementById('screen-auth').style.display = 'none';
+            document.getElementById('app-shell').classList.remove('hidden');
+            
+            syncAllData(true).then(() => {
+                navigateTo('screen-albums');
+                lucide.createIcons();
+            });
         }
 
-        async function submitAuthPassword() {
-            const pass = document.getElementById('input-auth-pass').value.trim().toLowerCase();
-            if(pass === 'kotlet') {
-                localStorage.setItem('8f_authenticated', 'true');
-                showToast("Autoryzacja udana!");
-                document.getElementById('screen-auth').style.display = 'none';
-                document.getElementById('app-shell').classList.remove('hidden');
-                await syncAllData();
-                navigateTo('screen-albums');
-            } else {
-                showToast("Niepoprawne hasło klasowe.");
-                gsap.fromTo('#screen-auth div', { x: -10 }, { x: 10, duration: 0.08, yoyo: true, repeat: 3 });
+        // Usuwanie zawartości
+        function deleteAlbum(albumKey) {
+            askConfirm('Usunąć cały folder?', 'Folder i wszystkie zdjęcia zostaną usunięte. Tej operacji nie można cofnąć.', async () => {
+                const toDelete = state.media.filter(m => m.category === albumKey);
+                for(let m of toDelete) {
+                    await fetch(`${SB_URL}/rest/v1/media_items?id=eq.${m.id}`, {
+                        method: 'DELETE', headers: { "apikey": SB_KEY, "Authorization": `Bearer ${SB_KEY}` }
+                    });
+                }
+                delete categories[albumKey];
+                delete albumsMetadata[albumKey];
+                saveAlbumsMetadata();
+                showToast('Folder został usunięty.');
+                await syncAllData(true);
+                renderAlbums();
+            });
+        }
+
+        function renameAlbumPrompt(albumKey, currentName) {
+            const newName = prompt('Nowa nazwa folderu:', currentName);
+            if(newName && newName.trim()) {
+                categories[albumKey] = newName.trim();
+                showToast('Zmieniono nazwę.');
+                renderAlbums();
             }
         }
 
-        // STRONA 1: RENDERING ALBUMÓW
+        function deletePhoto(photoUrl) {
+            askConfirm('Usunąć to zdjęcie?', 'Zdjęcie zostanie trwale usunięte.', async () => {
+                const mediaRecord = state.media.find(m => m.url === photoUrl);
+                if(mediaRecord) {
+                    await fetch(`${SB_URL}/rest/v1/media_items?id=eq.${mediaRecord.id}`, {
+                        method: 'DELETE', headers: { "apikey": SB_KEY, "Authorization": `Bearer ${SB_KEY}` }
+                    });
+                }
+                showToast('Zdjęcie usunięte.');
+                await syncAllData(true);
+                if(document.getElementById('modal-viewer').style.display === 'flex') closeViewer();
+                renderGallery();
+            });
+        }
+
+        // RENDEROWANIE: Albumy
         function renderAlbums() {
             const container = document.getElementById('container-albums');
             container.innerHTML = "";
+            const myId = localStorage.getItem('8f_user_id');
 
-            Object.keys(categories).forEach(key => {
+            const albumEntries = Object.keys(categories).map(key => {
                 const title = categories[key];
-                const online = state.media.filter(m => m.category === key);
-                
+                const media = state.media.filter(m => m.category === key);
+                const totalLikes = media.reduce((acc, m) => acc + state.likes.filter(l => l.media_url === m.url).length, 0);
+                const metadata = albumsMetadata[key];
+                const isOwner = metadata && metadata.creator_id === myId;
                 let covers = ["https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=400"];
-                if(online.length > 0) covers = online.map(o => o.url);
+                if(media.length > 0) covers = media.map(o => o.url);
                 else if(defaultHardcoded[key]) covers = defaultHardcoded[key];
+                return { key, title, media, totalLikes, covers, isOwner, metadata };
+            });
 
-                const c1 = covers[0] || covers[0];
-                const c2 = covers[1] || c1;
-                const c3 = covers[2] || c2;
+            albumEntries.sort((a,b) => b.totalLikes - a.totalLikes);
+
+            albumEntries.forEach(entry => {
+                const { key, title, media, totalLikes, isOwner, metadata, covers } = entry;
+                const c1 = covers[0], c2 = covers[1] || c1, c3 = covers[2] || c2;
 
                 const card = document.createElement('div');
-                card.className = "glass-panel rounded-3xl h-80 flex flex-col justify-end relative cursor-pointer overflow-hidden p-5 group album-card-stack";
+                card.className = "glass-panel rounded-3xl h-64 md:h-80 flex flex-col justify-between relative cursor-pointer overflow-hidden p-5 group album-card-stack";
+                
+                const deleteBtn = isOwner ? `<button onclick="event.stopPropagation(); deleteAlbum('${key}');" class="opacity-0 group-hover:opacity-100 transition absolute top-3 right-3 z-30 w-8 h-8 bg-red-500 hover:bg-red-600 text-white rounded-lg flex items-center justify-center text-sm font-bold"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : '';
+                const editBtn = isOwner ? `<button onclick="event.stopPropagation(); renameAlbumPrompt('${key}', '${title.replace(/'/g, "\\'")}');" class="opacity-0 group-hover:opacity-100 transition absolute top-3 right-12 z-30 w-8 h-8 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg flex items-center justify-center text-sm font-bold"><i data-lucide="edit-3" class="w-4 h-4"></i></button>` : '';
+                const ownerLabel = metadata ? `<div class="absolute top-3 left-3 z-30 text-[11px] font-bold px-2 py-1 rounded-lg ${isOwner ? 'bg-indigo-500/30 text-indigo-300 border border-indigo-500/50' : 'bg-slate-700/30 text-slate-300'}">${isAdminNick(metadata.creator_nick) ? '🔑 Host' : '📌'} ${metadata.creator_nick}</div>` : '';
+                
                 card.innerHTML = `
                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10"></div>
-                    <div class="absolute top-20 left-1/2 -translate-x-1/2 w-[75%] h-[50%] transition-all duration-300 stack-1 rotate-[-4deg] -translate-y-[60%]"><img src="${c1}" class="w-full h-full object-cover rounded-xl border-2 border-white/20 shadow-md"></div>
-                    <div class="absolute top-20 left-1/2 -translate-x-1/2 w-[75%] h-[50%] transition-all duration-300 stack-2 rotate-[4deg] -translate-y-[52%]"><img src="${c2}" class="w-full h-full object-cover rounded-xl border-2 border-white/20 shadow-md"></div>
-                    <div class="absolute top-20 left-1/2 -translate-x-1/2 w-[75%] h-[50%] transition-all duration-300 stack-3 -translate-y-[48%]"><img src="${c3}" class="w-full h-full object-cover rounded-xl border-2 border-white/10 shadow-lg"></div>
+                    <div class="absolute top-20 left-1/2 -translate-x-1/2 w-[75%] h-[50%] transition-all duration-300 rotate-[-4deg] -translate-y-[60%]"><img src="${c1}" class="w-full h-full object-cover rounded-xl border-2 border-white/20 shadow-md"></div>
+                    <div class="absolute top-20 left-1/2 -translate-x-1/2 w-[75%] h-[50%] transition-all duration-300 rotate-[4deg] -translate-y-[52%]"><img src="${c2}" class="w-full h-full object-cover rounded-xl border-2 border-white/20 shadow-md"></div>
+                    <div class="absolute top-20 left-1/2 -translate-x-1/2 w-[75%] h-[50%] transition-all duration-300 -translate-y-[48%] group-hover:-translate-y-[55%]"><img src="${c3}" class="w-full h-full object-cover rounded-xl border-2 border-white/10 shadow-lg"></div>
+                    ${ownerLabel} ${editBtn} ${deleteBtn}
                     <div class="relative z-20 text-center">
                         <h4 class="font-extrabold text-lg group-hover:text-indigo-400 transition mb-0.5">${title}</h4>
-                        <p class="text-xs text-brand-textMuted font-semibold">${online.length + (defaultHardcoded[key]?.length || 0)} zdjęć</p>
+                        <p class="text-xs text-brand-textMuted font-semibold">${media.length + (defaultHardcoded[key]?.length || 0)} zdjęć · ${totalLikes} ❤</p>
                     </div>
                 `;
                 card.onclick = () => {
@@ -498,28 +543,35 @@
                 };
                 container.appendChild(card);
             });
+            lucide.createIcons();
         }
 
-        // STRONA 2: RENDERING GALERII W ALBUMIE
+        // RENDEROWANIE: Galeria
         function renderGallery() {
             const container = document.getElementById('container-gallery');
             container.innerHTML = "";
+            const myId = localStorage.getItem('8f_user_id');
+            const albumMeta = albumsMetadata[state.activeAlbum];
+            const canUpload = !albumMeta || albumMeta.creator_id === myId;
 
             let items = [];
             if(defaultHardcoded[state.activeAlbum]) items = defaultHardcoded[state.activeAlbum].map(u => ({ url: u, isStatic: true }));
             
             state.media.filter(m => m.category === state.activeAlbum).forEach(m => {
-                if(!items.some(i => i.url === m.url)) items.unshift({ url: m.url, isStatic: false });
+                if(!items.some(i => i.url === m.url)) items.unshift({ url: m.url, isStatic: false, owner_id: m.user_id });
             });
 
             items.forEach(item => {
                 const totalLikes = state.likes.filter(l => l.media_url === item.url).length;
                 const totalCmt = state.comments.filter(c => c.media_url === item.url).length;
+                const isOwner = !item.isStatic && item.owner_id === myId;
+                const deleteBtn = isOwner ? `<button onclick="event.stopPropagation(); deletePhoto('${item.url}');" class="absolute top-2 right-2 z-20 w-8 h-8 bg-red-500 hover:bg-red-600 text-white rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : '';
 
                 const block = document.createElement('div');
                 block.className = "relative aspect-square rounded-2xl overflow-hidden border border-white/5 bg-slate-900 cursor-pointer group shadow-md";
                 block.innerHTML = `
                     <img src="${item.url}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy">
+                    ${deleteBtn}
                     <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center gap-4 text-sm font-bold">
                         <span class="flex items-center gap-1"><i data-lucide="heart" class="w-4 h-4 fill-white"></i> ${totalLikes}</span>
                         <span class="flex items-center gap-1"><i data-lucide="message-circle" class="w-4 h-4 fill-white"></i> ${totalCmt}</span>
@@ -528,35 +580,33 @@
                 block.onclick = () => openViewer(item.url);
                 container.appendChild(block);
             });
+
+            if(canUpload) {
+                const uploadBtn = document.createElement('div');
+                uploadBtn.className = "relative aspect-square rounded-2xl overflow-hidden border-2 border-dashed border-indigo-500 bg-indigo-500/5 cursor-pointer group shadow-md flex items-center justify-center hover:bg-indigo-500/10 transition";
+                uploadBtn.innerHTML = `<div class="text-center"><div class="text-4xl mb-2 text-indigo-400 group-hover:scale-110 transition">+</div><div class="text-xs font-bold text-indigo-400">Dodaj zdjęcie</div></div>`;
+                uploadBtn.onclick = () => openUploadToAlbumModal();
+                container.appendChild(uploadBtn);
+            }
             lucide.createIcons();
         }
 
-        // STRONA 3: RENDERING ZAAWANSOWANEGO PROFILU UŻYTKOWNIKA
-        function viewOwnProfile() {
-            state.viewedUserId = localStorage.getItem('8f_user_id');
-            navigateTo('screen-profile');
-        }
-
-        function viewUserById(userId) {
-            state.viewedUserId = userId;
-            closeViewer();
-            navigateTo('screen-profile');
-        }
+        // RENDEROWANIE: Profil
+        function viewOwnProfile() { state.viewedUserId = localStorage.getItem('8f_user_id'); navigateTo('screen-profile'); }
+        function viewUserById(userId) { state.viewedUserId = userId; closeViewer(); navigateTo('screen-profile'); }
 
         function renderProfile() {
             const isMe = (state.viewedUserId === localStorage.getItem('8f_user_id'));
-            
             let profileNick = localStorage.getItem('8f_nick');
             let profileAvatar = localStorage.getItem('8f_avatar');
 
             if(!isMe) {
-                // Szukanie danych innego użytkownika na podstawie jego wpisów
                 const firstFound = state.media.find(m => m.user_id === state.viewedUserId) || state.comments.find(c => c.user_id === state.viewedUserId);
                 profileNick = firstFound ? (firstFound.owner_nick || firstFound.nick) : "Użytkownik 8F";
                 profileAvatar = firstFound ? firstFound.avatar_url : "https://api.dicebear.com/7.x/bottts/svg?seed=Felix";
             }
 
-            document.getElementById('profile-card-nick').innerText = profileNick;
+            document.getElementById('profile-card-nick').innerHTML = `${isAdminNick(profileNick) ? '<span class="text-yellow-400">🔑</span> ' : ''}${profileNick}`;
             document.getElementById('profile-card-avatar').src = profileAvatar;
             document.getElementById('profile-edit-btn').style.display = isMe ? 'inline-flex' : 'none';
 
@@ -568,63 +618,46 @@
             document.getElementById('profile-stat-likes').innerText = earnedLikes;
 
             const container = document.getElementById('container-profile-gallery');
-            container.innerHTML = userMedia.length === 0 ? '<p class="col-span-full text-center text-brand-textMuted py-12 font-medium text-sm">Ten użytkownik nie dodał jeszcze żadnych osobistych zdjęć.</p>' : '';
+            container.innerHTML = userMedia.length === 0 ? '<p class="col-span-full text-center text-brand-textMuted py-12 font-medium text-sm">Ten użytkownik nie dodał jeszcze żadnych zdjęć.</p>' : '';
 
             userMedia.forEach(item => {
                 const block = document.createElement('div');
-                block.className = "relative aspect-square rounded-2xl overflow-hidden border border-white/5 bg-slate-900 cursor-pointer shadow-md";
+                block.className = "relative aspect-square rounded-2xl overflow-hidden border border-white/5 bg-slate-900 cursor-pointer shadow-md hover:opacity-80 transition";
                 block.innerHTML = `<img src="${item.url}" class="w-full h-full object-cover" loading="lazy">`;
                 block.onclick = () => openViewer(item.url);
                 container.appendChild(block);
             });
-        }
-
-        // MODAL 3: EDYCJA PROFILU (ZDJĘCIE Z GALERII DO STORAGE)
-        function openEditProfileModal() {
-            document.getElementById('input-edit-nick').value = localStorage.getItem('8f_nick');
-            document.getElementById('modal-profile-preview').src = localStorage.getItem('8f_avatar');
-            document.getElementById('modal-edit-profile').style.display = 'flex';
             lucide.createIcons();
         }
-        function closeEditProfileModal() { document.getElementById('modal-edit-profile').style.display = 'none'; }
 
-        function triggerFilePicker(id) { document.getElementById(id).click(); }
-
-        // PRZESYŁANIE AWATARA Z GALERII URZĄDZENIA DO SUPABASE STORAGE
-        async function processAvatarUpload(event) {
-            const file = event.target.files[0];
-            if(!file) return;
-
-            showToast("Wgrywam nowe zdjęcie profilowe...");
-            const ext = file.name.split('.').pop();
-            const path = `avatars/avatar_${Date.now()}.${ext}`;
-
-            try {
-                let res = await fetch(`${SB_URL}/storage/v1/object/${BUCKET}/${path}`, {
-                    method: 'POST',
-                    headers: { "apikey": SB_KEY, "Authorization": `Bearer ${SB_KEY}` },
-                    body: file
-                });
-                if(!res.ok) throw new Error();
-
-                const publicUrl = `${SB_URL}/storage/v1/object/public/${BUCKET}/${path}`;
-                localStorage.setItem('8f_avatar', publicUrl);
-                document.getElementById('modal-profile-preview').src = publicUrl;
-                showToast("Zdjęcie wgrane! Zapisz profil.");
-            } catch(e) { showToast("Nie udało się przesłać zdjęcia profilowego."); }
+        // Upload Helper Functions
+        function openUploadToAlbumModal() {
+            document.getElementById('upload-album-name').value = categories[state.activeAlbum] || state.activeAlbum;
+            document.getElementById('upload-owner-nick').value = localStorage.getItem('8f_nick') || 'Anon';
+            document.getElementById('upload-file').value = '';
+            document.getElementById('upload-modal').style.display = 'flex';
         }
 
-        function saveProfileChanges() {
-            const nick = document.getElementById('input-edit-nick').value.trim();
-            if(!nick) return showToast("Nazwa profilu nie może być pusta.");
+        function handleLocalSubmitUpload() {
+            const album = document.getElementById('upload-album-name').value.trim();
+            const owner = document.getElementById('upload-owner-nick').value.trim();
+            const fileEl = document.getElementById('upload-file');
             
-            localStorage.setItem('8f_nick', nick);
-            closeEditProfileModal();
-            showToast("Profil został zaktualizowany.");
-            syncAllData().then(() => renderProfile());
+            if(!fileEl.files || fileEl.files.length === 0) return showToast('Wybierz plik do przesłania');
+            if(album) {
+                let catKey = Object.keys(categories).find(k => categories[k] === album);
+                if(!catKey) {
+                    catKey = 'cat_' + Date.now();
+                    categories[catKey] = album;
+                    albumsMetadata[catKey] = { creator_id: localStorage.getItem('8f_user_id'), creator_nick: owner, created_at: new Date().toISOString() };
+                    saveAlbumsMetadata();
+                }
+                const evt = { target: { files: fileEl.files } };
+                closeLocalUploadModal();
+                processMediaUpload(evt, catKey, album); 
+            }
         }
 
-        // MODAL 2: DODAWANIE WPISU/ZDJĘĆ
         function openUploadWizard() {
             const select = document.getElementById('upload-select-album');
             select.innerHTML = "";
@@ -632,35 +665,69 @@
                 select.innerHTML += `<option value="${k}">${categories[k]}</option>`;
             });
             select.innerHTML += `<option value="_NEW_">[+ Stwórz nowy album...]</option>`;
-            
             if(state.activeAlbum) select.value = state.activeAlbum;
             toggleNewAlbumField();
             document.getElementById('modal-upload').style.display = 'flex';
             lucide.createIcons();
         }
         function closeUploadWizard() { document.getElementById('modal-upload').style.display = 'none'; }
-        
-        function toggleNewAlbumField() {
-            const isNew = document.getElementById('upload-select-album').value === '_NEW_';
-            document.getElementById('upload-new-album-wrapper').style.display = isNew ? 'block' : 'none';
+        function toggleNewAlbumField() { document.getElementById('upload-new-album-wrapper').style.display = (document.getElementById('upload-select-album').value === '_NEW_') ? 'block' : 'none'; }
+
+        function triggerFilePicker(id) { document.getElementById(id).click(); }
+
+        // Profil Upload
+        function openEditProfileModal() {
+            document.getElementById('input-edit-nick').value = localStorage.getItem('8f_nick');
+            document.getElementById('modal-profile-preview').src = localStorage.getItem('8f_avatar');
+            document.getElementById('modal-edit-profile').style.display = 'flex';
+        }
+        function closeEditProfileModal() { document.getElementById('modal-edit-profile').style.display = 'none'; }
+        function saveProfileChanges() {
+            const nick = document.getElementById('input-edit-nick').value.trim();
+            if(!nick) return showToast("Nazwa profilu nie może być pusta.");
+            localStorage.setItem('8f_nick', nick);
+            closeEditProfileModal();
+            showToast("Profil zaktualizowany.");
+            syncAllData(true).then(() => renderProfile());
         }
 
-        // PRZESYŁANIE ZDJĘCIA Z GALERII DO STORAGE JAKO WPIS
-        async function processMediaUpload(event) {
+        async function processAvatarUpload(event) {
             const file = event.target.files[0];
             if(!file) return;
+            showToast("Wgrywam awatar...");
+            const ext = file.name.split('.').pop();
+            const path = `avatars/avatar_${Date.now()}.${ext}`;
 
-            closeUploadWizard();
-            showToast("Publikowanie zdjęcia w toku...");
+            try {
+                let res = await fetch(`${SB_URL}/storage/v1/object/${BUCKET}/${path}`, {
+                    method: 'POST', headers: { "apikey": SB_KEY, "Authorization": `Bearer ${SB_KEY}` }, body: file
+                });
+                if(!res.ok) throw new Error();
+                const publicUrl = `${SB_URL}/storage/v1/object/public/${BUCKET}/${path}`;
+                localStorage.setItem('8f_avatar', publicUrl);
+                document.getElementById('modal-profile-preview').src = publicUrl;
+                showToast("Zdjęcie wgrane! Zapisz profil.");
+            } catch(e) { showToast("Nie udało się przesłać zdjęcia."); }
+        }
 
-            let catKey = document.getElementById('upload-select-album').value;
-            let catName = categories[catKey] || catKey;
+        // Media Upload
+        async function processMediaUpload(event, overrideCatKey = null, overrideCatName = null) {
+            const file = event.target.files[0];
+            if(!file) return;
+            showToast("Wysyłanie zdjęcia...");
 
-            if(catKey === '_NEW_') {
-                catName = document.getElementById('input-new-album-title').value.trim();
-                if(!catName) { showToast("Musisz wpisać nazwę nowego albumu!"); return; }
-                catKey = 'cat_' + Date.now();
-                categories[catKey] = catName;
+            let catKey = overrideCatKey, catName = overrideCatName;
+            
+            if(!catKey) {
+                catKey = document.getElementById('upload-select-album')?.value;
+                catName = categories[catKey] || catKey;
+                if(catKey === '_NEW_') {
+                    catName = document.getElementById('input-new-album-title').value.trim();
+                    if(!catName) { showToast("Wpisz nazwę albumu!"); return; }
+                    catKey = 'cat_' + Date.now();
+                    categories[catKey] = catName;
+                }
+                closeUploadWizard();
             }
 
             const ext = file.name.split('.').pop();
@@ -668,40 +735,31 @@
 
             try {
                 let res = await fetch(`${SB_URL}/storage/v1/object/${BUCKET}/${path}`, {
-                    method: 'POST',
-                    headers: { "apikey": SB_KEY, "Authorization": `Bearer ${SB_KEY}` },
-                    body: file
+                    method: 'POST', headers: { "apikey": SB_KEY, "Authorization": `Bearer ${SB_KEY}` }, body: file
                 });
                 if(!res.ok) throw new Error();
 
                 const publicUrl = `${SB_URL}/storage/v1/object/public/${BUCKET}/${path}`;
-
-                // Dodanie rekordu do tabeli bazy danych
                 await fetch(`${SB_URL}/rest/v1/media_items`, {
                     method: 'POST',
                     headers: { "apikey": SB_KEY, "Authorization": `Bearer ${SB_KEY}`, "Content-Type": "application/json" },
                     body: JSON.stringify({
-                        url: publicUrl,
-                        category: catKey,
-                        category_name: catName,
-                        owner_nick: localStorage.getItem('8f_nick'),
-                        user_id: localStorage.getItem('8f_user_id'),
-                        avatar_url: localStorage.getItem('8f_avatar')
+                        url: publicUrl, category: catKey, category_name: catName,
+                        owner_nick: localStorage.getItem('8f_nick'), user_id: localStorage.getItem('8f_user_id'), avatar_url: localStorage.getItem('8f_avatar')
                     })
                 });
 
                 showToast("Zdjęcie dodane pomyślnie!");
-                await syncAllData();
+                await syncAllData(true);
                 state.activeAlbum = catKey;
                 navigateTo('screen-gallery');
-            } catch(e) { showToast("Wystąpił problem podczas przesyłania."); }
+            } catch(e) { showToast("Błąd wysyłania."); }
         }
 
-        // MODAL 1: PODGLĄD ZDJĘCIA, DOUBLE TAP LIKE, SYSTEM KOMENTARZY
+        // Podgląd, Lajki, Komentarze
         function openViewer(url) {
             state.activeMediaUrl = url;
             cancelReply();
-            
             document.getElementById('viewer-img').src = url;
             
             const mediaRecord = state.media.find(m => m.url === url);
@@ -716,27 +774,42 @@
                 badge.onclick = () => viewUserById(mediaRecord.user_id);
                 delBtn.style.display = (mediaRecord.user_id === localStorage.getItem('8f_user_id')) ? 'inline-flex' : 'none';
             } else {
-                authorNick.innerText = "Spoleczność 8F";
-                authorAvatar.src = "https://raw.githubusercontent.com/skdbxq/8F/refs/heads/main/IMG_E4646.JPG";
+                authorNick.innerText = "Społeczność 8F";
+                authorAvatar.src = "https://api.dicebear.com/7.x/bottts/svg?seed=Felix";
                 badge.onclick = null;
                 delBtn.style.display = 'none';
             }
 
             updateViewerSocials();
             document.getElementById('modal-viewer').style.display = 'flex';
-            gsap.fromTo('#modal-viewer > div', { scale: 0.9, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.25 });
+            gsap.fromTo('#modal-viewer > div', { scale: 0.95, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.2 });
+            
+            setTimeout(() => {
+                const commentInput = document.getElementById('input-comment');
+                if(commentInput) commentInput.onkeypress = (e) => { if(e.key === 'Enter') postComment(); };
+            }, 100);
             lucide.createIcons();
         }
-
         function closeViewer() { document.getElementById('modal-viewer').style.display = 'none'; }
 
         function updateViewerSocials() {
             const likes = state.likes.filter(l => l.media_url === state.activeMediaUrl);
             document.getElementById('viewer-likes-count').innerText = likes.length;
+            
+            const myId = localStorage.getItem('8f_user_id');
+            const liked = state.likes.some(l => l.media_url === state.activeMediaUrl && l.user_id === myId);
+            const likeBtn = document.getElementById('viewer-like-btn');
+            
+            if(likeBtn) {
+                if(liked) {
+                    likeBtn.style.backgroundColor = '#dc2626'; likeBtn.style.color = 'white'; likeBtn.style.borderColor = '#991b1b';
+                } else {
+                    likeBtn.style.backgroundColor = ''; likeBtn.style.color = ''; likeBtn.style.borderColor = '';
+                }
+            }
 
             const list = document.getElementById('viewer-comments-list');
             list.innerHTML = "";
-
             const rootComments = state.comments.filter(c => c.media_url === state.activeMediaUrl && !c.parent_id);
             
             if(rootComments.length === 0) {
@@ -755,7 +828,7 @@
 
                 if(repliesHtml) repliesHtml = `<div class="pl-6 pt-2 space-y-1.5 border-l border-white/5 mt-1.5">${repliesHtml}</div>`;
                 
-                const isMyComment = c.user_id === localStorage.getItem('8f_user_id');
+                const isMyComment = c.user_id === myId;
                 const delCmtBtn = isMyComment ? `<button onclick="deleteComment(${c.id})" class="text-slate-600 hover:text-red-400 transition ml-auto"><i data-lucide="trash" class="w-3.5 h-3.5"></i></button>` : '';
 
                 const item = document.createElement('div');
@@ -780,7 +853,6 @@
             lucide.createIcons();
         }
 
-        // ANIMACJA GESTU DOUBLE TAP TO LIKE (IG STYLE)
         function triggerDoubleTapLike(event) {
             const heart = document.getElementById('viewer-pop-heart');
             const myId = localStorage.getItem('8f_user_id');
@@ -799,86 +871,67 @@
             const myId = localStorage.getItem('8f_user_id');
             const existing = state.likes.find(l => l.media_url === state.activeMediaUrl && l.user_id === myId);
 
-            if(existing) {
-                await fetch(`${SB_URL}/rest/v1/likes?id=eq.${existing.id}`, {
-                    method: 'DELETE',
-                    headers: { "apikey": SB_KEY, "Authorization": `Bearer ${SB_KEY}` }
-                });
-            } else {
-                await fetch(`${SB_URL}/rest/v1/likes`, {
-                    method: 'POST',
-                    headers: { "apikey": SB_KEY, "Authorization": `Bearer ${SB_KEY}`, "Content-Type": "application/json" },
-                    body: JSON.stringify({ media_url: state.activeMediaUrl, user_id: myId, user_nick: localStorage.getItem('8f_nick') })
-                });
-            }
-            await syncAllData();
+            // Aktualizacja optymistyczna (zanim serwer odpowie)
+            if(existing) state.likes = state.likes.filter(l => l.id !== existing.id);
+            else state.likes.push({ id: Date.now(), media_url: state.activeMediaUrl, user_id: myId, user_nick: localStorage.getItem('8f_nick') });
+            localStorage.setItem('8f_likes', JSON.stringify(state.likes));
             updateViewerSocials();
+
+            try {
+                if(existing) {
+                    await fetch(`${SB_URL}/rest/v1/likes?id=eq.${existing.id}`, { method: 'DELETE', headers: { "apikey": SB_KEY, "Authorization": `Bearer ${SB_KEY}` } });
+                } else {
+                    await fetch(`${SB_URL}/rest/v1/likes`, {
+                        method: 'POST', headers: { "apikey": SB_KEY, "Authorization": `Bearer ${SB_KEY}`, "Content-Type": "application/json" },
+                        body: JSON.stringify({ media_url: state.activeMediaUrl, user_id: myId, user_nick: localStorage.getItem('8f_nick') })
+                    });
+                }
+            } catch(e) { console.warn('Błąd lajka:', e); }
         }
 
-        // DODAWANIE KOMENTARZY / ODPOWIEDZI
         async function postComment() {
             const input = document.getElementById('input-comment');
             const text = input.value.trim();
-            if(!text) return;
+            if(!text) return showToast('Napisz coś!');
+            
+            const newComment = {
+                media_url: state.activeMediaUrl, nick: localStorage.getItem('8f_nick'), text: text,
+                parent_id: state.replyingToId, user_id: localStorage.getItem('8f_user_id'), avatar_url: localStorage.getItem('8f_avatar')
+            };
 
-            await fetch(`${SB_URL}/rest/v1/comments`, {
-                method: 'POST',
-                headers: { "apikey": SB_KEY, "Authorization": `Bearer ${SB_KEY}`, "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    media_url: state.activeMediaUrl,
-                    nick: localStorage.getItem('8f_nick'),
-                    text: text,
-                    parent_id: state.replyingToId,
-                    user_id: localStorage.getItem('8f_user_id'),
-                    avatar_url: localStorage.getItem('8f_avatar')
-                })
-            });
-
+            // Optymistyczna aktualizacja
+            state.comments.push({ id: Date.now(), ...newComment });
+            localStorage.setItem('8f_comments', JSON.stringify(state.comments));
             input.value = "";
             cancelReply();
-            await syncAllData();
             updateViewerSocials();
+
+            try {
+                await fetch(`${SB_URL}/rest/v1/comments`, {
+                    method: 'POST', headers: { "apikey": SB_KEY, "Authorization": `Bearer ${SB_KEY}`, "Content-Type": "application/json" },
+                    body: JSON.stringify(newComment)
+                });
+            } catch(e) { console.warn('Błąd komentarza:', e); }
         }
 
         function prepareReply(id, name) {
             state.replyingToId = id;
-            document.getElementById('reply-alert-text').innerText = `Odpowiadasz użytkownikowi ${name}`;
+            document.getElementById('reply-alert-text').innerText = `Odpowiadasz: ${name}`;
             document.getElementById('reply-alert').style.display = 'flex';
             document.getElementById('input-comment').focus();
         }
-
-        function cancelReply() {
-            state.replyingToId = null;
-            document.getElementById('reply-alert').style.display = 'none';
-        }
+        function cancelReply() { state.replyingToId = null; document.getElementById('reply-alert').style.display = 'none'; }
 
         function deleteComment(id) {
             askConfirm("Usunąć komentarz?", "Komentarz zniknie na zawsze.", async () => {
-                await fetch(`${SB_URL}/rest/v1/comments?id=eq.${id}`, {
-                    method: 'DELETE',
-                    headers: { "apikey": SB_KEY, "Authorization": `Bearer ${SB_KEY}` }
-                });
+                await fetch(`${SB_URL}/rest/v1/comments?id=eq.${id}`, { method: 'DELETE', headers: { "apikey": SB_KEY, "Authorization": `Bearer ${SB_KEY}` } });
                 showToast("Komentarz usunięty.");
-                await syncAllData();
+                await syncAllData(true);
                 updateViewerSocials();
             });
         }
 
-        function deleteCurrentMedia() {
-            const record = state.media.find(m => m.url === state.activeMediaUrl);
-            if(!record) return;
-
-            askConfirm("Usunąć to zdjęcie?", "Zostanie trwale usunięte z galerii i profilu.", async () => {
-                await fetch(`${SB_URL}/rest/v1/media_items?id=eq.${record.id}`, {
-                    method: 'DELETE',
-                    headers: { "apikey": SB_KEY, "Authorization": `Bearer ${SB_KEY}` }
-                });
-                showToast("Zdjęcie usunięte.");
-                await syncAllData();
-                closeViewer();
-                if(state.currentScreen === 'screen-profile') renderProfile(); else renderGallery();
-            });
-        }
+        function deleteCurrentMedia() { deletePhoto(state.activeMediaUrl); }
     </script>
 </body>
 </html>
