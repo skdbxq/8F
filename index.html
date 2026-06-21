@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8F - Klasowe Wspomnienia</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <style>
+        :root {
+            /* Głęboki grafit + Turkusowy akcent */
+            --bg-color: #0d1117;       
+            --card-bg: #161b22;        
+            --primary: #00bcd4;        
+            --primary-hover: #00a8c2;
+            --text-main: #f0f3f5;      
+            --text-muted: #8b9bb4;     
+            --shadow-soft: 0 12px 30px rgba(0, 188, 212, 0.1); 
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .ambient-layer {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 1; pointer-events: none; overflow: hidden;
+            background: radial-gradient(circle at top right, #1d2731, var(--bg-color));
+        }
+
+        /* --- NAVI --- */
+        .navbar {
+            position: fixed; top: 0; left: 0; width: 100%; padding: 1rem 2rem;
+            background: rgba(13, 17, 23, 0.9); backdrop-filter: blur(12px);
+            border-bottom: 2px solid rgba(0, 188, 212, 0.1);
+            display: none; justify-content: space-between; align-items: center; z-index: 100;
+        }
+        .nav-left { display: flex; align-items: center; gap: 1rem; }
+        
+        .btn-back {
+            display: none;
+            background: none; border: 2px solid rgba(0, 188, 212, 0.3); color: var(--text-main);
+            width: 40px; height: 40px; border-radius: 50%; cursor: pointer; transition: 0.2s;
+            justify-content: center; align-items: center;
+        }
+        .btn-back:hover { background: rgba(0, 188, 212, 0.2); border-color: var(--primary); }
+
+        .nav-logo { font-weight: 900; font-size: 1.5rem; color: var(--text-main); }
+        .nav-logo span { color: var(--primary); }
+        .nav-links { display: flex; gap: 0.8rem; }
+        .nav-btn { background: none; border: 2px solid rgba(0, 188, 212, 0.2); padding: 0.5rem 1rem; border-radius: 20px; font-weight: 700; color: var(--text-main); cursor: pointer; transition: all 0.2s; font-family: 'Nunito', sans-serif; }
+        .nav-btn:hover { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+        main { position: relative; z-index: 5; width: 100%; }
+        .screen { display: none; min-height: 100vh; width: 100%; padding: 2rem; flex-direction: column; justify-content: center; align-items: center; }
+        .screen.active { display: flex; }
+
+        /* ==================== WERYFIKACJA ==================== */
+        .verify-box {
+            background: var(--card-bg); padding: 3rem; border-radius: 24px;
+            box-shadow: var(--shadow-soft); text-align: center; max-width: 400px; width: 100%;
+            border: 2px solid rgba(0, 188, 212, 0.1);
+        }
+        .verify-box img { width: 120px; height: 120px; object-fit: cover; border-radius: 50%; margin-bottom: 1.5rem; border: 4px solid var(--primary); }
+        .verify-box h2 { font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--text-main); font-weight: 800; }
+        .verify-box input { width: 100%; padding: 1rem; background: var(--bg-color); border: 2px solid rgba(255,255,255,0.1); border-radius: 16px; font-size: 1.1rem; text-align: center; margin-bottom: 1rem; color: var(--text-main); outline: none; transition: 0.3s; font-family: 'Nunito', sans-serif; font-weight: 600; }
+        .verify-box input:focus { border-color: var(--primary); }
+        .btn-verify { width: 100%; padding: 1rem; background: var(--primary); color: #fff; border: none; border-radius: 16px; font-size: 1.2rem; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; box-shadow: 0 6px 15px rgba(0, 188, 212, 0.3);}
+        .btn-verify:hover { background: var(--primary-hover); transform: translateY(-2px); }
+        .msg-text { font-weight: 700; margin-top: 1rem; display: none; font-size: 1.1rem; }
+
+        /* ==================== HERO ==================== */
+        #hero-screen { text-align: center; }
+        .hero-title { font-size: clamp(3.5rem, 10vw, 7rem); font-weight: 900; color: var(--text-main); margin-bottom: 0.5rem; }
+        .hero-title span { color: var(--primary); }
+        .hero-subtitle { font-size: 1.4rem; color: var(--text-muted); margin-bottom: 3rem; font-weight: 600; }
+        .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+        .btn-main { display: inline-flex; align-items: center; gap: 0.8rem; padding: 1.1rem 2.5rem; background: none; border: 2px solid var(--primary); color: var(--text-main); font-size: 1.1rem; font-weight: 800; border-radius: 20px; cursor: pointer; transition: all 0.3s; font-family: 'Nunito', sans-serif; }
+        .btn-main:hover { background: var(--primary); color: #fff; transform: translateY(-3px); box-shadow: var(--shadow-soft); }
+
+        /* ==================== ALBUMY ==================== */
+        #albums-screen { justify-content: flex-start; padding-top: 7rem; max-width: 1000px; margin: 0 auto; }
+        .screen-header h2 { font-size: 2.5rem; margin-bottom: 1.5rem; color: var(--text-main); text-align: center; font-weight: 900; }
+        .albums-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2rem; width: 100%; padding: 2rem; }
+        .album-card { background: var(--card-bg); border-radius: 24px; height: 300px; display: flex; flex-direction: column; justify-content: flex-end; position: relative; cursor: pointer; transition: all 0.3s ease; border: 2px solid rgba(255,255,255,0.05); }
+        .album-card:hover { transform: translateY(-10px); border-color: var(--primary); box-shadow: var(--shadow-soft); }
+        .album-info { background: #fff; padding: 1.2rem; border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; text-align: center; font-weight: 800; font-size: 1.2rem; color: var(--bg-color); z-index: 10; border-top: 1px solid rgba(0,0,0,0.1); }
+        .card-stack { position: absolute; top: 1.5rem; left: 50%; transform: translateX(-50%); width: 80%; height: 60%; }
+        .stack-img { position: absolute; width: 100%; height: 100%; object-fit: cover; border-radius: 16px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); border: 4px solid #fff; transition: transform 0.4s; }
+        .stack-img:nth-child(1) { transform: rotate(-4deg); z-index: 3; }
+        .stack-img:nth-child(2) { transform: rotate(4deg) translate(5px, -5px); z-index: 2; }
+        .album-card:hover .stack-img:nth-child(1) { transform: rotate(-6deg) translate(-10px, -10px); }
+
+        /* ==================== KATEGORIA (ZDJĘCIA / FILMY) ==================== */
+        #gallery-screen { justify-content: flex-start; padding-top: 7rem; max-width: 1200px; margin: 0 auto; }
+        
+        .sub-nav { display: flex; gap: 1rem; margin-bottom: 2rem; justify-content: center; background: rgba(0,188,212,0.05); padding: 0.5rem; border-radius: 30px; border: 1px solid rgba(0,188,212,0.1); }
+        .sub-btn { background: none; border: none; padding: 0.8rem 2rem; font-family: 'Nunito'; font-weight: 800; font-size: 1.1rem; border-radius: 25px; cursor: pointer; color: var(--text-muted); transition: 0.2s; display: flex; align-items: center; gap: 0.5rem; }
+        .sub-btn.active { background: var(--primary); color: #fff; box-shadow: 0 4px 12px rgba(0,188,212,0.25); }
+
+        .domino-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 2rem; width: 100%; padding: 0 1.5rem 3rem 1.5rem; }
+        
+        /* Element siatki */
+        .domino-item { position: relative; aspect-ratio: 1; border-radius: 18px; cursor: pointer; border: 4px solid #fff; transition: transform 0.3s, box-shadow 0.3s; box-shadow: 0 6px 18px rgba(0,0,0,0.1); overflow: hidden; }
+        .domino-item:hover { transform: scale(1.04); border-color: var(--primary); z-index: 5; }
+        .domino-item img, .domino-item video { width: 100%; height: 100%; object-fit: cover; display: block; }
+        
+        .video-badge { position: absolute; top: 10px; left: 10px; background: rgba(0, 0, 0, 0.6); color: #fff; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px); z-index: 2; }
+
+        .like-badge { 
+            position: absolute; bottom: 10px; right: 10px; 
+            background: rgba(26, 33, 40, 0.95); color: var(--primary); 
+            padding: 0.4rem 0.8rem; border-radius: 20px; 
+            font-weight: 800; font-size: 0.95rem; 
+            display: flex; align-items: center; gap: 0.4rem; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: transform 0.2s; z-index: 2;
+        }
+
+        /* ==================== MODAL Z PODGLĄDEM MIEJSCA ==================== */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(13, 17, 23, 0.8); backdrop-filter: blur(8px); z-index: 1000; display: none; justify-content: center; align-items: center; padding: 1rem; }
+        .modal-box { background: var(--card-bg); border-radius: 24px; padding: 2rem; max-width: 500px; width: 100%; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.3); animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); border: 1px solid rgba(255,255,255,0.05); }
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        
+        .media-container { width: 100%; max-height: 45vh; margin-bottom: 1.5rem; border-radius: 12px; overflow: hidden; border: 1px solid rgba(0, 188, 212, 0.1); background: #000; display: flex; justify-content: center; align-items: center; }
+        .modal-preview-img, .modal-preview-video { max-width: 100%; max-height: 45vh; object-fit: contain; }
+        
+        .modal-choices { display: flex; flex-direction: column; gap: 1rem; }
+        .choice-btn { display: flex; align-items: center; justify-content: center; gap: 0.8rem; padding: 1rem; border-radius: 16px; font-weight: 800; cursor: pointer; transition: 0.2s; font-size: 1.1rem; font-family: 'Nunito', sans-serif; border: none; }
+        .btn-open-file { background: none; border: 2px solid var(--primary); color: var(--text-main); }
+        .btn-open-file:hover { background: rgba(0,188,212,0.1); }
+        .btn-like { background: var(--primary); color: #fff; box-shadow: 0 4px 15px rgba(0, 188, 212, 0.3); }
+        .btn-like:hover:not(:disabled) { background: var(--primary-hover); }
+        .btn-like:disabled { background: #e0e0e0; color: #888; cursor: not-allowed; box-shadow: none; }
+        .btn-cancel { margin-top: 1.2rem; background: none; border: none; color: var(--text-muted); cursor: pointer; text-decoration: underline; font-family: 'Nunito'; font-weight: 700; font-size: 1rem; }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-layer"></div>
+
+    <nav class="navbar" id="main-nav">
+        <div class="nav-left">
+            <button class="btn-back" id="back-btn" onclick="goBack()"><i data-lucide="arrow-left"></i></button>
+            <div class="nav-logo">Klasa <span>8F</span></div>
+        </div>
+        <div class="nav-links">
+            <button class="nav-btn" onclick="showScreen('albums-screen')">Albumy</button>
+        </div>
+    </nav>
+
+    <main>
+        <section id="verify-screen" class="screen active">
+            <div class="verify-box">
+                <img src="https://images.unsplash.com/photo-1542385151-efd9000785a0?q=80&w=200" alt="Kto to?">
+                <h2>Kto to jest?</h2>
+                <input type="text" id="verify-input" placeholder="Wpisz tekst...">
+                <button class="btn-verify" id="verify-btn">Sprawdź</button>
+                <p class="msg-text" id="verify-msg"></p>
+            </div>
+        </section>
+
+        <section id="hero-screen" class="screen">
+            <h1 class="hero-title">Klasa <span>8F</span></h1>
+            <p class="hero-subtitle">Baza naszych wspomnień</p>
+            <div class="hero-actions">
+                <button class="btn-main" onclick="showScreen('albums-screen')"><i data-lucide="image"></i> Otwórz Galerię</button>
+            </div>
+        </section>
+
+        <section id="albums-screen" class="screen">
+            <div class="screen-header"><h2>Nasze Albumy</h2></div>
+            <div class="albums-grid">
+                <div class="album-card" data-category="krosnice">
+                    <div class="card-stack">
+                        <img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=400" class="stack-img">
+                        <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=400" class="stack-img">
+                    </div>
+                    <div class="album-info">Krośnice</div>
+                </div>
+                <div class="album-card" data-category="bal">
+                    <div class="card-stack">
+                        <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=400" class="stack-img">
+                        <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?q=80&w=400" class="stack-img">
+                    </div>
+                    <div class="album-info">Bal Ósmoklasisty</div>
+                </div>
+                <div class="album-card" data-category="wycieczki">
+                    <div class="card-stack">
+                        <img src="https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=400" class="stack-img">
+                        <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=400" class="stack-img">
+                    </div>
+                    <div class="album-info">Wycieczki</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery-screen" class="screen">
+            <div class="screen-header"><h2 id="gallery-title">Galeria</h2></div>
+            
+            <div class="sub-nav">
+                <button class="sub-btn active" id="sub-photos-btn" onclick="switchSubCategory('photos')"><i data-lucide="camera"></i> Zdjęcia</button>
+                <button class="sub-btn" id="sub-videos-btn" onclick="switchSubCategory('videos')"><i data-lucide="clapperboard"></i> Filmy</button>
+            </div>
+
+            <div class="domino-grid" id="domino-grid"></div>
+        </section>
+
+        <div class="modal-overlay" id="choice-modal">
+            <div class="modal-box">
+                <div class="media-container" id="modal-media-container"></div>
+                <div class="modal-choices">
+                    <button class="choice-btn btn-open-file" id="opt-download"><i data-lucide="download"></i> Pobierz plik</button>
+                    <button class="choice-btn btn-like" id="opt-like"><i data-lucide="heart"></i> Daj lajka</button>
+                </div>
+                <button onclick="closeModal()" class="btn-cancel">Zamknij</button>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        lucide.createIcons();
+
+        // --- BAZA (ZDJĘCIA + FILMY) ---
+        const albumData = {
+            krosnice: {
+                photos: [
+                    "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=500",
+                    "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=500",
+                    "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=500"
+                ],
+                videos: [
+                    "https://assets.mixkit.co/videos/preview/mixkit-friends-laughing-and-having-fun-40150-large.mp4"
+                ]
+            },
+            bal: {
+                photos: [
+                    "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=500",
+                    "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?q=80&w=500"
+                ],
+                videos: [
+                    "https://assets.mixkit.co/videos/preview/mixkit-dancing-in-the-school-hallway-40144-large.mp4"
+                ]
+            },
+            wycieczki: {
+                photos: [
+                    "https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=500",
+                    "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=500"
+                ],
+                videos: [
+                    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
+                ]
+            }
+        };
+
+        const categoryNames = { krosnice: "Krośnice", bal: "Bal Ósmoklasisty", wycieczki: "Wycieczki" };
+        
+        let currentCategory = "";
+        let currentSubCategory = "photos"; 
+        let selectedMediaSrc = "";
+        let selectedMediaType = "photo";
+
+        // --- SYSTEM LAJKÓW ---
+        let mediaLikes = JSON.parse(localStorage.getItem('8f_media_likes_v7')) || {};
+        let myLikedMedia = JSON.parse(localStorage.getItem('8f_my_liked_media_v7')) || [];
+
+        // --- NAWIGACJA (WSTECZ) ---
+        let screenHistory = [];
+
+        function showScreen(screenId, isGoingBack = false) {
+            const currentScreen = document.querySelector('.screen.active');
+            if (!isGoingBack && currentScreen && currentScreen.id !== 'verify-screen' && currentScreen.id !== screenId) {
+                screenHistory.push(currentScreen.id);
+            }
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            window.scrollTo(0,0);
+            updateBackButtonVisibility();
+        }
+
+        function goBack() {
+            if (screenHistory.length > 0) {
+                showScreen(screenHistory.pop(), true);
+            }
+        }
+
+        function updateBackButtonVisibility() {
+            const current = document.querySelector('.screen.active');
+            const backBtn = document.getElementById('back-btn');
+            if (screenHistory.length > 0 && current.id !== 'verify-screen' && current.id !== 'hero-screen') {
+                backBtn.style.display = 'inline-flex';
+            } else {
+                backBtn.style.display = 'none';
+            }
+        }
+
+        // --- WERYFIKACJA HASŁA ---
+        function checkPassword() {
+            const input = document.getElementById('verify-input').value.trim().toLowerCase();
+            const btn = document.getElementById('verify-btn');
+            const msgBox = document.getElementById('verify-msg');
+            
+            msgBox.style.display = 'block';
+
+            if(input === 'kotlet') {
+                msgBox.innerText = "Dobra odpowiedź 😊";
+                msgBox.style.color = "#4CAF50"; // zielony na sukces
+                
+                setTimeout(() => {
+                    document.getElementById('verify-screen').classList.remove('active');
+                    document.getElementById('main-nav').style.display = 'flex';
+                    showScreen('hero-screen');
+                }, 800);
+            } else {
+                msgBox.innerText = "Zła odpowiedź 😞";
+                msgBox.style.color = "#FF6B6B"; // czerwony na błąd
+                gsap.fromTo('.verify-box', {x:-10}, {x:10, duration:0.1, yoyo:true, repeat:2});
+            }
+        }
+
+        document.getElementById('verify-btn').addEventListener('click', checkPassword);
+        document.getElementById('verify-input').addEventListener('keypress', (e) => { if (e.key === 'Enter') checkPassword(); });
+
+        // --- WEJŚCIE DO ALBUMU ---
+        document.querySelectorAll('.album-card').forEach(card => {
+            card.addEventListener('click', () => {
+                currentCategory = card.getAttribute('data-category');
+                document.getElementById('gallery-title').innerText = categoryNames[currentCategory];
+                switchSubCategory('photos');
+                showScreen('gallery-screen');
+            });
+        });
+
+        function switchSubCategory(type) {
+            currentSubCategory = type;
+            document.getElementById('sub-photos-btn').classList.toggle('active', type === 'photos');
+            document.getElementById('sub-videos-btn').classList.toggle('active', type === 'videos');
+            renderGalleryGrid();
+        }
+
+        // --- RENDEROWANIE I SORTOWANIE ZAWARTOŚCI ---
+        function renderGalleryGrid() {
+            const grid = document.getElementById('domino-grid');
+            grid.innerHTML = "";
+
+            const items = albumData[currentCategory][currentSubCategory];
+
+            if (items.length === 0) {
+                grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-weight: 700; padding: 3rem;">Jeszcze nic tu nie ma!</p>`;
+                return;
+            }
+
+            // Kopiujemy tablicę i sortujemy malejąco na podstawie liczby polubień
+            const sortedItems = [...items].sort((a, b) => {
+                let likesA = mediaLikes[a] || 0;
+                let likesB = mediaLikes[b] || 0;
+                return likesB - likesA;
+            });
+
+            sortedItems.forEach((src) => {
+                if (mediaLikes[src] === undefined) mediaLikes[src] = 0;
+                let currentLikes = mediaLikes[src];
+                
+                const item = document.createElement('div');
+                item.classList.add('domino-item');
+                item.setAttribute('data-src', src);
+
+                if (currentSubCategory === 'photos') {
+                    item.innerHTML += `<img src="${src}" loading="lazy">`;
+                } else {
+                    item.innerHTML += `
+                        <div class="video-badge"><i data-lucide="play" style="width:16px;height:16px;"></i></div>
+                        <video src="${src}" muted playsinline loop></video>
+                    `;
+                    item.addEventListener('mouseenter', () => item.querySelector('video').play());
+                    item.addEventListener('mouseleave', () => {
+                        const v = item.querySelector('video');
+                        v.pause();
+                        v.currentTime = 0;
+                    });
+                }
+
+                // Etykieta z polubieniami w prawym dolnym rogu
+                const badge = document.createElement('div');
+                badge.classList.add('like-badge');
+                badge.innerHTML = `<i data-lucide="heart" fill="${currentLikes > 0 ? 'var(--primary)' : 'none'}"></i> <span class="count-val">${currentLikes}</span>`;
+                item.appendChild(badge);
+
+                item.addEventListener('click', () => {
+                    openMediaModal(src, currentSubCategory === 'photos' ? 'photo' : 'video');
+                });
+
+                grid.appendChild(item);
+            });
+            lucide.createIcons();
+        }
+
+        // --- OTWARCIE MODALU ---
+        function openMediaModal(src, type) {
+            selectedMediaSrc = src;
+            selectedMediaType = type;
+
+            const container = document.getElementById('modal-media-container');
+            container.innerHTML = "";
+
+            if (type === 'photo') {
+                container.innerHTML = `<img src="${src}" class="modal-preview-img">`;
+            } else {
+                container.innerHTML = `<video src="${src}" controls autoplay class="modal-preview-video"></video>`;
+            }
+
+            const likeBtn = document.getElementById('opt-like');
+            if (myLikedMedia.includes(src)) {
+                likeBtn.innerHTML = `<i data-lucide="check"></i> Już polubione`;
+                likeBtn.disabled = true;
+            } else {
+                likeBtn.innerHTML = `<i data-lucide="heart"></i> Daj lajka`;
+                likeBtn.disabled = false;
+            }
+
+            lucide.createIcons();
+            document.getElementById('choice-modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            const video = document.querySelector('.modal-preview-video');
+            if(video) video.pause();
+            document.getElementById('choice-modal').style.display = 'none';
+        }
+
+        document.getElementById('opt-download').addEventListener('click', () => {
+            const a = document.createElement('a');
+            a.href = selectedMediaSrc;
+            a.download = selectedMediaType === 'photo' ? 'foto_8f.jpg' : 'wideo_8f.mp4';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        });
+
+        // --- AKCJA: POLUBIENIE ---
+        document.getElementById('opt-like').addEventListener('click', function() {
+            if (!myLikedMedia.includes(selectedMediaSrc)) {
+                mediaLikes[selectedMediaSrc] = (mediaLikes[selectedMediaSrc] || 0) + 1;
+                localStorage.setItem('8f_media_likes_v7', JSON.stringify(mediaLikes));
+                
+                myLikedMedia.push(selectedMediaSrc);
+                localStorage.setItem('8f_my_liked_media_v7', JSON.stringify(myLikedMedia));
+
+                this.innerHTML = `<i data-lucide="check"></i> Polubiono!`;
+                this.disabled = true;
+                lucide.createIcons();
+
+                // Animacja na kafelku od razu po kliknięciu
+                const gridItem = document.querySelector(`.domino-item[data-src="${selectedMediaSrc}"]`);
+                if (gridItem) {
+                    const badge = gridItem.querySelector('.like-badge');
+                    badge.querySelector('.count-val').innerText = mediaLikes[selectedMediaSrc];
+                    badge.querySelector('svg').setAttribute('fill', 'var(--primary)');
+                    gsap.fromTo(badge, {scale: 1}, {scale: 1.3, duration: 0.15, yoyo: true, repeat: 1});
+                }
+
+                // Odczekujemy chwilkę i przeładowujemy galerię - spowoduje to automatyczne przesortowanie!
+                setTimeout(() => {
+                    closeModal();
+                    renderGalleryGrid();
+                }, 800);
+            }
+        });
+    </script>
+</body>
+</html>
