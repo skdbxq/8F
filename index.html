@@ -7,14 +7,13 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet">
     
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     
     <style>
         :root {
-            /* Głęboki grafit + Turkusowy akcent */
             --bg-color: #0d1117;       
             --card-bg: #161b22;        
             --primary: #00bcd4;        
@@ -27,7 +26,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-           <img src="https://raw.githubusercontent.com/skdbxq/8F/refs/heads/main/IMG_E4646.JPG" alt="kotlet" style="width: 300px;">
+            font-family: 'Nunito', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             overflow-x: hidden;
@@ -73,11 +72,11 @@
             box-shadow: var(--shadow-soft); text-align: center; max-width: 400px; width: 100%;
             border: 2px solid rgba(0, 188, 212, 0.1);
         }
-        .verify-box img { width: 120px; height: 120px; object-fit: cover; border-radius: 50%; margin-bottom: 1.5rem; border: 4px solid var(--primary); }
+        .verify-box img { width: 120px; height: 120px; object-fit: contain; border-radius: 50%; margin-bottom: 1.5rem; border: 4px solid var(--primary); background: #000; }
         .verify-box h2 { font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--text-main); font-weight: 800; }
         .verify-box input { width: 100%; padding: 1rem; background: var(--bg-color); border: 2px solid rgba(255,255,255,0.1); border-radius: 16px; font-size: 1.1rem; text-align: center; margin-bottom: 1rem; color: var(--text-main); outline: none; transition: 0.3s; font-family: 'Nunito', sans-serif; font-weight: 600; }
         .verify-box input:focus { border-color: var(--primary); }
-        .btn-verify { width: 100%; padding: 1rem; background: var(--primary); color: #fff; border: none; border-radius: 16px; font-size: 1.2rem; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; box-shadow: 0 6px 15px rgba(0, 188, 212, 0.3);}
+        .btn-verify { width: 100%; padding: 1rem; background: var(--primary); color: #fff; border: none; border-radius: 16px; font-size: 1.2rem; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; }
         .btn-verify:hover { background: var(--primary-hover); transform: translateY(-2px); }
         .msg-text { font-weight: 700; margin-top: 1rem; display: none; font-size: 1.1rem; }
 
@@ -86,9 +85,8 @@
         .hero-title { font-size: clamp(3.5rem, 10vw, 7rem); font-weight: 900; color: var(--text-main); margin-bottom: 0.5rem; }
         .hero-title span { color: var(--primary); }
         .hero-subtitle { font-size: 1.4rem; color: var(--text-muted); margin-bottom: 3rem; font-weight: 600; }
-        .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
         .btn-main { display: inline-flex; align-items: center; gap: 0.8rem; padding: 1.1rem 2.5rem; background: none; border: 2px solid var(--primary); color: var(--text-main); font-size: 1.1rem; font-weight: 800; border-radius: 20px; cursor: pointer; transition: all 0.3s; font-family: 'Nunito', sans-serif; }
-        .btn-main:hover { background: var(--primary); color: #fff; transform: translateY(-3px); box-shadow: var(--shadow-soft); }
+        .btn-main:hover { background: var(--primary); color: #fff; transform: translateY(-3px); }
 
         /* ==================== ALBUMY ==================== */
         #albums-screen { justify-content: flex-start; padding-top: 7rem; max-width: 1000px; margin: 0 auto; }
@@ -98,7 +96,7 @@
         .album-card:hover { transform: translateY(-10px); border-color: var(--primary); box-shadow: var(--shadow-soft); }
         .album-info { background: #fff; padding: 1.2rem; border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; text-align: center; font-weight: 800; font-size: 1.2rem; color: var(--bg-color); z-index: 10; border-top: 1px solid rgba(0,0,0,0.1); }
         .card-stack { position: absolute; top: 1.5rem; left: 50%; transform: translateX(-50%); width: 80%; height: 60%; }
-        .stack-img { position: absolute; width: 100%; height: 100%; object-fit: cover; border-radius: 16px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); border: 4px solid #fff; transition: transform 0.4s; }
+        .stack-img { position: absolute; width: 100%; height: 100%; object-fit: cover; border-radius: 16px; border: 4px solid #fff; transition: transform 0.4s; background: #000; }
         .stack-img:nth-child(1) { transform: rotate(-4deg); z-index: 3; }
         .stack-img:nth-child(2) { transform: rotate(4deg) translate(5px, -5px); z-index: 2; }
         .album-card:hover .stack-img:nth-child(1) { transform: rotate(-6deg) translate(-10px, -10px); }
@@ -106,45 +104,50 @@
         /* ==================== KATEGORIA (ZDJĘCIA / FILMY) ==================== */
         #gallery-screen { justify-content: flex-start; padding-top: 7rem; max-width: 1200px; margin: 0 auto; }
         
-        .sub-nav { display: flex; gap: 1rem; margin-bottom: 2rem; justify-content: center; background: rgba(0,188,212,0.05); padding: 0.5rem; border-radius: 30px; border: 1px solid rgba(0,188,212,0.1); }
+        .sub-nav { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; justify-content: center; background: rgba(0,188,212,0.05); padding: 0.5rem; border-radius: 30px; border: 1px solid rgba(0,188,212,0.1); }
         .sub-btn { background: none; border: none; padding: 0.8rem 2rem; font-family: 'Nunito'; font-weight: 800; font-size: 1.1rem; border-radius: 25px; cursor: pointer; color: var(--text-muted); transition: 0.2s; display: flex; align-items: center; gap: 0.5rem; }
         .sub-btn.active { background: var(--primary); color: #fff; box-shadow: 0 4px 12px rgba(0,188,212,0.25); }
+        
+        /* Upload Przycisk */
+        .upload-label { background: rgba(0, 188, 212, 0.15); border: 1px dashed var(--primary); color: var(--primary); }
+        .upload-label:hover { background: var(--primary); color: #fff; }
 
         .domino-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 2rem; width: 100%; padding: 0 1.5rem 3rem 1.5rem; }
-        
-        /* Element siatki */
-        .domino-item { position: relative; aspect-ratio: 1; border-radius: 18px; cursor: pointer; border: 4px solid #fff; transition: transform 0.3s, box-shadow 0.3s; box-shadow: 0 6px 18px rgba(0,0,0,0.1); overflow: hidden; }
+        .domino-item { position: relative; aspect-ratio: 1; border-radius: 18px; cursor: pointer; border: 4px solid #fff; transition: transform 0.3s; box-shadow: 0 6px 18px rgba(0,0,0,0.1); overflow: hidden; background: #000; }
         .domino-item:hover { transform: scale(1.04); border-color: var(--primary); z-index: 5; }
         .domino-item img, .domino-item video { width: 100%; height: 100%; object-fit: cover; display: block; }
-        
         .video-badge { position: absolute; top: 10px; left: 10px; background: rgba(0, 0, 0, 0.6); color: #fff; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px); z-index: 2; }
-
-        .like-badge { 
-            position: absolute; bottom: 10px; right: 10px; 
-            background: rgba(26, 33, 40, 0.95); color: var(--primary); 
-            padding: 0.4rem 0.8rem; border-radius: 20px; 
-            font-weight: 800; font-size: 0.95rem; 
-            display: flex; align-items: center; gap: 0.4rem; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            transition: transform 0.2s; z-index: 2;
-        }
+        
+        /* Loader */
+        #upload-loader { display: none; text-align: center; width: 100%; padding: 2rem; color: var(--primary); font-weight: bold; }
 
         /* ==================== MODAL Z PODGLĄDEM MIEJSCA ==================== */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(13, 17, 23, 0.8); backdrop-filter: blur(8px); z-index: 1000; display: none; justify-content: center; align-items: center; padding: 1rem; }
-        .modal-box { background: var(--card-bg); border-radius: 24px; padding: 2rem; max-width: 500px; width: 100%; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.3); animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); border: 1px solid rgba(255,255,255,0.05); }
-        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal-box { background: var(--card-bg); border-radius: 24px; padding: 2rem; max-width: 500px; width: 100%; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); }
         
-        .media-container { width: 100%; max-height: 45vh; margin-bottom: 1.5rem; border-radius: 12px; overflow: hidden; border: 1px solid rgba(0, 188, 212, 0.1); background: #000; display: flex; justify-content: center; align-items: center; }
+        .media-container { width: 100%; max-height: 45vh; margin-bottom: 1.5rem; border-radius: 12px; overflow: hidden; background: #000; display: flex; justify-content: center; align-items: center; }
         .modal-preview-img, .modal-preview-video { max-width: 100%; max-height: 45vh; object-fit: contain; }
         
         .modal-choices { display: flex; flex-direction: column; gap: 1rem; }
         .choice-btn { display: flex; align-items: center; justify-content: center; gap: 0.8rem; padding: 1rem; border-radius: 16px; font-weight: 800; cursor: pointer; transition: 0.2s; font-size: 1.1rem; font-family: 'Nunito', sans-serif; border: none; }
         .btn-open-file { background: none; border: 2px solid var(--primary); color: var(--text-main); }
-        .btn-open-file:hover { background: rgba(0,188,212,0.1); }
-        .btn-like { background: var(--primary); color: #fff; box-shadow: 0 4px 15px rgba(0, 188, 212, 0.3); }
-        .btn-like:hover:not(:disabled) { background: var(--primary-hover); }
-        .btn-like:disabled { background: #e0e0e0; color: #888; cursor: not-allowed; box-shadow: none; }
+        .btn-delete { background: rgba(255, 75, 75, 0.1); border: 2px solid #ff4b4b; color: #ff4b4b; display: none; }
+        .btn-delete:hover { background: #ff4b4b; color: #fff; }
         .btn-cancel { margin-top: 1.2rem; background: none; border: none; color: var(--text-muted); cursor: pointer; text-decoration: underline; font-family: 'Nunito'; font-weight: 700; font-size: 1rem; }
+
+        /* ==================== CZAT ONLINE ==================== */
+        #chat-panel { position: fixed; top: 0; right: -400px; width: 100%; max-width: 350px; height: 100vh; background: var(--card-bg); border-left: 2px solid rgba(0,188,212,0.2); z-index: 200; transition: right 0.3s ease; display: flex; flex-direction: column; box-shadow: -10px 0 30px rgba(0,0,0,0.5); }
+        #chat-panel.open { right: 0; }
+        .chat-header { padding: 1.5rem; background: rgba(0,188,212,0.1); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .chat-header h3 { display: flex; align-items: center; gap: 0.5rem; }
+        .btn-close-chat { background: none; border: none; color: var(--text-main); cursor: pointer; }
+        .chat-messages { flex-grow: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 0.8rem; }
+        .msg-bubble { background: rgba(255,255,255,0.05); padding: 0.8rem 1rem; border-radius: 16px; border-bottom-left-radius: 4px; font-size: 0.95rem; }
+        .msg-bubble.mine { background: rgba(0,188,212,0.2); border-bottom-left-radius: 16px; border-bottom-right-radius: 4px; align-self: flex-end; }
+        .msg-author { font-weight: 800; font-size: 0.8rem; color: var(--primary); margin-bottom: 0.2rem; }
+        .chat-input-area { padding: 1rem; background: var(--bg-color); border-top: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; gap: 0.5rem; }
+        .chat-input-area input { padding: 0.8rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: var(--card-bg); color: var(--text-main); outline: none; font-family: 'Nunito'; }
+        .chat-input-area button { padding: 0.8rem; border-radius: 12px; border: none; background: var(--primary); color: #fff; font-weight: 800; cursor: pointer; font-family: 'Nunito'; }
     </style>
 </head>
 <body>
@@ -153,18 +156,35 @@
 
     <nav class="navbar" id="main-nav">
         <div class="nav-left">
-            <button class="btn-back" id="back-btn" onclick="goBack()"><i data-lucide="arrow-left"></i></button>
+            <button class="btn-back" id="back-btn" onclick="window.goBack()"><i data-lucide="arrow-left"></i></button>
             <div class="nav-logo">Klasa <span>8F</span></div>
         </div>
         <div class="nav-links">
-            <button class="nav-btn" onclick="showScreen('albums-screen')">Albumy</button>
+            <button class="nav-btn" onclick="window.toggleChat()"><i data-lucide="message-circle" style="width:18px;height:18px;vertical-align:middle;margin-right:5px;"></i> Czat</button>
+            <button class="nav-btn" onclick="window.showScreen('albums-screen')">Albumy</button>
         </div>
     </nav>
+
+    <!-- PANEL CZATU -->
+    <div id="chat-panel">
+        <div class="chat-header">
+            <h3><i data-lucide="message-square"></i> Czat na żywo</h3>
+            <button class="btn-close-chat" onclick="window.toggleChat()"><i data-lucide="x"></i></button>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <!-- Wiadomości -->
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chat-nick" placeholder="Twój nick..." maxlength="15">
+            <input type="text" id="chat-text" placeholder="Napisz wiadomość...">
+            <button onclick="window.sendChatMessage()">Wyślij</button>
+        </div>
+    </div>
 
     <main>
         <section id="verify-screen" class="screen active">
             <div class="verify-box">
-                <img src="https://images.unsplash.com/photo-1542385151-efd9000785a0?q=80&w=200" alt="Kto to?">
+                <img src="https://raw.githubusercontent.com/skdbxq/8F/refs/heads/main/IMG_E4646.JPG" alt="Kotlet">
                 <h2>Kto to jest?</h2>
                 <input type="text" id="verify-input" placeholder="Wpisz tekst...">
                 <button class="btn-verify" id="verify-btn">Sprawdź</button>
@@ -176,7 +196,7 @@
             <h1 class="hero-title">Klasa <span>8F</span></h1>
             <p class="hero-subtitle">Baza naszych wspomnień</p>
             <div class="hero-actions">
-                <button class="btn-main" onclick="showScreen('albums-screen')"><i data-lucide="image"></i> Otwórz Galerię</button>
+                <button class="btn-main" onclick="window.showScreen('albums-screen')"><i data-lucide="image"></i> Otwórz Galerię</button>
             </div>
         </section>
 
@@ -192,8 +212,8 @@
                 </div>
                 <div class="album-card" data-category="bal">
                     <div class="card-stack">
-                        <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=400" class="stack-img">
-                        <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?q=80&w=400" class="stack-img">
+                        <img src="https://raw.githubusercontent.com/skdbxq/8F/refs/heads/main/IMG_E4641.JPG" class="stack-img">
+                        <img src="https://raw.githubusercontent.com/skdbxq/8F/refs/heads/main/IMG_4636%5B1%5D.PNG" class="stack-img">
                     </div>
                     <div class="album-info">Bal Ósmoklasisty</div>
                 </div>
@@ -211,9 +231,15 @@
             <div class="screen-header"><h2 id="gallery-title">Galeria</h2></div>
             
             <div class="sub-nav">
-                <button class="sub-btn active" id="sub-photos-btn" onclick="switchSubCategory('photos')"><i data-lucide="camera"></i> Zdjęcia</button>
-                <button class="sub-btn" id="sub-videos-btn" onclick="switchSubCategory('videos')"><i data-lucide="clapperboard"></i> Filmy</button>
+                <button class="sub-btn active" id="sub-photos-btn" onclick="window.switchSubCategory('photos')"><i data-lucide="camera"></i> Zdjęcia</button>
+                <button class="sub-btn" id="sub-videos-btn" onclick="window.switchSubCategory('videos')"><i data-lucide="clapperboard"></i> Filmy</button>
+                
+                <!-- Przycisk wgrywania -->
+                <input type="file" id="file-upload" hidden accept="image/*,video/*">
+                <label for="file-upload" class="sub-btn upload-label"><i data-lucide="upload"></i> Dodaj plik</label>
             </div>
+            
+            <div id="upload-loader"><i data-lucide="loader" class="spin"></i> Wgrywanie... proszę czekać</div>
 
             <div class="domino-grid" id="domino-grid"></div>
         </section>
@@ -223,64 +249,70 @@
                 <div class="media-container" id="modal-media-container"></div>
                 <div class="modal-choices">
                     <button class="choice-btn btn-open-file" id="opt-download"><i data-lucide="download"></i> Pobierz plik</button>
-                    <button class="choice-btn btn-like" id="opt-like"><i data-lucide="heart"></i> Daj lajka</button>
+                    <button class="choice-btn btn-delete" id="opt-delete"><i data-lucide="trash-2"></i> Usuń swój plik</button>
                 </div>
-                <button onclick="closeModal()" class="btn-cancel">Zamknij</button>
+                <button onclick="window.closeModal()" class="btn-cancel">Zamknij</button>
             </div>
         </div>
 
     </main>
 
-    <script>
-        lucide.createIcons();
+    <!-- Skrypty Firebase jako ES Modules -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getDatabase, ref as dbRef, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
-        // --- BAZA (ZDJĘCIA + FILMY) ---
-        const albumData = {
-            krosnice: {
-                photos: [
-                    "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=500",
-                    "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=500",
-                    "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=500"
-                ],
-                videos: [
-                    "https://assets.mixkit.co/videos/preview/mixkit-friends-laughing-and-having-fun-40150-large.mp4"
-                ]
-            },
-            bal: {
-                photos: [
-                    "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=500",
-                    "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?q=80&w=500"
-                ],
-                videos: [
-                    "https://assets.mixkit.co/videos/preview/mixkit-dancing-in-the-school-hallway-40144-large.mp4"
-                ]
-            },
-            wycieczki: {
-                photos: [
-                    "https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=500",
-                    "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=500"
-                ],
-                videos: [
-                    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
-                ]
-            }
+        // Twoja konfiguracja z Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBYVVYBVaE8gVLew-lZ0ewfM9wNoC1gjiM",
+            authDomain: "f-pic-79578.firebaseapp.com",
+            projectId: "f-pic-79578",
+            storageBucket: "f-pic-79578.firebasestorage.app",
+            messagingSenderId: "498667585272",
+            appId: "1:498667585272:web:a7aa9601989f86db81850d",
+            measurementId: "G-QVCNHGLMFQ"
         };
 
-        const categoryNames = { krosnice: "Krośnice", bal: "Bal Ósmoklasisty", wycieczki: "Wycieczki" };
-        
-        let currentCategory = "";
-        let currentSubCategory = "photos"; 
-        let selectedMediaSrc = "";
-        let selectedMediaType = "photo";
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const storage = getStorage(app);
 
-        // --- SYSTEM LAJKÓW ---
-        let mediaLikes = JSON.parse(localStorage.getItem('8f_media_likes_v7')) || {};
-        let myLikedMedia = JSON.parse(localStorage.getItem('8f_my_liked_media_v7')) || [];
+        // --- UNIKALNE ID UŻYTKOWNIKA (do usuwania swoich plików) ---
+        let myUploaderId = localStorage.getItem('8f_uploader_id');
+        if (!myUploaderId) {
+            myUploaderId = 'user_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('8f_uploader_id', myUploaderId);
+        }
 
-        // --- NAWIGACJA (WSTECZ) ---
+        lucide.createIcons();
+
+        // Podstawowe wpisy początkowe
+        const defaultHardcodedItems = {
+            krosnice: { photos: ["https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=500"], videos: [] },
+            bal: { 
+                photos: [
+                    "https://raw.githubusercontent.com/skdbxq/8F/refs/heads/main/IMG_E4641.JPG",
+                    "https://raw.githubusercontent.com/skdbxq/8F/refs/heads/main/IMG_4636%5B1%5D.PNG",
+                    "https://raw.githubusercontent.com/skdbxq/8F/refs/heads/main/BPYA0776.JPG"
+                ], 
+                videos: [] 
+            },
+            wycieczki: { photos: ["https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=500"], videos: [] }
+        };
+
+        // Zmienne globalne stanu
+        window.currentCategory = "";
+        window.currentSubCategory = "photos";
+        let currentDbItems = []; // Przechowuje elementy pobrane z bazy
+        let selectedMediaUrl = "";
+        let selectedMediaKey = ""; // klucz w bazie do usunięcia
+        let selectedMediaUploader = "";
         let screenHistory = [];
+        const categoryNames = { krosnice: "Krośnice", bal: "Bal Ósmoklasisty", wycieczki: "Wycieczki" };
 
-        function showScreen(screenId, isGoingBack = false) {
+        // --- NAWIGACJA ---
+        window.showScreen = function(screenId, isGoingBack = false) {
             const currentScreen = document.querySelector('.screen.active');
             if (!isGoingBack && currentScreen && currentScreen.id !== 'verify-screen' && currentScreen.id !== screenId) {
                 screenHistory.push(currentScreen.id);
@@ -288,197 +320,255 @@
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
             window.scrollTo(0,0);
-            updateBackButtonVisibility();
-        }
-
-        function goBack() {
-            if (screenHistory.length > 0) {
-                showScreen(screenHistory.pop(), true);
-            }
-        }
-
-        function updateBackButtonVisibility() {
-            const current = document.querySelector('.screen.active');
+            
             const backBtn = document.getElementById('back-btn');
-            if (screenHistory.length > 0 && current.id !== 'verify-screen' && current.id !== 'hero-screen') {
+            if (screenHistory.length > 0 && screenId !== 'verify-screen' && screenId !== 'hero-screen') {
                 backBtn.style.display = 'inline-flex';
             } else {
                 backBtn.style.display = 'none';
             }
-        }
+        };
 
-        // --- WERYFIKACJA HASŁA ---
-        function checkPassword() {
+        window.goBack = function() {
+            if (screenHistory.length > 0) window.showScreen(screenHistory.pop(), true);
+        };
+
+        // --- HASŁO ---
+        document.getElementById('verify-btn').addEventListener('click', () => {
             const input = document.getElementById('verify-input').value.trim().toLowerCase();
-            const btn = document.getElementById('verify-btn');
             const msgBox = document.getElementById('verify-msg');
-            
             msgBox.style.display = 'block';
-
             if(input === 'kotlet') {
                 msgBox.innerText = "Dobra odpowiedź 😊";
-                msgBox.style.color = "#4CAF50"; // zielony na sukces
-                
+                msgBox.style.color = "#4CAF50"; 
                 setTimeout(() => {
                     document.getElementById('verify-screen').classList.remove('active');
                     document.getElementById('main-nav').style.display = 'flex';
-                    showScreen('hero-screen');
+                    window.showScreen('hero-screen');
                 }, 800);
             } else {
                 msgBox.innerText = "Zła odpowiedź 😞";
-                msgBox.style.color = "#FF6B6B"; // czerwony na błąd
+                msgBox.style.color = "#FF6B6B"; 
                 gsap.fromTo('.verify-box', {x:-10}, {x:10, duration:0.1, yoyo:true, repeat:2});
             }
-        }
+        });
 
-        document.getElementById('verify-btn').addEventListener('click', checkPassword);
-        document.getElementById('verify-input').addEventListener('keypress', (e) => { if (e.key === 'Enter') checkPassword(); });
-
-        // --- WEJŚCIE DO ALBUMU ---
+        // --- ALBUMY KLIK ---
         document.querySelectorAll('.album-card').forEach(card => {
             card.addEventListener('click', () => {
-                currentCategory = card.getAttribute('data-category');
-                document.getElementById('gallery-title').innerText = categoryNames[currentCategory];
-                switchSubCategory('photos');
-                showScreen('gallery-screen');
+                window.currentCategory = card.getAttribute('data-category');
+                document.getElementById('gallery-title').innerText = categoryNames[window.currentCategory];
+                window.switchSubCategory('photos');
+                window.showScreen('gallery-screen');
+                loadGalleryFromFirebase();
             });
         });
 
-        function switchSubCategory(type) {
-            currentSubCategory = type;
+        window.switchSubCategory = function(type) {
+            window.currentSubCategory = type;
             document.getElementById('sub-photos-btn').classList.toggle('active', type === 'photos');
             document.getElementById('sub-videos-btn').classList.toggle('active', type === 'videos');
             renderGalleryGrid();
+        };
+
+        // --- POBIERANIE Z BAZY DANYCH ---
+        let currentListener = null;
+        function loadGalleryFromFirebase() {
+            const catRef = dbRef(db, 'albums/' + window.currentCategory);
+            
+            // Nasłuchiwanie zmian na żywo
+            onValue(catRef, (snapshot) => {
+                currentDbItems = [];
+                snapshot.forEach((childSnapshot) => {
+                    const data = childSnapshot.val();
+                    currentDbItems.push({
+                        key: childSnapshot.key,
+                        url: data.url,
+                        type: data.type,
+                        uploaderId: data.uploaderId || 'unknown'
+                    });
+                });
+                renderGalleryGrid();
+            });
         }
 
-        // --- RENDEROWANIE I SORTOWANIE ZAWARTOŚCI ---
         function renderGalleryGrid() {
             const grid = document.getElementById('domino-grid');
             grid.innerHTML = "";
 
-            const items = albumData[currentCategory][currentSubCategory];
+            // Łączymy twardo wpisane dane z tymi z bazy na dany moment
+            let combinedItems = [];
+            
+            // Hardcodowane złączamy udając, że to uploader "system"
+            const hcItems = defaultHardcodedItems[window.currentCategory][window.currentSubCategory] || [];
+            hcItems.forEach(url => combinedItems.push({ url, type: window.currentSubCategory, key: null, uploaderId: 'system' }));
 
-            if (items.length === 0) {
-                grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-weight: 700; padding: 3rem;">Jeszcze nic tu nie ma!</p>`;
+            // Filtrujemy z bazy tylko obecny pod-typ (zdjęcia albo filmy)
+            const dbFiltered = currentDbItems.filter(item => item.type === window.currentSubCategory);
+            combinedItems = combinedItems.concat(dbFiltered);
+
+            if (combinedItems.length === 0) {
+                grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-weight: 700; padding: 3rem;">Jeszcze nic tu nie ma! Dodaj coś!</p>`;
                 return;
             }
 
-            // Kopiujemy tablicę i sortujemy malejąco na podstawie liczby polubień
-            const sortedItems = [...items].sort((a, b) => {
-                let likesA = mediaLikes[a] || 0;
-                let likesB = mediaLikes[b] || 0;
-                return likesB - likesA;
-            });
+            // Renderowanie od najnowszego
+            combinedItems.reverse().forEach((item) => {
+                const div = document.createElement('div');
+                div.classList.add('domino-item');
+                div.onclick = () => window.openMediaModal(item.url, item.type, item.key, item.uploaderId);
 
-            sortedItems.forEach((src) => {
-                if (mediaLikes[src] === undefined) mediaLikes[src] = 0;
-                let currentLikes = mediaLikes[src];
-                
-                const item = document.createElement('div');
-                item.classList.add('domino-item');
-                item.setAttribute('data-src', src);
-
-                if (currentSubCategory === 'photos') {
-                    item.innerHTML += `<img src="${src}" loading="lazy">`;
+                if (item.type === 'photos') {
+                    div.innerHTML = `<img src="${item.url}" loading="lazy">`;
                 } else {
-                    item.innerHTML += `
+                    div.innerHTML = `
                         <div class="video-badge"><i data-lucide="play" style="width:16px;height:16px;"></i></div>
-                        <video src="${src}" muted playsinline loop></video>
+                        <video src="${item.url}" muted playsinline loop></video>
                     `;
-                    item.addEventListener('mouseenter', () => item.querySelector('video').play());
-                    item.addEventListener('mouseleave', () => {
-                        const v = item.querySelector('video');
-                        v.pause();
-                        v.currentTime = 0;
-                    });
+                    div.addEventListener('mouseenter', () => div.querySelector('video').play());
+                    div.addEventListener('mouseleave', () => { const v = div.querySelector('video'); v.pause(); v.currentTime = 0; });
                 }
-
-                // Etykieta z polubieniami w prawym dolnym rogu
-                const badge = document.createElement('div');
-                badge.classList.add('like-badge');
-                badge.innerHTML = `<i data-lucide="heart" fill="${currentLikes > 0 ? 'var(--primary)' : 'none'}"></i> <span class="count-val">${currentLikes}</span>`;
-                item.appendChild(badge);
-
-                item.addEventListener('click', () => {
-                    openMediaModal(src, currentSubCategory === 'photos' ? 'photo' : 'video');
-                });
-
-                grid.appendChild(item);
+                grid.appendChild(div);
             });
             lucide.createIcons();
         }
 
-        // --- OTWARCIE MODALU ---
-        function openMediaModal(src, type) {
-            selectedMediaSrc = src;
-            selectedMediaType = type;
+        // --- WGRYWANIE PLIKU DO FIREBASE ---
+        document.getElementById('file-upload').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if(!file || !window.currentCategory) return;
+
+            const loader = document.getElementById('upload-loader');
+            loader.style.display = 'block';
+
+            // Ustalanie typu (zdjęcie czy film)
+            const fileType = file.type.startsWith('video') ? 'videos' : 'photos';
+            const uniqueName = Date.now() + "_" + file.name;
+            const fileRef = storageRef(storage, `klasa8f/${window.currentCategory}/${uniqueName}`);
+
+            try {
+                // Wrzucanie do Storage
+                await uploadBytes(fileRef, file);
+                const downloadURL = await getDownloadURL(fileRef);
+
+                // Zapis linku do bazy Realtime
+                await push(dbRef(db, 'albums/' + window.currentCategory), {
+                    url: downloadURL,
+                    type: fileType,
+                    uploaderId: myUploaderId,
+                    timestamp: Date.now()
+                });
+                
+                // Automatycznie przełącz na zakładkę, do której wgrano plik
+                window.switchSubCategory(fileType);
+
+            } catch (err) {
+                alert("Wystąpił błąd! Upewnij się, że w Firebase włączyłeś reguły (Rules) na tryb testowy. Błąd: " + err.message);
+            } finally {
+                loader.style.display = 'none';
+                e.target.value = ""; // reset inputa
+            }
+        });
+
+        // --- MODAL & USUWANIE ---
+        window.openMediaModal = function(url, type, key, uploaderId) {
+            selectedMediaUrl = url;
+            selectedMediaKey = key;
+            selectedMediaUploader = uploaderId;
 
             const container = document.getElementById('modal-media-container');
-            container.innerHTML = "";
-
-            if (type === 'photo') {
-                container.innerHTML = `<img src="${src}" class="modal-preview-img">`;
+            if (type === 'photos') {
+                container.innerHTML = `<img src="${url}" class="modal-preview-img">`;
             } else {
-                container.innerHTML = `<video src="${src}" controls autoplay class="modal-preview-video"></video>`;
+                container.innerHTML = `<video src="${url}" controls autoplay class="modal-preview-video"></video>`;
             }
 
-            const likeBtn = document.getElementById('opt-like');
-            if (myLikedMedia.includes(src)) {
-                likeBtn.innerHTML = `<i data-lucide="check"></i> Już polubione`;
-                likeBtn.disabled = true;
+            const btnDelete = document.getElementById('opt-delete');
+            // Pokaż przycisk usuwania TYLKO jeśli token się zgadza
+            if (uploaderId === myUploaderId && key !== null) {
+                btnDelete.style.display = 'flex';
             } else {
-                likeBtn.innerHTML = `<i data-lucide="heart"></i> Daj lajka`;
-                likeBtn.disabled = false;
+                btnDelete.style.display = 'none';
             }
 
-            lucide.createIcons();
             document.getElementById('choice-modal').style.display = 'flex';
-        }
+        };
 
-        function closeModal() {
+        window.closeModal = function() {
             const video = document.querySelector('.modal-preview-video');
             if(video) video.pause();
             document.getElementById('choice-modal').style.display = 'none';
-        }
+        };
 
         document.getElementById('opt-download').addEventListener('click', () => {
             const a = document.createElement('a');
-            a.href = selectedMediaSrc;
-            a.download = selectedMediaType === 'photo' ? 'foto_8f.jpg' : 'wideo_8f.mp4';
+            a.href = selectedMediaUrl;
+            a.download = window.currentSubCategory === 'photos' ? '8f_foto.jpg' : '8f_wideo.mp4';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
         });
 
-        // --- AKCJA: POLUBIENIE ---
-        document.getElementById('opt-like').addEventListener('click', function() {
-            if (!myLikedMedia.includes(selectedMediaSrc)) {
-                mediaLikes[selectedMediaSrc] = (mediaLikes[selectedMediaSrc] || 0) + 1;
-                localStorage.setItem('8f_media_likes_v7', JSON.stringify(mediaLikes));
-                
-                myLikedMedia.push(selectedMediaSrc);
-                localStorage.setItem('8f_my_liked_media_v7', JSON.stringify(myLikedMedia));
-
-                this.innerHTML = `<i data-lucide="check"></i> Polubiono!`;
-                this.disabled = true;
-                lucide.createIcons();
-
-                // Animacja na kafelku od razu po kliknięciu
-                const gridItem = document.querySelector(`.domino-item[data-src="${selectedMediaSrc}"]`);
-                if (gridItem) {
-                    const badge = gridItem.querySelector('.like-badge');
-                    badge.querySelector('.count-val').innerText = mediaLikes[selectedMediaSrc];
-                    badge.querySelector('svg').setAttribute('fill', 'var(--primary)');
-                    gsap.fromTo(badge, {scale: 1}, {scale: 1.3, duration: 0.15, yoyo: true, repeat: 1});
-                }
-
-                // Odczekujemy chwilkę i przeładowujemy galerię - spowoduje to automatyczne przesortowanie!
-                setTimeout(() => {
-                    closeModal();
-                    renderGalleryGrid();
-                }, 800);
+        document.getElementById('opt-delete').addEventListener('click', async () => {
+            if(confirm("Na pewno usunąć ten plik?") && selectedMediaKey) {
+                const itemRef = dbRef(db, `albums/${window.currentCategory}/${selectedMediaKey}`);
+                await remove(itemRef);
+                window.closeModal();
             }
         });
+
+        // ==================== CZAT ONLINE LOGIKA ====================
+        const chatPanel = document.getElementById('chat-panel');
+        window.toggleChat = function() {
+            chatPanel.classList.toggle('open');
+        };
+
+        const chatDbRef = dbRef(db, 'chat_messages');
+        const chatBox = document.getElementById('chat-messages');
+        
+        // Nasłuchiwanie wiadomości czatu na żywo
+        onValue(chatDbRef, (snapshot) => {
+            chatBox.innerHTML = '';
+            let myNick = document.getElementById('chat-nick').value.trim();
+            if(!myNick) myNick = localStorage.getItem('8f_nick') || "Ktoś";
+
+            snapshot.forEach((childSnapshot) => {
+                const msg = childSnapshot.val();
+                const div = document.createElement('div');
+                const isMine = msg.uploaderId === myUploaderId;
+                div.className = `msg-bubble ${isMine ? 'mine' : ''}`;
+                div.innerHTML = `<div class="msg-author">${msg.nick}</div><div>${msg.text}</div>`;
+                chatBox.appendChild(div);
+            });
+            // Zjechanie na dół czatu
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
+
+        window.sendChatMessage = async function() {
+            const nickInput = document.getElementById('chat-nick');
+            const textInput = document.getElementById('chat-text');
+            const nick = nickInput.value.trim() || "Ktoś";
+            const text = textInput.value.trim();
+
+            if(!text) return;
+
+            localStorage.setItem('8f_nick', nick);
+
+            await push(chatDbRef, {
+                nick: nick,
+                text: text,
+                uploaderId: myUploaderId,
+                timestamp: Date.now()
+            });
+
+            textInput.value = '';
+        };
+
+        // Klawisz Enter do wysyłania wiadomości
+        document.getElementById('chat-text').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') window.sendChatMessage();
+        });
+
     </script>
 </body>
 </html>
