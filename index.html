@@ -61,8 +61,11 @@
         .nav-logo { font-weight: 900; font-size: 1.6rem; color: var(--text-main); letter-spacing: 1px; }
         .nav-logo span { color: var(--primary); text-shadow: 0 0 10px rgba(59, 130, 246, 0.5); }
         .nav-links { display: flex; gap: 0.8rem; align-items: center; }
+        
         .nav-btn { background: rgba(255,255,255,0.03); border: 2px solid rgba(59, 130, 246, 0.2); padding: 0.5rem 1.2rem; border-radius: 20px; font-weight: 700; color: var(--text-main); cursor: pointer; transition: all 0.2s; font-family: 'Nunito', sans-serif; display: flex; align-items: center; gap: 0.4rem; }
         .nav-btn:hover { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: var(--shadow-glow); transform: translateY(-2px); }
+        .nav-btn.upload-btn { background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.4); }
+        .nav-btn.upload-btn:hover { background: #22c55e; border-color: #22c55e; }
 
         main { position: relative; z-index: 5; width: 100%; }
         .screen { display: none; min-height: 100vh; width: 100%; padding: 2rem; flex-direction: column; justify-content: center; align-items: center; opacity: 0; }
@@ -98,9 +101,11 @@
         #gallery-screen { justify-content: flex-start; padding-top: 7rem; max-width: 1200px; margin: 0 auto; }
         .domino-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 2rem; width: 100%; padding: 0 1.5rem 3rem 1.5rem; }
         .domino-item { position: relative; aspect-ratio: 1; border-radius: 20px; cursor: pointer; border: 4px solid #fff; box-shadow: 0 6px 18px rgba(0,0,0,0.2); overflow: hidden; background: #000; }
-        .domino-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
-        .domino-item:hover img { transform: scale(1.1); }
+        .domino-item img, .domino-item video { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
+        .domino-item:hover img, .domino-item:hover video { transform: scale(1.1); }
         
+        .video-indicator { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.7); color: #fff; padding: 5px; border-radius: 50%; display: flex; z-index: 2; }
+
         .likes-badge { position: absolute; bottom: 12px; right: 12px; background: rgba(0, 0, 0, 0.8); color: var(--heart-red); padding: 6px 14px; border-radius: 20px; font-weight: 900; display: flex; align-items: center; gap: 5px; backdrop-filter: blur(4px); z-index: 2; font-size: 0.95rem; border: 1px solid rgba(255, 42, 75, 0.3); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
         .likes-badge i { fill: var(--heart-red); color: var(--heart-red); }
 
@@ -109,9 +114,9 @@
         .modal-box { background: var(--card-bg); border-radius: 28px; max-width: 1100px; width: 100%; height: 85vh; box-shadow: 0 30px 60px rgba(0,0,0,0.6); border: 2px solid rgba(255,255,255,0.05); display: flex; overflow: hidden; }
         
         .media-container { flex: 1.4; background: #05080f; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative; user-select: none; cursor: pointer; }
-        .modal-preview-img { max-width: 100%; max-height: 100%; object-fit: contain; pointer-events: none; }
+        .modal-preview-img, .modal-preview-video { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .modal-preview-video { width: 100%; height: 100%; }
         
-        /* Wielkie serce pod dwukrotne kliknięcie */
         .center-pop-heart { position: absolute; color: var(--heart-red); fill: var(--heart-red); font-size: 11rem; opacity: 0; scale: 0; pointer-events: none; z-index: 15; filter: drop-shadow(var(--heart-glow)); transform: translate(-50%, -50%); }
 
         /* Prawy Panel */
@@ -151,7 +156,6 @@
         .btn-cmt-action.cmt-liked { color: var(--heart-red); }
         .btn-cmt-action.cmt-liked i { fill: var(--heart-red); color: var(--heart-red); }
 
-        /* Przycisk usuwania komentarza */
         .btn-delete-comment { background: none; border: none; color: var(--text-muted); cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; position: absolute; top: 0.9rem; right: 0.9rem; }
         .btn-delete-comment:hover { color: #ef4444; transform: scale(1.15); }
 
@@ -175,6 +179,9 @@
             .social-panel { flex: 1.4; }
         }
 
+        /* Styl ukrytego inputu do wgrywania */
+        #global-file-picker { display: none; }
+
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.3); border-radius: 10px; }
@@ -191,6 +198,11 @@
             <div class="nav-logo">Klasa <span>8F</span></div>
         </div>
         <div class="nav-links">
+            <button class="nav-btn upload-btn" id="upload-nav-btn" onclick="triggerFileUpload()" style="display: none;">
+                <i data-lucide="plus-circle"></i> Dodaj plik
+            </button>
+            <input type="file" id="global-file-picker" accept="image/*,video/*" onchange="handleGlobalFileSelect(event)">
+            
             <button class="nav-btn" onclick="window.showScreen('albums-screen')"><i data-lucide="images"></i> Albumy</button>
         </div>
     </nav>
@@ -225,7 +237,7 @@
 
         <div class="modal-overlay" id="choice-modal">
             <div class="modal-box">
-                <div class="media-container" id="modal-media-container" onclick="window.handleSingleOrDouble(event)">
+                <div class="media-container" id="modal-media-container" onclick="window.handleMediaClick(event)">
                     </div>
                 
                 <div class="social-panel">
@@ -267,7 +279,13 @@
     </main>
 
     <script>
-        // TUTAJ SĄ TWOJE WYDOBYTE LINKI DODANE DO KROŚNIC!
+        // ==========================================
+        // KONFIGURACJA SUPABASE (Zanim tam wkleisz klucze, pliki zapisują się tymczasowo)
+        // ==========================================
+        const SUPABASE_URL = "TUTAJ_WKLEJ_PROJECT_URL";
+        const SUPABASE_ANON_KEY = "TUTAJ_WKLEJ_ANON_PUBLIC_API_KEY";
+
+        // Twoje uporządkowane linki z GitHuba
         const defaultHardcodedItems = {
             krosnice: [
                 "https://raw.githubusercontent.com/skdbxq/8F/refs/heads/main/IMG_4652.PNG",
@@ -292,7 +310,7 @@
             "Napisz coś miłego...",
             "Podziel się wspomnieniem...",
             "Ale to były czasy! Skomentuj...",
-            "Co wtedy robiliśmy? Napisz..."
+            "Ktoś pamięta ten moment? Haha"
         ];
         
         let localLikes = JSON.parse(localStorage.getItem('8f_local_likes')) || {};
@@ -302,11 +320,17 @@
         let selectedMediaUrl = "";
         let screenHistory = [];
         let replyingToCommentIndex = null;
-        let lastTap = 0; 
+        
+        let clickTimer = null; // Obsługa pojedynczego vs podwójnego tapnięcia
 
         lucide.createIcons();
 
-        // --- ONBOARDING: KROK 1 (NICK) ---
+        // Pomocnicza funkcja sprawdzająca, czy plik to film wideo
+        function isVideoUrl(url) {
+            return url.toLowerCase().match(/\.(mp4|mov|webm|ogg|quicktime)/) || url.includes("video");
+        }
+
+        // --- ONBOARDING ---
         function handleNickSubmit() {
             const nickVal = document.getElementById('nick-input').value.trim();
             if(!nickVal) {
@@ -324,7 +348,6 @@
             }});
         }
 
-        // --- ONBOARDING: KROK 2 (HASŁO) ---
         function handlePasswordSubmit() {
             const input = document.getElementById('verify-input').value.trim().toLowerCase();
             const msgBox = document.getElementById('verify-msg');
@@ -333,12 +356,9 @@
             if(input === 'kotlet') {
                 msgBox.innerText = "Dobra odpowiedź 😊";
                 msgBox.style.color = "#4CAF50"; 
-                
-                setTimeout(() => {
-                    enterAppDirectly();
-                }, 400);
+                setTimeout(() => enterAppDirectly(), 400);
             } else {
-                msgBox.innerText = "Zła odpowiedź 😞 Sprawdź hasło klasowe.";
+                msgBox.innerText = "Zła odpowiedź 😞 Spróbuj jeszcze raz.";
                 msgBox.style.color = "#FF6B6B"; 
                 gsap.fromTo('#box-step-password', {x:-12}, {x:12, duration:0.08, yoyo:true, repeat:4});
             }
@@ -347,6 +367,7 @@
         function enterAppDirectly() {
             gsap.to('.verify-box', { scale: 0.8, opacity: 0, duration: 0.4, onComplete: () => {
                 document.getElementById('main-nav').style.display = 'flex';
+                document.getElementById('upload-nav-btn').style.display = 'inline-flex';
                 window.showScreen('albums-screen');
             }});
         }
@@ -359,7 +380,7 @@
             }
         });
 
-        // --- SEKCJA EKRANÓW ---
+        // --- OBSŁUGA STRON ---
         window.showScreen = function(screenId, isGoingBack = false) {
             const currentScreen = document.querySelector('.screen.active');
             if (currentScreen && currentScreen.id === screenId) return;
@@ -391,7 +412,6 @@
             window.scrollTo(0,0);
             
             gsap.fromTo(nextScreen, { opacity: 0, scale: 0.95, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: "power3.out" });
-            
             if(screenId === 'albums-screen') renderAlbums();
         }
 
@@ -399,7 +419,31 @@
             if (screenHistory.length > 0) window.showScreen(screenHistory.pop(), true);
         };
 
-        // --- KAFELKI ALBUMÓW ---
+        // --- SYSTEM WGRIWANIA PLIKÓW ---
+        function triggerFileUpload() {
+            if(!window.currentCategory) {
+                alert("Najpierw wejdź do wybranego albumu, do którego chcesz wrzucić plik!");
+                return;
+            }
+            document.getElementById('global-file-picker').click();
+        }
+
+        function handleGlobalFileSelect(event) {
+            const file = event.target.files[0];
+            if(!file) return;
+
+            // Tworzymy lokalny adres URL tylko na czas prezentacji pliku przed spięciem Supabase
+            const fakeUploadedUrl = URL.createObjectURL(file);
+            
+            // Dodajemy plik do pamięci podręcznej aktualnego albumu
+            defaultHardcodedItems[window.currentCategory].unshift(fakeUploadedUrl);
+            
+            alert(`Pomyślnie wgrano plik do albumu ${categoryNames[window.currentCategory]}! Po skonfigurowaniu Supabase pojawi się on u wszystkich.`);
+            renderGalleryGrid();
+            event.target.value = ''; // Reset inputu
+        }
+
+        // --- GENEROWANIE ALBUMÓW ---
         function renderAlbums() {
             const container = document.getElementById('albums-grid-container');
             if (!container) return;
@@ -412,10 +456,16 @@
                 const div = document.createElement('div');
                 div.className = 'album-card';
                 div.style.opacity = '0';
+                
+                let coverHtml = `<img src="${cover}" class="stack-img img-s1">`;
+                if(isVideoUrl(cover)) {
+                    coverHtml = `<video src="${cover}" class="stack-img img-s1" muted></video>`;
+                }
+
                 div.innerHTML = `
                     <div class="card-stack">
-                        <img src="${cover}" class="stack-img img-s1">
-                        <img src="${cover}" class="stack-img img-s2">
+                        ${coverHtml}
+                        ${coverHtml.replace('img-s1', 'img-s2')}
                     </div>
                     <div class="album-info">${name}</div>
                 `;
@@ -445,7 +495,7 @@
             lucide.createIcons();
         }
 
-        // --- GALERIA FOTEK ---
+        // --- GALERIA ZDJĘĆ / WIDEO ---
         function renderGalleryGrid() {
             const grid = document.getElementById('domino-grid');
             if(!grid) return;
@@ -465,39 +515,59 @@
                 div.addEventListener('mouseenter', () => gsap.to(div, { scale: 1.05, borderColor: 'var(--primary)', boxShadow: 'var(--shadow-glow)', zIndex: 10, duration: 0.2 }));
                 div.addEventListener('mouseleave', () => gsap.to(div, { scale: 1, borderColor: '#fff', boxShadow: '0 6px 18px rgba(0,0,0,0.2)', zIndex: 1, duration: 0.2 }));
 
-                let inner = `<img src="${item.url}" loading="lazy">`;
+                let mediaElement = `<img src="${item.url}" loading="lazy">`;
+                let videoTag = '';
+                
+                if(isVideoUrl(item.url)) {
+                    mediaElement = `<video src="${item.url}" muted loop playsinline></video>`;
+                    videoTag = `<div class="video-indicator"><i data-lucide="video" style="width:14px;height:14px;"></i></div>`;
+                    
+                    div.addEventListener('mouseenter', () => div.querySelector('video').play());
+                    div.addEventListener('mouseleave', () => {
+                        const v = div.querySelector('video');
+                        v.pause();
+                        v.currentTime = 0;
+                    });
+                }
+
                 if(item.likes > 0) {
-                    inner += `<div class="likes-badge"><i data-lucide="heart" style="width:14px;height:14px;"></i> ${item.likes}</div>`;
+                    mediaElement += `<div class="likes-badge"><i data-lucide="heart" style="width:14px;height:14px;"></i> ${item.likes}</div>`;
                 }
 
-                div.innerHTML = inner;
+                div.innerHTML = mediaElement + videoTag;
                 grid.appendChild(div);
-
-                const badge = div.querySelector('.likes-badge i');
-                if(badge) {
-                    gsap.to(badge, {scale: 1.2, duration: 0.6, repeat: -1, yoyo: true, ease: "power1.inOut"});
-                }
                 
                 gsap.fromTo(div, { opacity: 0, scale: 0.8, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.4, delay: index * 0.05, ease: "back.out(1.2)" });
             });
             lucide.createIcons();
         }
 
-        // --- DOUBLE TAP W MIEJSCE KLIKNIĘCIA ---
-        window.handleSingleOrDouble = function(e) {
-            const now = new Date().getTime();
-            const timesince = now - lastTap;
-            if((timesince < 300) && (timesince > 0)){
-                const rect = e.currentTarget.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
+        // --- ROZRÓŻNIANIE SINGLE CLICK (FULLSCREEN) OD DOUBLE CLICK (LIKE) ---
+        window.handleMediaClick = function(e) {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
 
+            if (clickTimer == null) {
+                clickTimer = setTimeout(function () {
+                    clickTimer = null;
+                    // Pojedyncze kliknięcie -> Tryb Fullscreen elementu domowego
+                    const element = e.target.closest('.modal-preview-img') || e.target.closest('.modal-preview-video');
+                    if (element) {
+                        if (element.requestFullscreen) element.requestFullscreen();
+                        else if (element.webkitRequestFullscreen) element.webkitRequestFullscreen();
+                        else if (element.msRequestFullscreen) element.msRequestFullscreen();
+                    }
+                }, 250);
+            } else {
+                clearTimeout(clickTimer);
+                clickTimer = null;
+                // Podwójne kliknięcie -> Like
                 if(!localLikes[selectedMediaUrl] || localLikes[selectedMediaUrl] === 0) {
                     window.toggleLike(false); 
                 }
                 playTargetedHeartAnimation(x, y);
             }
-            lastTap = now;
         };
 
         function playTargetedHeartAnimation(x, y) {
@@ -516,7 +586,7 @@
             );
         }
 
-        // --- MODAL ---
+        // --- OKNO MODALU ---
         window.openMediaModal = function(url) {
             selectedMediaUrl = url;
             replyingToCommentIndex = null;
@@ -526,10 +596,18 @@
             document.getElementById('comment-input').placeholder = randPlaceholder;
 
             const container = document.getElementById('modal-media-container');
-            container.innerHTML = `
-                <img src="${url}" class="modal-preview-img">
-                <i data-lucide="heart" class="center-pop-heart" id="center-heart"></i>
-            `;
+            
+            if(isVideoUrl(url)) {
+                container.innerHTML = `
+                    <video src="${url}" class="modal-preview-video" controls autoplay loop playsinline></video>
+                    <i data-lucide="heart" class="center-pop-heart" id="center-heart"></i>
+                `;
+            } else {
+                container.innerHTML = `
+                    <img src="${url}" class="modal-preview-img">
+                    <i data-lucide="heart" class="center-pop-heart" id="center-heart"></i>
+                `;
+            }
 
             updateModalSocials();
 
@@ -542,6 +620,9 @@
         };
 
         window.closeModal = function() {
+            const video = document.querySelector('.modal-preview-video');
+            if(video) video.pause();
+
             gsap.to('.modal-box', { scale: 0.8, opacity: 0, duration: 0.2, onComplete: () => {
                 document.getElementById('choice-modal').style.display = 'none';
                 renderGalleryGrid(); 
