@@ -108,7 +108,7 @@
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5, 7, 13, 0.96); backdrop-filter: blur(16px); z-index: 1000; display: none; justify-content: center; align-items: center; padding: 2rem; }
         .modal-box { background: var(--card-bg); border-radius: 28px; max-width: 1100px; width: 100%; height: 85vh; box-shadow: 0 30px 60px rgba(0,0,0,0.6); border: 2px solid rgba(255,255,255,0.05); display: flex; overflow: hidden; }
         
-        .media-container { flex: 1.4; background: #05080f; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative; user-select: none; cursor: pointer; }
+        .media-container { flex: 1.4; background: #05080f; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative; user-select: none; }
         .modal-preview-img, .modal-preview-video { max-width: 100%; max-height: 100%; object-fit: contain; }
         .modal-preview-video { width: 100%; height: 100%; }
         
@@ -120,16 +120,19 @@
         .btn-close-modal { background: none; border: none; color: var(--text-muted); cursor: pointer; transition: 0.2s; }
         .btn-close-modal:hover { color: var(--heart-red); transform: scale(1.2) rotate(90deg); }
 
-        .modal-actions-row { margin-bottom: 1.2rem; padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 1.2rem; }
+        .modal-actions-row { margin-bottom: 1.2rem; padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
         
-        .btn-only-heart { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
-        .btn-only-heart:hover { background: rgba(255, 42, 75, 0.1); border-color: rgba(255, 42, 75, 0.4); transform: scale(1.1); color: var(--heart-red); }
+        .btn-only-heart { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: var(--heart-red); width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
+        .btn-only-heart i { fill: var(--heart-red); } /* Zawsze zamalowane serce */
+        .btn-only-heart:hover { transform: scale(1.1); box-shadow: var(--heart-glow); }
+        .btn-only-heart.liked { background: rgba(255, 42, 75, 0.2); border-color: var(--heart-red); box-shadow: var(--heart-glow); }
         
-        .btn-only-heart.liked { color: var(--heart-red); background: rgba(255, 42, 75, 0.15); border-color: var(--heart-red); box-shadow: var(--heart-glow); }
-        .btn-only-heart.liked i { fill: var(--heart-red); color: var(--heart-red); }
-        
-        .stats-display { display: flex; align-items: center; gap: 1rem; font-weight: 800; font-size: 1rem; color: var(--text-main); }
-        .stat-item { display: flex; align-items: center; gap: 0.4rem; background: rgba(255,255,255,0.02); padding: 0.4rem 0.8rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
+        /* Przycisk powiększania */
+        .btn-fullscreen-trigger { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main); padding: 0.5rem 1rem; height: 52px; border-radius: 26px; font-weight: 700; font-family: 'Nunito'; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; transition: 0.2s; }
+        .btn-fullscreen-trigger:hover { background: rgba(59, 130, 246, 0.1); border-color: var(--primary); color: var(--primary); }
+
+        .stats-display { display: flex; align-items: center; gap: 0.6rem; font-weight: 800; font-size: 1rem; color: var(--text-main); }
+        .stat-item { display: flex; align-items: center; gap: 0.4rem; background: rgba(255,255,255,0.02); padding: 0.4rem 0.8rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); height: 52px; }
         .stat-item i { width: 16px; height: 16px; }
         .stat-item.heart-stat i { color: var(--heart-red); fill: var(--heart-red); }
         .stat-item.comment-stat i { color: var(--primary); }
@@ -150,8 +153,7 @@
         .btn-delete-comment { position: absolute; top: 0.9rem; right: 0.9rem; }
         .btn-delete-comment:hover, .btn-delete-media:hover { color: #ef4444; transform: scale(1.15); }
         
-        /* Specjalny przycisk usuwania pliku w modal-u */
-        .btn-delete-media { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); padding: 0.5rem 1rem; border-radius: 12px; color: #ef4444; font-weight: 700; gap: 0.3rem; font-family: 'Nunito'; cursor: pointer; margin-left: auto; }
+        .btn-delete-media { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); padding: 0.5rem 1rem; border-radius: 12px; color: #ef4444; font-weight: 700; gap: 0.3rem; font-family: 'Nunito'; cursor: pointer; height: 52px; }
 
         .replies-container { margin-top: 0.4rem; padding-left: 1rem; border-left: 2px dashed rgba(255,255,255,0.1); display: flex; flex-direction: column; gap: 0.4rem; }
         .reply-item { background: rgba(255,255,255,0.01); padding: 0.5rem 0.7rem; border-radius: 10px; font-size: 0.88rem; }
@@ -228,7 +230,7 @@
 
         <div class="modal-overlay" id="choice-modal">
             <div class="modal-box">
-                <div class="media-container" id="modal-media-container" onclick="window.handleMediaClick(event)"></div>
+                <div class="media-container" id="modal-media-container"></div>
                 
                 <div class="social-panel">
                     <div class="panel-header">
@@ -240,6 +242,11 @@
                         <button class="btn-only-heart" id="modal-like-btn" onclick="window.toggleLike(true)">
                             <i data-lucide="heart"></i>
                         </button>
+                        
+                        <button class="btn-fullscreen-trigger" onclick="window.triggerFullscreenMedia()">
+                            <i data-lucide="maximize-2" style="width:16px;height:16px;"></i> Cały ekran
+                        </button>
+
                         <div class="stats-display">
                             <div class="stat-item heart-stat">
                                 <i data-lucide="heart"></i> <span id="modal-like-count">0</span>
@@ -303,7 +310,6 @@
         let selectedMediaUrl = "";
         let screenHistory = [];
         let replyingToCommentIndex = null;
-        let clickTimer = null;
         
         let dbMediaItems = [];
         let dbLikes = [];
@@ -315,7 +321,6 @@
             return url.toLowerCase().match(/\.(mp4|mov|webm|ogg|quicktime)/) || url.includes("video");
         }
 
-        // --- FETCH ONLINE DATA ---
         async function supabaseFetch(table) {
             try {
                 const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
@@ -331,7 +336,6 @@
             dbComments = await supabaseFetch("comments");
         }
 
-        // --- AUTOLOGOWANIE / ZAPISYWANIE SESJI ---
         function handleNickSubmit() {
             const nickVal = document.getElementById('nick-input').value.trim();
             if(!nickVal) return alert("Wpisz swoje imię!");
@@ -354,7 +358,7 @@
             if(input === 'kotlet') {
                 msgBox.innerText = "Dobra odpowiedź 😊";
                 msgBox.style.color = "#4CAF50"; 
-                localStorage.setItem('8f_authenticated', 'true'); // Zapamiętanie autoryzacji
+                localStorage.setItem('8f_authenticated', 'true'); 
                 setTimeout(() => enterAppDirectly(), 400);
             } else {
                 msgBox.innerText = "Zła odpowiedź 😞";
@@ -372,7 +376,6 @@
         }
 
         window.addEventListener('DOMContentLoaded', async () => {
-            // Jeśli użytkownik wpisał nick ORAZ podał już poprawne hasło w przeszłości - wchodzi od razu
             if (localStorage.getItem('8f_nick') && localStorage.getItem('8f_authenticated') === 'true') {
                 document.getElementById('verify-screen').style.display = 'none';
                 await enterAppDirectly();
@@ -411,7 +414,6 @@
             if (screenHistory.length > 0) window.showScreen(screenHistory.pop(), true);
         };
 
-        // --- UPLOAD DO STORAGE ---
         function triggerFileUpload() {
             if(!window.currentCategory) return alert("Wejdź najpierw do wybranego albumu!");
             document.getElementById('global-file-picker').click();
@@ -439,7 +441,6 @@
 
                 const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/${BUCKET_NAME}/${filePath}`;
 
-                // Zapisujemy w tabeli URL pliku oraz NICK osoby, która go wrzuciła
                 await fetch(`${SUPABASE_URL}/rest/v1/media_items`, {
                     method: 'POST',
                     headers: { 
@@ -459,7 +460,6 @@
             event.target.value = '';
         }
 
-        // --- RENDER ALBUMÓW ---
         function renderAlbums() {
             const container = document.getElementById('albums-grid-container');
             if (!container) return;
@@ -499,7 +499,6 @@
             });
         }
 
-        // --- RENDER GALERII ---
         function renderGalleryGrid() {
             const grid = document.getElementById('domino-grid');
             if(!grid) return;
@@ -538,26 +537,12 @@
             lucide.createIcons();
         }
 
-        // --- CLICK EVENTS ---
-        window.handleMediaClick = function(e) {
-            const rect = e.currentTarget.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-
-            if (clickTimer == null) {
-                clickTimer = setTimeout(function () {
-                    clickTimer = null;
-                    const element = e.target.closest('.modal-preview-img') || e.target.closest('.modal-preview-video');
-                    if (element) {
-                        if (element.requestFullscreen) element.requestFullscreen();
-                        else if (element.webkitRequestFullscreen) element.webkitRequestFullscreen();
-                    }
-                }, 250);
-            } else {
-                clearTimeout(clickTimer);
-                clickTimer = null;
-                window.toggleLike(false);
-                playTargetedHeartAnimation(x, y);
+        // --- POWIĘKSZANIE ZDJĘCIA (FULLSCREEN) ---
+        window.triggerFullscreenMedia = function() {
+            const element = document.querySelector('.modal-preview-img') || document.querySelector('.modal-preview-video');
+            if (element) {
+                if (element.requestFullscreen) element.requestFullscreen();
+                else if (element.webkitRequestFullscreen) element.webkitRequestFullscreen();
             }
         };
 
@@ -570,7 +555,6 @@
             }});
         }
 
-        // --- MODAL ---
         window.openMediaModal = function(url) {
             selectedMediaUrl = url;
             window.cancelReply();
@@ -598,10 +582,8 @@
         function updateModalSocials() {
             const myNick = localStorage.getItem('8f_nick') || "Anonim";
             
-            // Sprawdzenie właściciela pliku
             const mediaRecord = dbMediaItems.find(i => i.url === selectedMediaUrl);
             const deleteMediaBtn = document.getElementById('modal-delete-media-btn');
-            // Wyświetlamy usuwanie TYLKO jeśli plik należy do nas
             if(mediaRecord && mediaRecord.owner_nick === myNick) {
                 deleteMediaBtn.style.display = 'inline-flex';
             } else {
@@ -627,7 +609,6 @@
                 let repliesHtml = childReplies.map(r => `<div class="reply-item"><div class="reply-author">${r.nick}</div><div>${r.text}</div></div>`).join('');
                 if(repliesHtml) repliesHtml = `<div class="replies-container">${repliesHtml}</div>`;
 
-                // Sprawdzamy czy komentarz należy do zalogowanego użytkownika
                 const canDeleteComment = (c.nick === myNick) ? 'style="display:flex;"' : 'style="display:none;"';
 
                 list.innerHTML += `
@@ -645,14 +626,12 @@
             lucide.createIcons();
         }
 
-        // --- USUWANIE WŁASNEGO ZDJĘCIA/WIDEO ---
         window.deleteCurrentMediaOnline = async function() {
             const mediaRecord = dbMediaItems.find(i => i.url === selectedMediaUrl);
             if(!mediaRecord) return;
             
             if(!confirm("Czy na pewno chcesz usunąć to wspomnienie?")) return;
 
-            // Kasujemy z bazy danych
             await fetch(`${SUPABASE_URL}/rest/v1/media_items?id=eq.${mediaRecord.id}`, {
                 method: 'DELETE',
                 headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
@@ -662,7 +641,6 @@
             window.closeModal();
         };
 
-        // --- POLUBIENIA I KOMENTARZE ONLINE ---
         window.toggleLike = async function(triggerVisual = false) {
             const myNick = localStorage.getItem('8f_nick') || "Anonim";
             const existing = dbLikes.find(l => l.media_url === selectedMediaUrl && l.user_nick === myNick);
