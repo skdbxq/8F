@@ -146,8 +146,12 @@
         .btn-cmt-action { background: none; border: none; color: var(--text-muted); font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 0.3rem; font-family: 'Nunito'; transition: 0.2s; }
         .btn-cmt-action:hover { color: var(--primary); }
         
-        .btn-delete-comment { background: none; border: none; color: var(--text-muted); cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; position: absolute; top: 0.9rem; right: 0.9rem; }
-        .btn-delete-comment:hover { color: #ef4444; transform: scale(1.15); }
+        .btn-delete-comment, .btn-delete-media { background: none; border: none; color: var(--text-muted); cursor: pointer; transition: 0.2s; display: none; align-items: center; justify-content: center; }
+        .btn-delete-comment { position: absolute; top: 0.9rem; right: 0.9rem; }
+        .btn-delete-comment:hover, .btn-delete-media:hover { color: #ef4444; transform: scale(1.15); }
+        
+        /* Specjalny przycisk usuwania pliku w modal-u */
+        .btn-delete-media { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); padding: 0.5rem 1rem; border-radius: 12px; color: #ef4444; font-weight: 700; gap: 0.3rem; font-family: 'Nunito'; cursor: pointer; margin-left: auto; }
 
         .replies-container { margin-top: 0.4rem; padding-left: 1rem; border-left: 2px dashed rgba(255,255,255,0.1); display: flex; flex-direction: column; gap: 0.4rem; }
         .reply-item { background: rgba(255,255,255,0.01); padding: 0.5rem 0.7rem; border-radius: 10px; font-size: 0.88rem; }
@@ -244,6 +248,10 @@
                                 <i data-lucide="message-circle"></i> <span id="modal-comment-count">0</span>
                             </div>
                         </div>
+                        
+                        <button class="btn-delete-media" id="modal-delete-media-btn" onclick="window.deleteCurrentMediaOnline()">
+                            <i data-lucide="trash-2" style="width:14px;height:14px;"></i> Usuń
+                        </button>
                     </div>
 
                     <div class="comments-section">
@@ -307,7 +315,7 @@
             return url.toLowerCase().match(/\.(mp4|mov|webm|ogg|quicktime)/) || url.includes("video");
         }
 
-        // --- FETCH ONLINE DATA FROM SUPABASE ---
+        // --- FETCH ONLINE DATA ---
         async function supabaseFetch(table) {
             try {
                 const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
@@ -323,7 +331,7 @@
             dbComments = await supabaseFetch("comments");
         }
 
-        // --- ONBOARDING ---
+        // --- AUTOLOGOWANIE / ZAPISYWANIE SESJI ---
         function handleNickSubmit() {
             const nickVal = document.getElementById('nick-input').value.trim();
             if(!nickVal) return alert("Wpisz swoje imię!");
@@ -346,6 +354,7 @@
             if(input === 'kotlet') {
                 msgBox.innerText = "Dobra odpowiedź 😊";
                 msgBox.style.color = "#4CAF50"; 
+                localStorage.setItem('8f_authenticated', 'true'); // Zapamiętanie autoryzacji
                 setTimeout(() => enterAppDirectly(), 400);
             } else {
                 msgBox.innerText = "Zła odpowiedź 😞";
@@ -356,15 +365,18 @@
 
         async function enterAppDirectly() {
             await syncOnlineData();
-            gsap.to('.verify-box', { scale: 0.8, opacity: 0, duration: 0.4, onComplete: () => {
-                document.getElementById('main-nav').style.display = 'flex';
-                document.getElementById('upload-nav-btn').style.display = 'inline-flex';
-                window.showScreen('albums-screen');
-            }});
+            document.getElementById('verify-screen').classList.remove('active');
+            document.getElementById('main-nav').style.display = 'flex';
+            document.getElementById('upload-nav-btn').style.display = 'inline-flex';
+            window.showScreen('albums-screen');
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            if (localStorage.getItem('8f_nick')) {
+        window.addEventListener('DOMContentLoaded', async () => {
+            // Jeśli użytkownik wpisał nick ORAZ podał już poprawne hasło w przeszłości - wchodzi od razu
+            if (localStorage.getItem('8f_nick') && localStorage.getItem('8f_authenticated') === 'true') {
+                document.getElementById('verify-screen').style.display = 'none';
+                await enterAppDirectly();
+            } else if (localStorage.getItem('8f_nick')) {
                 document.getElementById('box-step-nick').style.display = 'none';
                 document.getElementById('box-step-password').style.display = 'block';
                 document.getElementById('box-step-password').style.opacity = '1';
@@ -409,6 +421,7 @@
             const file = event.target.files[0];
             if(!file) return;
 
+            const myNick = localStorage.getItem('8f_nick') || "Anonim";
             const fileExt = file.name.split('.').pop();
             const fileName = `${Math.random()}.${fileExt}`;
             const filePath = `${window.currentCategory}/${fileName}`;
@@ -416,7 +429,6 @@
             alert("Wgrywam plik... Poczekaj chwilkę.");
 
             try {
-                // 1. Wrzucamy fizyczny plik do Storage
                 let uploadRes = await fetch(`${SUPABASE_URL}/storage/v1/object/${BUCKET_NAME}/${filePath}`, {
                     method: 'POST',
                     headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` },
@@ -427,7 +439,7 @@
 
                 const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/${BUCKET_NAME}/${filePath}`;
 
-                // 2. Dodajemy rekord do tabeli, żeby każdy to widział
+                // Zapisujemy w tabeli URL pliku oraz NICK osoby, która go wrzuciła
                 await fetch(`${SUPABASE_URL}/rest/v1/media_items`, {
                     method: 'POST',
                     headers: { 
@@ -435,14 +447,14 @@
                         "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify({ url: publicUrl, category: window.currentCategory })
+                    body: JSON.stringify({ url: publicUrl, category: window.currentCategory, owner_nick: myNick })
                 });
 
                 alert("Gotowe! Plik jest już w chmurze.");
                 await syncOnlineData();
                 renderGalleryGrid();
             } catch(e) {
-                alert("Błąd wgrywania. Sprawdź czy stworzyłeś publiczny bucket w Storage o nazwie: wspomnienia");
+                alert("Błąd wgrywania.");
             }
             event.target.value = '';
         }
@@ -455,8 +467,6 @@
 
             Object.keys(categoryNames).forEach((catKey, index) => {
                 const name = categoryNames[catKey];
-                
-                // Szukamy pierwszej okładki z bazy lub bierzemy domyślną z GitHuba
                 const catOnlineItems = dbMediaItems.filter(i => i.category === catKey);
                 const cover = catOnlineItems.length > 0 ? catOnlineItems[0].url : defaultHardcodedItems[catKey][0];
 
@@ -495,7 +505,6 @@
             if(!grid) return;
             grid.innerHTML = "";
 
-            // Łączymy zdjęcia wbudowane w kod + te dodane przez użytkowników do bazy danych
             let items = [...defaultHardcodedItems[window.currentCategory]];
             dbMediaItems.filter(i => i.category === window.currentCategory).forEach(i => {
                 if(!items.includes(i.url)) items.unshift(i.url);
@@ -529,7 +538,7 @@
             lucide.createIcons();
         }
 
-        // --- FULLSCREEN VS PODWÓJNE TPNIĘCIE ---
+        // --- CLICK EVENTS ---
         window.handleMediaClick = function(e) {
             const rect = e.currentTarget.getBoundingClientRect();
             const x = e.clientX - rect.left;
@@ -561,7 +570,7 @@
             }});
         }
 
-        // --- OKNO PODGLĄDU MODAL ---
+        // --- MODAL ---
         window.openMediaModal = function(url) {
             selectedMediaUrl = url;
             window.cancelReply();
@@ -589,6 +598,16 @@
         function updateModalSocials() {
             const myNick = localStorage.getItem('8f_nick') || "Anonim";
             
+            // Sprawdzenie właściciela pliku
+            const mediaRecord = dbMediaItems.find(i => i.url === selectedMediaUrl);
+            const deleteMediaBtn = document.getElementById('modal-delete-media-btn');
+            // Wyświetlamy usuwanie TYLKO jeśli plik należy do nas
+            if(mediaRecord && mediaRecord.owner_nick === myNick) {
+                deleteMediaBtn.style.display = 'inline-flex';
+            } else {
+                deleteMediaBtn.style.display = 'none';
+            }
+
             const totalLikes = dbLikes.filter(l => l.media_url === selectedMediaUrl);
             const isLikedByMe = totalLikes.some(l => l.user_nick === myNick);
             
@@ -608,11 +627,14 @@
                 let repliesHtml = childReplies.map(r => `<div class="reply-item"><div class="reply-author">${r.nick}</div><div>${r.text}</div></div>`).join('');
                 if(repliesHtml) repliesHtml = `<div class="replies-container">${repliesHtml}</div>`;
 
+                // Sprawdzamy czy komentarz należy do zalogowanego użytkownika
+                const canDeleteComment = (c.nick === myNick) ? 'style="display:flex;"' : 'style="display:none;"';
+
                 list.innerHTML += `
                     <div class="comment-item">
                         <div class="comment-top"><div class="comment-author">${c.nick}</div></div>
                         <div class="comment-text">${c.text}</div>
-                        <button class="btn-delete-comment" onclick="window.deleteCommentOnline(${c.id})"><i data-lucide="trash-2" style="width:14px;height:14px;"></i></button>
+                        <button class="btn-delete-comment" ${canDeleteComment} onclick="window.deleteCommentOnline(${c.id})"><i data-lucide="trash-2" style="width:14px;height:14px;"></i></button>
                         <div class="comment-actions">
                             <button class="btn-cmt-action" onclick="window.prepareReply(${c.id}, '${c.nick}')"><i data-lucide="message-square" style="width:12px;height:12px;"></i> Odpowiedz</button>
                         </div>
@@ -623,19 +645,34 @@
             lucide.createIcons();
         }
 
-        // --- MODAL ONLINE ACTIONS ---
+        // --- USUWANIE WŁASNEGO ZDJĘCIA/WIDEO ---
+        window.deleteCurrentMediaOnline = async function() {
+            const mediaRecord = dbMediaItems.find(i => i.url === selectedMediaUrl);
+            if(!mediaRecord) return;
+            
+            if(!confirm("Czy na pewno chcesz usunąć to wspomnienie?")) return;
+
+            // Kasujemy z bazy danych
+            await fetch(`${SUPABASE_URL}/rest/v1/media_items?id=eq.${mediaRecord.id}`, {
+                method: 'DELETE',
+                headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+            });
+
+            await syncOnlineData();
+            window.closeModal();
+        };
+
+        // --- POLUBIENIA I KOMENTARZE ONLINE ---
         window.toggleLike = async function(triggerVisual = false) {
             const myNick = localStorage.getItem('8f_nick') || "Anonim";
             const existing = dbLikes.find(l => l.media_url === selectedMediaUrl && l.user_nick === myNick);
 
             if(existing) {
-                // Usuń lajka online
                 await fetch(`${SUPABASE_URL}/rest/v1/likes?id=eq.${existing.id}`, {
                     method: 'DELETE',
                     headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
                 });
             } else {
-                // Dodaj lajka online
                 if(triggerVisual) {
                     const cnt = document.getElementById('modal-media-container');
                     playTargetedHeartAnimation(cnt.clientWidth/2, cnt.clientHeight/2);
