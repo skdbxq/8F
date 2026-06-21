@@ -41,7 +41,6 @@
             background: radial-gradient(circle at top right, #1e293b, var(--bg-color));
         }
 
-        /* --- NAVI --- */
         .navbar {
             position: fixed; top: 0; left: 0; width: 100%; padding: 1rem 2rem;
             background: rgba(10, 14, 23, 0.95); backdrop-filter: blur(16px);
@@ -71,7 +70,6 @@
         .screen { display: none; min-height: 100vh; width: 100%; padding: 2rem; flex-direction: column; justify-content: center; align-items: center; opacity: 0; }
         .screen.active { display: flex; opacity: 1; }
 
-        /* ==================== ONBOARDING ==================== */
         .verify-box {
             background: var(--card-bg); padding: 3rem; border-radius: 24px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.5); text-align: center; max-width: 400px; width: 100%;
@@ -85,7 +83,6 @@
         .btn-verify:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: var(--shadow-glow); }
         .msg-text { font-weight: 700; margin-top: 1rem; display: none; font-size: 1.1rem; }
 
-        /* ==================== ALBUMY ==================== */
         #albums-screen { justify-content: flex-start; padding-top: 7rem; max-width: 1000px; margin: 0 auto; }
         .screen-header h2 { font-size: 2.6rem; margin-bottom: 1.5rem; color: var(--text-main); text-align: center; font-weight: 900; }
         .albums-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2.5rem; width: 100%; padding: 2rem; }
@@ -97,7 +94,6 @@
         .stack-img:nth-child(1) { z-index: 3; }
         .stack-img:nth-child(2) { z-index: 2; }
 
-        /* ==================== KATEGORIA ZDJĘĆ ==================== */
         #gallery-screen { justify-content: flex-start; padding-top: 7rem; max-width: 1200px; margin: 0 auto; }
         .domino-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 2rem; width: 100%; padding: 0 1.5rem 3rem 1.5rem; }
         .domino-item { position: relative; aspect-ratio: 1; border-radius: 20px; cursor: pointer; border: 4px solid #fff; box-shadow: 0 6px 18px rgba(0,0,0,0.2); overflow: hidden; background: #000; }
@@ -109,7 +105,6 @@
         .likes-badge { position: absolute; bottom: 12px; right: 12px; background: rgba(0, 0, 0, 0.8); color: var(--heart-red); padding: 6px 14px; border-radius: 20px; font-weight: 900; display: flex; align-items: center; gap: 5px; backdrop-filter: blur(4px); z-index: 2; font-size: 0.95rem; border: 1px solid rgba(255, 42, 75, 0.3); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
         .likes-badge i { fill: var(--heart-red); color: var(--heart-red); }
 
-        /* ==================== DYNAMICZNY MODAL PODGLĄDU ==================== */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5, 7, 13, 0.96); backdrop-filter: blur(16px); z-index: 1000; display: none; justify-content: center; align-items: center; padding: 2rem; }
         .modal-box { background: var(--card-bg); border-radius: 28px; max-width: 1100px; width: 100%; height: 85vh; box-shadow: 0 30px 60px rgba(0,0,0,0.6); border: 2px solid rgba(255,255,255,0.05); display: flex; overflow: hidden; }
         
@@ -119,14 +114,12 @@
         
         .center-pop-heart { position: absolute; color: var(--heart-red); fill: var(--heart-red); font-size: 11rem; opacity: 0; scale: 0; pointer-events: none; z-index: 15; filter: drop-shadow(var(--heart-glow)); transform: translate(-50%, -50%); }
 
-        /* Prawy Panel */
         .social-panel { flex: 1; display: flex; flex-direction: column; border-left: 2px solid rgba(255,255,255,0.05); background: #111827; padding: 1.8rem; }
         .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .panel-header h4 { font-weight: 800; color: var(--text-main); font-size: 1.2rem; }
         .btn-close-modal { background: none; border: none; color: var(--text-muted); cursor: pointer; transition: 0.2s; }
         .btn-close-modal:hover { color: var(--heart-red); transform: scale(1.2) rotate(90deg); }
 
-        /* Pasek akcji */
         .modal-actions-row { margin-bottom: 1.2rem; padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 1.2rem; }
         
         .btn-only-heart { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
@@ -141,7 +134,6 @@
         .stat-item.heart-stat i { color: var(--heart-red); fill: var(--heart-red); }
         .stat-item.comment-stat i { color: var(--primary); }
 
-        /* Komentarze */
         .comments-section { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; }
         .comments-list { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 1.2rem; padding-right: 0.5rem; }
         
@@ -153,9 +145,7 @@
         .comment-actions { display: flex; gap: 1rem; margin-top: 0.2rem; align-items: center; }
         .btn-cmt-action { background: none; border: none; color: var(--text-muted); font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 0.3rem; font-family: 'Nunito'; transition: 0.2s; }
         .btn-cmt-action:hover { color: var(--primary); }
-        .btn-cmt-action.cmt-liked { color: var(--heart-red); }
-        .btn-cmt-action.cmt-liked i { fill: var(--heart-red); color: var(--heart-red); }
-
+        
         .btn-delete-comment { background: none; border: none; color: var(--text-muted); cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; position: absolute; top: 0.9rem; right: 0.9rem; }
         .btn-delete-comment:hover { color: #ef4444; transform: scale(1.15); }
 
@@ -179,9 +169,7 @@
             .social-panel { flex: 1.4; }
         }
 
-        /* Styl ukrytego inputu do wgrywania */
         #global-file-picker { display: none; }
-
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.3); border-radius: 10px; }
@@ -202,7 +190,6 @@
                 <i data-lucide="plus-circle"></i> Dodaj plik
             </button>
             <input type="file" id="global-file-picker" accept="image/*,video/*" onchange="handleGlobalFileSelect(event)">
-            
             <button class="nav-btn" onclick="window.showScreen('albums-screen')"><i data-lucide="images"></i> Albumy</button>
         </div>
     </nav>
@@ -237,8 +224,7 @@
 
         <div class="modal-overlay" id="choice-modal">
             <div class="modal-box">
-                <div class="media-container" id="modal-media-container" onclick="window.handleMediaClick(event)">
-                    </div>
+                <div class="media-container" id="modal-media-container" onclick="window.handleMediaClick(event)"></div>
                 
                 <div class="social-panel">
                     <div class="panel-header">
@@ -279,13 +265,10 @@
     </main>
 
     <script>
-        // ==========================================
-        // KONFIGURACJA SUPABASE (Zanim tam wkleisz klucze, pliki zapisują się tymczasowo)
-        // ==========================================
-        const SUPABASE_URL = "TUTAJ_WKLEJ_PROJECT_URL";
-        const SUPABASE_ANON_KEY = "TUTAJ_WKLEJ_ANON_PUBLIC_API_KEY";
+        const SUPABASE_URL = "https://kxcirzmkjgxgkfiragfc.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_E_0z_SOkrJc8jy89ZmUg4g_1zfbyWTt";
+        const BUCKET_NAME = "wspomnienia"; 
 
-        // Twoje uporządkowane linki z GitHuba
         const defaultHardcodedItems = {
             krosnice: [
                 "https://raw.githubusercontent.com/skdbxq/8F/refs/heads/main/IMG_4652.PNG",
@@ -306,37 +289,44 @@
         };
 
         const categoryNames = { krosnice: "Krośnice", bal: "Bal Ósmoklasisty", wycieczki: "Wycieczki" };
-        const inputPlaceholders = [
-            "Napisz coś miłego...",
-            "Podziel się wspomnieniem...",
-            "Ale to były czasy! Skomentuj...",
-            "Ktoś pamięta ten moment? Haha"
-        ];
+        const inputPlaceholders = ["Napisz coś miłego...", "Podziel się wspomnieniem...", "Ale to były czasy!", "Skomentuj to fotkę..."];
         
-        let localLikes = JSON.parse(localStorage.getItem('8f_local_likes')) || {};
-        let localComments = JSON.parse(localStorage.getItem('8f_local_comments')) || {};
-
         window.currentCategory = "";
         let selectedMediaUrl = "";
         let screenHistory = [];
         let replyingToCommentIndex = null;
+        let clickTimer = null;
         
-        let clickTimer = null; // Obsługa pojedynczego vs podwójnego tapnięcia
+        let dbMediaItems = [];
+        let dbLikes = [];
+        let dbComments = [];
 
         lucide.createIcons();
 
-        // Pomocnicza funkcja sprawdzająca, czy plik to film wideo
         function isVideoUrl(url) {
             return url.toLowerCase().match(/\.(mp4|mov|webm|ogg|quicktime)/) || url.includes("video");
+        }
+
+        // --- FETCH ONLINE DATA FROM SUPABASE ---
+        async function supabaseFetch(table) {
+            try {
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
+                    headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+                });
+                return await res.json();
+            } catch(e) { return []; }
+        }
+
+        async function syncOnlineData() {
+            dbMediaItems = await supabaseFetch("media_items");
+            dbLikes = await supabaseFetch("likes");
+            dbComments = await supabaseFetch("comments");
         }
 
         // --- ONBOARDING ---
         function handleNickSubmit() {
             const nickVal = document.getElementById('nick-input').value.trim();
-            if(!nickVal) {
-                alert("Najpierw musisz wpisać swoje imię!");
-                return;
-            }
+            if(!nickVal) return alert("Wpisz swoje imię!");
             localStorage.setItem('8f_nick', nickVal);
             
             gsap.to('#box-step-nick', { scale: 0.8, opacity: 0, duration: 0.3, onComplete: () => {
@@ -358,13 +348,14 @@
                 msgBox.style.color = "#4CAF50"; 
                 setTimeout(() => enterAppDirectly(), 400);
             } else {
-                msgBox.innerText = "Zła odpowiedź 😞 Spróbuj jeszcze raz.";
+                msgBox.innerText = "Zła odpowiedź 😞";
                 msgBox.style.color = "#FF6B6B"; 
                 gsap.fromTo('#box-step-password', {x:-12}, {x:12, duration:0.08, yoyo:true, repeat:4});
             }
         }
 
-        function enterAppDirectly() {
+        async function enterAppDirectly() {
+            await syncOnlineData();
             gsap.to('.verify-box', { scale: 0.8, opacity: 0, duration: 0.4, onComplete: () => {
                 document.getElementById('main-nav').style.display = 'flex';
                 document.getElementById('upload-nav-btn').style.display = 'inline-flex';
@@ -380,14 +371,10 @@
             }
         });
 
-        // --- OBSŁUGA STRON ---
         window.showScreen = function(screenId, isGoingBack = false) {
             const currentScreen = document.querySelector('.screen.active');
             if (currentScreen && currentScreen.id === screenId) return;
-
-            if (!isGoingBack && currentScreen && currentScreen.id !== 'verify-screen') {
-                screenHistory.push(currentScreen.id);
-            }
+            if (!isGoingBack && currentScreen && currentScreen.id !== 'verify-screen') screenHistory.push(currentScreen.id);
             
             if (currentScreen) {
                 gsap.to(currentScreen, { opacity: 0, scale: 0.95, y: -10, duration: 0.3, onComplete: () => {
@@ -397,21 +384,14 @@
             } else {
                 showNewScreen(screenId);
             }
-
-            const backBtn = document.getElementById('back-btn');
-            if (screenHistory.length > 0 && screenId !== 'verify-screen') {
-                backBtn.style.display = 'inline-flex';
-            } else {
-                backBtn.style.display = 'none';
-            }
+            document.getElementById('back-btn').style.display = (screenHistory.length > 0 && screenId !== 'verify-screen') ? 'inline-flex' : 'none';
         };
 
         function showNewScreen(screenId) {
             const nextScreen = document.getElementById(screenId);
             nextScreen.classList.add('active');
             window.scrollTo(0,0);
-            
-            gsap.fromTo(nextScreen, { opacity: 0, scale: 0.95, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: "power3.out" });
+            gsap.fromTo(nextScreen, { opacity: 0, scale: 0.95, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.4 });
             if(screenId === 'albums-screen') renderAlbums();
         }
 
@@ -419,31 +399,55 @@
             if (screenHistory.length > 0) window.showScreen(screenHistory.pop(), true);
         };
 
-        // --- SYSTEM WGRIWANIA PLIKÓW ---
+        // --- UPLOAD DO STORAGE ---
         function triggerFileUpload() {
-            if(!window.currentCategory) {
-                alert("Najpierw wejdź do wybranego albumu, do którego chcesz wrzucić plik!");
-                return;
-            }
+            if(!window.currentCategory) return alert("Wejdź najpierw do wybranego albumu!");
             document.getElementById('global-file-picker').click();
         }
 
-        function handleGlobalFileSelect(event) {
+        async function handleGlobalFileSelect(event) {
             const file = event.target.files[0];
             if(!file) return;
 
-            // Tworzymy lokalny adres URL tylko na czas prezentacji pliku przed spięciem Supabase
-            const fakeUploadedUrl = URL.createObjectURL(file);
-            
-            // Dodajemy plik do pamięci podręcznej aktualnego albumu
-            defaultHardcodedItems[window.currentCategory].unshift(fakeUploadedUrl);
-            
-            alert(`Pomyślnie wgrano plik do albumu ${categoryNames[window.currentCategory]}! Po skonfigurowaniu Supabase pojawi się on u wszystkich.`);
-            renderGalleryGrid();
-            event.target.value = ''; // Reset inputu
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${Math.random()}.${fileExt}`;
+            const filePath = `${window.currentCategory}/${fileName}`;
+
+            alert("Wgrywam plik... Poczekaj chwilkę.");
+
+            try {
+                // 1. Wrzucamy fizyczny plik do Storage
+                let uploadRes = await fetch(`${SUPABASE_URL}/storage/v1/object/${BUCKET_NAME}/${filePath}`, {
+                    method: 'POST',
+                    headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` },
+                    body: file
+                });
+
+                if(!uploadRes.ok) throw new Error();
+
+                const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/${BUCKET_NAME}/${filePath}`;
+
+                // 2. Dodajemy rekord do tabeli, żeby każdy to widział
+                await fetch(`${SUPABASE_URL}/rest/v1/media_items`, {
+                    method: 'POST',
+                    headers: { 
+                        "apikey": SUPABASE_ANON_KEY, 
+                        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ url: publicUrl, category: window.currentCategory })
+                });
+
+                alert("Gotowe! Plik jest już w chmurze.");
+                await syncOnlineData();
+                renderGalleryGrid();
+            } catch(e) {
+                alert("Błąd wgrywania. Sprawdź czy stworzyłeś publiczny bucket w Storage o nazwie: wspomnienia");
+            }
+            event.target.value = '';
         }
 
-        // --- GENEROWANIE ALBUMÓW ---
+        // --- RENDER ALBUMÓW ---
         function renderAlbums() {
             const container = document.getElementById('albums-grid-container');
             if (!container) return;
@@ -451,25 +455,18 @@
 
             Object.keys(categoryNames).forEach((catKey, index) => {
                 const name = categoryNames[catKey];
-                const cover = defaultHardcodedItems[catKey][0];
+                
+                // Szukamy pierwszej okładki z bazy lub bierzemy domyślną z GitHuba
+                const catOnlineItems = dbMediaItems.filter(i => i.category === catKey);
+                const cover = catOnlineItems.length > 0 ? catOnlineItems[0].url : defaultHardcodedItems[catKey][0];
 
                 const div = document.createElement('div');
                 div.className = 'album-card';
                 div.style.opacity = '0';
                 
-                let coverHtml = `<img src="${cover}" class="stack-img img-s1">`;
-                if(isVideoUrl(cover)) {
-                    coverHtml = `<video src="${cover}" class="stack-img img-s1" muted></video>`;
-                }
+                let coverHtml = isVideoUrl(cover) ? `<video src="${cover}" class="stack-img img-s1" muted></video>` : `<img src="${cover}" class="stack-img img-s1">`;
 
-                div.innerHTML = `
-                    <div class="card-stack">
-                        ${coverHtml}
-                        ${coverHtml.replace('img-s1', 'img-s2')}
-                    </div>
-                    <div class="album-info">${name}</div>
-                `;
-                
+                div.innerHTML = `<div class="card-stack">${coverHtml}${coverHtml.replace('img-s1', 'img-s2')}</div><div class="album-info">${name}</div>`;
                 div.onclick = () => {
                     window.currentCategory = catKey;
                     document.getElementById('gallery-title').innerText = name;
@@ -481,68 +478,58 @@
                     gsap.to(div, { borderColor: 'var(--primary)', boxShadow: 'var(--shadow-glow)', y: -10, duration: 0.3 });
                     gsap.to(div.querySelector('.img-s1'), { rotate: -8, x: -10, y: -10, duration: 0.3 });
                     gsap.to(div.querySelector('.img-s2'), { rotate: 8, x: 10, y: -5, duration: 0.3 });
-                    gsap.to(div.querySelector('.album-info'), { background: 'var(--primary)', color: '#fff', duration: 0.3 });
                 });
                 div.addEventListener('mouseleave', () => {
                     gsap.to(div, { borderColor: 'rgba(255,255,255,0.05)', boxShadow: 'none', y: 0, duration: 0.3 });
                     gsap.to(div.querySelectorAll('.stack-img'), { rotate: 0, x: 0, y: 0, duration: 0.3 });
-                    gsap.to(div.querySelector('.album-info'), { background: '#fff', color: '#000', duration: 0.3 });
                 });
 
                 container.appendChild(div);
-                gsap.fromTo(div, {opacity: 0, y: 30, scale: 0.9}, {opacity: 1, y: 0, scale: 1, duration: 0.4, delay: index * 0.1, ease: "power2.out"});
+                gsap.to(div, {opacity: 1, y: 0, scale: 1, duration: 0.4, delay: index * 0.1});
             });
-            lucide.createIcons();
         }
 
-        // --- GALERIA ZDJĘĆ / WIDEO ---
+        // --- RENDER GALERII ---
         function renderGalleryGrid() {
             const grid = document.getElementById('domino-grid');
             if(!grid) return;
             grid.innerHTML = "";
 
+            // Łączymy zdjęcia wbudowane w kod + te dodane przez użytkowników do bazy danych
             let items = [...defaultHardcodedItems[window.currentCategory]];
-            let mappedItems = items.map(url => ({ url: url, likes: localLikes[url] || 0 }));
+            dbMediaItems.filter(i => i.category === window.currentCategory).forEach(i => {
+                if(!items.includes(i.url)) items.unshift(i.url);
+            });
+
+            let mappedItems = items.map(url => {
+                const itemLikes = dbLikes.filter(l => l.media_url === url).length;
+                return { url: url, likes: itemLikes };
+            });
             mappedItems.sort((a, b) => b.likes - a.likes);
 
             mappedItems.forEach((item, index) => {
                 const div = document.createElement('div');
                 div.className = 'domino-item';
                 div.style.opacity = '0';
-                
                 div.onclick = () => window.openMediaModal(item.url);
 
-                div.addEventListener('mouseenter', () => gsap.to(div, { scale: 1.05, borderColor: 'var(--primary)', boxShadow: 'var(--shadow-glow)', zIndex: 10, duration: 0.2 }));
-                div.addEventListener('mouseleave', () => gsap.to(div, { scale: 1, borderColor: '#fff', boxShadow: '0 6px 18px rgba(0,0,0,0.2)', zIndex: 1, duration: 0.2 }));
+                let mediaElement = isVideoUrl(item.url) ? `<video src="${item.url}" muted loop playsinline></video><div class="video-indicator"><i data-lucide="video" style="width:14px;height:14px;"></i></div>` : `<img src="${item.url}" loading="lazy">`;
+                if(item.likes > 0) mediaElement += `<div class="likes-badge"><i data-lucide="heart" style="width:14px;height:14px;"></i> ${item.likes}</div>`;
 
-                let mediaElement = `<img src="${item.url}" loading="lazy">`;
-                let videoTag = '';
+                div.innerHTML = mediaElement;
                 
                 if(isVideoUrl(item.url)) {
-                    mediaElement = `<video src="${item.url}" muted loop playsinline></video>`;
-                    videoTag = `<div class="video-indicator"><i data-lucide="video" style="width:14px;height:14px;"></i></div>`;
-                    
                     div.addEventListener('mouseenter', () => div.querySelector('video').play());
-                    div.addEventListener('mouseleave', () => {
-                        const v = div.querySelector('video');
-                        v.pause();
-                        v.currentTime = 0;
-                    });
+                    div.addEventListener('mouseleave', () => { const v = div.querySelector('video'); v.pause(); v.currentTime = 0; });
                 }
 
-                if(item.likes > 0) {
-                    mediaElement += `<div class="likes-badge"><i data-lucide="heart" style="width:14px;height:14px;"></i> ${item.likes}</div>`;
-                }
-
-                div.innerHTML = mediaElement + videoTag;
                 grid.appendChild(div);
-                
-                gsap.fromTo(div, { opacity: 0, scale: 0.8, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.4, delay: index * 0.05, ease: "back.out(1.2)" });
+                gsap.to(div, { opacity: 1, scale: 1, y: 0, duration: 0.4, delay: index * 0.03 });
             });
             lucide.createIcons();
         }
 
-        // --- ROZRÓŻNIANIE SINGLE CLICK (FULLSCREEN) OD DOUBLE CLICK (LIKE) ---
+        // --- FULLSCREEN VS PODWÓJNE TPNIĘCIE ---
         window.handleMediaClick = function(e) {
             const rect = e.currentTarget.getBoundingClientRect();
             const x = e.clientX - rect.left;
@@ -551,21 +538,16 @@
             if (clickTimer == null) {
                 clickTimer = setTimeout(function () {
                     clickTimer = null;
-                    // Pojedyncze kliknięcie -> Tryb Fullscreen elementu domowego
                     const element = e.target.closest('.modal-preview-img') || e.target.closest('.modal-preview-video');
                     if (element) {
                         if (element.requestFullscreen) element.requestFullscreen();
                         else if (element.webkitRequestFullscreen) element.webkitRequestFullscreen();
-                        else if (element.msRequestFullscreen) element.msRequestFullscreen();
                     }
                 }, 250);
             } else {
                 clearTimeout(clickTimer);
                 clickTimer = null;
-                // Podwójne kliknięcie -> Like
-                if(!localLikes[selectedMediaUrl] || localLikes[selectedMediaUrl] === 0) {
-                    window.toggleLike(false); 
-                }
+                window.toggleLike(false);
                 playTargetedHeartAnimation(x, y);
             }
         };
@@ -573,212 +555,139 @@
         function playTargetedHeartAnimation(x, y) {
             const centerHeart = document.getElementById('center-heart');
             if(!centerHeart) return;
-            
-            centerHeart.style.left = `${x}px`;
-            centerHeart.style.top = `${y}px`;
-            
-            gsap.killTweensOf(centerHeart);
-            gsap.fromTo(centerHeart, 
-                { scale: 0, opacity: 0, rotation: -25 },
-                { scale: 1, opacity: 1, rotation: 10, duration: 0.25, ease: "back.out(2)", onComplete: () => {
-                    gsap.to(centerHeart, { scale: 0, opacity: 0, delay: 0.3, duration: 0.2, ease: "power2.in" });
-                }}
-            );
+            centerHeart.style.left = `${x}px`; centerHeart.style.top = `${y}px`;
+            gsap.fromTo(centerHeart, { scale: 0, opacity: 0, rotation: -25 }, { scale: 1, opacity: 1, rotation: 10, duration: 0.25, onComplete: () => {
+                gsap.to(centerHeart, { scale: 0, opacity: 0, delay: 0.2, duration: 0.2 });
+            }});
         }
 
-        // --- OKNO MODALU ---
+        // --- OKNO PODGLĄDU MODAL ---
         window.openMediaModal = function(url) {
             selectedMediaUrl = url;
-            replyingToCommentIndex = null;
-            document.getElementById('reply-box-indicator').style.display = 'none';
+            window.cancelReply();
 
-            const randPlaceholder = inputPlaceholders[Math.floor(Math.random() * inputPlaceholders.length)];
-            document.getElementById('comment-input').placeholder = randPlaceholder;
-
+            document.getElementById('comment-input').placeholder = inputPlaceholders[Math.floor(Math.random() * inputPlaceholders.length)];
             const container = document.getElementById('modal-media-container');
             
-            if(isVideoUrl(url)) {
-                container.innerHTML = `
-                    <video src="${url}" class="modal-preview-video" controls autoplay loop playsinline></video>
-                    <i data-lucide="heart" class="center-pop-heart" id="center-heart"></i>
-                `;
-            } else {
-                container.innerHTML = `
-                    <img src="${url}" class="modal-preview-img">
-                    <i data-lucide="heart" class="center-pop-heart" id="center-heart"></i>
-                `;
-            }
+            container.innerHTML = isVideoUrl(url) ? 
+                `<video src="${url}" class="modal-preview-video" controls autoplay loop playsinline></video><i data-lucide="heart" class="center-pop-heart" id="center-heart"></i>` :
+                `<img src="${url}" class="modal-preview-img"><i data-lucide="heart" class="center-pop-heart" id="center-heart"></i>`;
 
             updateModalSocials();
-
-            const modal = document.getElementById('choice-modal');
-            modal.style.display = 'flex';
-            
-            gsap.fromTo('.modal-box', { scale: 0.7, opacity: 0, rotationX: -15 }, { scale: 1, opacity: 1, rotationX: 0, duration: 0.4, ease: "back.out(1.5)" });
-            gsap.fromTo('.social-panel', { x: 50, opacity: 0 }, { x: 0, opacity: 1, delay: 0.1, duration: 0.3 });
+            document.getElementById('choice-modal').style.display = 'flex';
+            gsap.fromTo('.modal-box', { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3 });
             lucide.createIcons();
         };
 
         window.closeModal = function() {
             const video = document.querySelector('.modal-preview-video');
             if(video) video.pause();
-
-            gsap.to('.modal-box', { scale: 0.8, opacity: 0, duration: 0.2, onComplete: () => {
-                document.getElementById('choice-modal').style.display = 'none';
-                renderGalleryGrid(); 
-            }});
+            document.getElementById('choice-modal').style.display = 'none';
+            renderGalleryGrid();
         };
 
         function updateModalSocials() {
-            const likesCount = localLikes[selectedMediaUrl] || 0;
-            document.getElementById('modal-like-count').innerText = likesCount;
-
-            const comments = localComments[selectedMediaUrl] || [];
-            document.getElementById('modal-comment-count').innerText = comments.length;
-
-            const likeBtn = document.getElementById('modal-like-btn');
-            if(likesCount > 0) likeBtn.classList.add('liked');
-            else likeBtn.classList.remove('liked');
-
-            const commentsList = document.getElementById('modal-comments-list');
-            commentsList.innerHTML = '';
+            const myNick = localStorage.getItem('8f_nick') || "Anonim";
             
-            if(comments.length === 0) {
-                commentsList.innerHTML = '<p style="color:var(--text-muted); font-size:0.95rem; text-align:center; padding-top: 2rem;">Brak wiadomości. Napisz coś!</p>';
-            } else {
-                comments.forEach((c, i) => {
-                    let cmtLikes = c.likes || 0;
-                    let isCmtLiked = c.isLiked ? 'cmt-liked' : '';
-                    
-                    let repliesHtml = '';
-                    if(c.replies && c.replies.length > 0) {
-                        repliesHtml = '<div class="replies-container">';
-                        c.replies.forEach(r => {
-                            repliesHtml += `
-                                <div class="reply-item">
-                                    <div class="reply-author">${r.nick}</div>
-                                    <div>${r.text}</div>
-                                </div>
-                            `;
-                        });
-                        repliesHtml += '</div>';
-                    }
+            const totalLikes = dbLikes.filter(l => l.media_url === selectedMediaUrl);
+            const isLikedByMe = totalLikes.some(l => l.user_nick === myNick);
+            
+            document.getElementById('modal-like-count').innerText = totalLikes.length;
+            
+            const likeBtn = document.getElementById('modal-like-btn');
+            if(isLikedByMe) likeBtn.classList.add('liked'); else likeBtn.classList.remove('liked');
 
-                    commentsList.innerHTML += `
-                        <div class="comment-item" id="cmt-${i}" style="opacity:0; transform:scale(0.9) translateY(10px);">
-                            <div class="comment-top">
-                                <div class="comment-author">${c.nick}</div>
-                                <button class="btn-cmt-action ${isCmtLiked}" onclick="window.likeComment(${i})">
-                                    <i data-lucide="heart" style="width:14px;height:14px;"></i> <span>${cmtLikes}</span>
-                                </button>
-                            </div>
-                            <div class="comment-text">${c.text}</div>
-                            
-                            <button class="btn-delete-comment" onclick="window.deleteComment(${i})" title="Usuń komentarz">
-                                <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
-                            </button>
+            const currentComments = dbComments.filter(c => c.media_url === selectedMediaUrl && !c.parent_id);
+            document.getElementById('modal-comment-count').innerText = dbComments.filter(c => c.media_url === selectedMediaUrl).length;
 
-                            <div class="comment-actions">
-                                <button class="btn-cmt-action" onclick="window.prepareReply(${i}, '${c.nick}')">
-                                    <i data-lucide="message-square" style="width:12px;height:12px;"></i> Odpowiedz
-                                </button>
-                            </div>
-                            ${repliesHtml}
+            const list = document.getElementById('modal-comments-list');
+            list.innerHTML = currentComments.length === 0 ? '<p style="color:var(--text-muted); text-align:center; padding-top:2rem;">Brak komentarzy. Napisz pierwszy!</p>' : '';
+
+            currentComments.forEach(c => {
+                const childReplies = dbComments.filter(r => r.parent_id === c.id);
+                let repliesHtml = childReplies.map(r => `<div class="reply-item"><div class="reply-author">${r.nick}</div><div>${r.text}</div></div>`).join('');
+                if(repliesHtml) repliesHtml = `<div class="replies-container">${repliesHtml}</div>`;
+
+                list.innerHTML += `
+                    <div class="comment-item">
+                        <div class="comment-top"><div class="comment-author">${c.nick}</div></div>
+                        <div class="comment-text">${c.text}</div>
+                        <button class="btn-delete-comment" onclick="window.deleteCommentOnline(${c.id})"><i data-lucide="trash-2" style="width:14px;height:14px;"></i></button>
+                        <div class="comment-actions">
+                            <button class="btn-cmt-action" onclick="window.prepareReply(${c.id}, '${c.nick}')"><i data-lucide="message-square" style="width:12px;height:12px;"></i> Odpowiedz</button>
                         </div>
-                    `;
-                });
-
-                gsap.to('.comment-item', { opacity: 1, scale: 1, translateY: 0, stagger: 0.05, duration: 0.3, ease: "back.out(1.2)" });
-            }
-            commentsList.scrollTop = commentsList.scrollHeight;
+                        ${repliesHtml}
+                    </div>`;
+            });
+            list.scrollTop = list.scrollHeight;
             lucide.createIcons();
         }
 
-        window.toggleLike = function(triggerVisualHeart = false) {
-            if(!localLikes[selectedMediaUrl]) {
-                localLikes[selectedMediaUrl] = 1;
-                if(triggerVisualHeart) {
-                    const container = document.getElementById('modal-media-container');
-                    playTargetedHeartAnimation(container.clientWidth / 2, container.clientHeight / 2);
-                }
+        // --- MODAL ONLINE ACTIONS ---
+        window.toggleLike = async function(triggerVisual = false) {
+            const myNick = localStorage.getItem('8f_nick') || "Anonim";
+            const existing = dbLikes.find(l => l.media_url === selectedMediaUrl && l.user_nick === myNick);
+
+            if(existing) {
+                // Usuń lajka online
+                await fetch(`${SUPABASE_URL}/rest/v1/likes?id=eq.${existing.id}`, {
+                    method: 'DELETE',
+                    headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+                });
             } else {
-                localLikes[selectedMediaUrl] = 0; 
+                // Dodaj lajka online
+                if(triggerVisual) {
+                    const cnt = document.getElementById('modal-media-container');
+                    playTargetedHeartAnimation(cnt.clientWidth/2, cnt.clientHeight/2);
+                }
+                await fetch(`${SUPABASE_URL}/rest/v1/likes`, {
+                    method: 'POST',
+                    headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}`, "Content-Type": "application/json" },
+                    body: JSON.stringify({ media_url: selectedMediaUrl, user_nick: myNick })
+                });
             }
-            localStorage.setItem('8f_local_likes', JSON.stringify(localLikes));
-            gsap.fromTo('#modal-like-btn i', { scale: 1 }, { scale: 1.5, duration: 0.15, yoyo: true, repeat: 1, ease: "back.out(1.5)" });
+            await syncOnlineData();
             updateModalSocials();
         };
 
-        window.deleteComment = function(index) {
-            let comments = localComments[selectedMediaUrl] || [];
-            if(!comments[index]) return;
+        window.addComment = async function() {
+            const input = document.getElementById('comment-input');
+            const text = input.value.trim();
+            if(!text) return;
 
-            gsap.to(`#cmt-${index}`, { opacity: 0, scale: 0.8, x: -50, filter: "blur(5px)", duration: 0.25, onComplete: () => {
-                comments.splice(index, 1);
-                localComments[selectedMediaUrl] = comments;
-                localStorage.setItem('8f_local_comments', JSON.stringify(localComments));
-                updateModalSocials();
-            }});
+            const myNick = localStorage.getItem('8f_nick') || "Anonim";
+            
+            await fetch(`${SUPABASE_URL}/rest/v1/comments`, {
+                method: 'POST',
+                headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}`, "Content-Type": "application/json" },
+                body: JSON.stringify({ media_url: selectedMediaUrl, nick: myNick, text: text, parent_id: replyingToCommentIndex })
+            });
+
+            input.value = '';
+            window.cancelReply();
+            await syncOnlineData();
+            updateModalSocials();
         };
 
-        window.prepareReply = function(index, authorNick) {
-            replyingToCommentIndex = index;
-            document.getElementById('reply-indicator-text').innerText = `Odpowiadasz użytkownikowi ${authorNick}`;
-            const indicator = document.getElementById('reply-box-indicator');
-            indicator.style.display = 'flex';
-            gsap.fromTo(indicator, {y: 10, opacity: 0}, {y: 0, opacity: 1, duration: 0.2});
+        window.deleteCommentOnline = async function(id) {
+            await fetch(`${SUPABASE_URL}/rest/v1/comments?id=eq.${id}`, {
+                method: 'DELETE',
+                headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+            });
+            await syncOnlineData();
+            updateModalSocials();
+        };
+
+        window.prepareReply = function(id, name) {
+            replyingToCommentIndex = id;
+            document.getElementById('reply-indicator-text').innerText = `Odpowiadasz użytkownikowi ${name}`;
+            document.getElementById('reply-box-indicator').style.display = 'flex';
             document.getElementById('comment-input').focus();
         };
 
         window.cancelReply = function() {
             replyingToCommentIndex = null;
             document.getElementById('reply-box-indicator').style.display = 'none';
-        };
-
-        window.likeComment = function(index) {
-            let comments = localComments[selectedMediaUrl] || [];
-            if(!comments[index]) return;
-
-            if(!comments[index].likes) comments[index].likes = 0;
-
-            if(comments[index].isLiked) {
-                comments[index].likes--;
-                comments[index].isLiked = false;
-            } else {
-                comments[index].likes++;
-                comments[index].isLiked = true;
-                const heartIcon = document.querySelector(`#cmt-${index} .btn-cmt-action i`);
-                if(heartIcon) gsap.fromTo(heartIcon, {scale: 1}, {scale: 1.5, duration: 0.15, yoyo: true, repeat: 1});
-            }
-
-            localComments[selectedMediaUrl] = comments;
-            localStorage.setItem('8f_local_comments', JSON.stringify(localComments));
-            updateModalSocials();
-        };
-
-        window.addComment = function() {
-            const input = document.getElementById('comment-input');
-            const text = input.value.trim();
-            if(!text) return;
-
-            let myNick = localStorage.getItem('8f_nick') || "Anonim";
-            let comments = localComments[selectedMediaUrl] || [];
-
-            if(replyingToCommentIndex !== null) {
-                if(!comments[replyingToCommentIndex].replies) {
-                    comments[replyingToCommentIndex].replies = [];
-                }
-                comments[replyingToCommentIndex].replies.push({ nick: myNick, text: text });
-                window.cancelReply();
-            } else {
-                comments.push({ nick: myNick, text: text, likes: 0, isLiked: false, replies: [] });
-            }
-
-            localComments[selectedMediaUrl] = comments;
-            localStorage.setItem('8f_local_comments', JSON.stringify(localComments));
-            input.value = '';
-            
-            updateModalSocials();
         };
     </script>
 </body>
